@@ -4,6 +4,7 @@
 #include <queue>
 #include <iterator>
 #include <algorithm>
+#include <cassert>
 
 class Point;
 class IsGreater {
@@ -24,22 +25,22 @@ public:
 
 class Point {
 public:
+    enum class PointType { Infrastructure, BasePoint };
     unsigned int id;
     std::vector <Edge> BasePointEdges;
-    virtual bool IsInfrastucture() { return false; }
-    virtual bool IsBasePoint() { return false; }
+    virtual PointType Type() = 0;
 };
 
 class Infrastructure : public Point {
 public:
     std::string name;
-    bool IsInfrastucture() override { return true; }
+    PointType Type() override { return PointType::Infrastructure; }
 };
 
 class BasePoint : public Point {
 public:
     std::vector <Edge> InfrastructureEdges;
-    bool IsBasePoint() override { return true; }
+    PointType Type() override { return PointType::BasePoint; }
 };
 
 std::vector <BasePoint> fillTestBasePoints() {
@@ -118,7 +119,7 @@ std::vector <Infrastructure> fillInfrPoints() {
     i11.name = "401u";
     edge = {1, 2, "11->1.txt"};
     i11.BasePointEdges.push_back(edge);
-    edge = {2, 1, "11->2>1.txt"};
+    edge = {2, 1, "11->2.txt"};
     i11.BasePointEdges.push_back(edge);
 
     i12.id = 12;
@@ -153,16 +154,13 @@ class Search {
     struct OptimalDistData {
         unsigned int dist;
         unsigned int indexOfEdge;
-        // make enum 
-        // 1 is BasePoint
-        // 2 is infr
-        unsigned int type;
+        Point::PointType type;
         Point* prev;
         OptimalDistData() {}
         OptimalDistData(unsigned int getDist, 
                         unsigned int getNumberOfEdge, 
                         Point* getPrev, 
-                        unsigned int getType = 1) : dist(getDist),
+                        Point::PointType getType = Point::PointType::BasePoint) : dist(getDist),
                         indexOfEdge(getNumberOfEdge),
                         prev(getPrev),
                         type(getType) {}
@@ -211,12 +209,7 @@ public:
         OptimalDistData optDataFirst(0, 0, NULL);
         distToPoint[startVertex] = optDataFirst;
         pq.push(std::make_pair(0, startVertex));
-        int debug = 0;
         while (!pq.empty()) {
-            ++debug;
-            if (debug > 100) {
-                break;
-            }
             Point* p = pq.top().second;
             unsigned int dist = pq.top().first;
             // std::cout << "dist: " << dist << std::endl;
@@ -224,7 +217,6 @@ public:
             pq.pop();
             if (distToPoint[p].dist < dist) continue;
             for (int i = 0; i < p->BasePointEdges.size(); ++i) {
-                // std::cout << (p->BasePointEdges[i]).dist << std::endl;
                 unsigned int localDistToPoint = dist + (p->BasePointEdges[i]).dist;
                 Point* neighbour = idBasePointsMap[(p->BasePointEdges[i]).vertexTo];
                 if (!distToPoint.count(neighbour) || distToPoint[neighbour].dist > localDistToPoint) {
@@ -233,7 +225,7 @@ public:
                     pq.push(std::make_pair(localDistToPoint, neighbour));
                 }
             }
-            if (p->IsBasePoint()) {
+            if (p->Type() == Point::PointType::BasePoint) {
                 BasePoint* bpPtr = (BasePoint *)p;
                 for (int i = 0; i < bpPtr->InfrastructureEdges.size(); ++i) {
                     unsigned int localIdInfr = (bpPtr->InfrastructureEdges)[i].vertexTo;
@@ -242,7 +234,7 @@ public:
                         Point* localPoint = (Point*) localInfr;
                         unsigned int localDistToPoint = dist + (bpPtr->InfrastructureEdges)[i].dist;
                         if (!distToPoint.count(localPoint) || distToPoint[localPoint].dist > localDistToPoint) {
-                            OptimalDistData optData(localDistToPoint, i, p, 2);
+                            OptimalDistData optData(localDistToPoint, i, p, Point::PointType::Infrastructure);
                             distToPoint[localPoint] = optData;
                         } 
                     }
@@ -260,7 +252,7 @@ public:
         while (true) {
             Point* ptr = optData.prev;
             if (ptr == NULL) break;
-            if (optData.type == 2) {
+            if (optData.type == Point::PointType::Infrastructure) {
                 BasePoint* bpPtr = (BasePoint*)ptr;
                 linksToFiles.push_back((bpPtr->InfrastructureEdges)[optData.indexOfEdge].linkToFile);
             } else {
@@ -270,19 +262,48 @@ public:
         }
         std::reverse(linksToFiles.begin(), linksToFiles.end());
         std::cout << " dist to end: " << dist << std::endl;
-        std::cout << "links: " << std::endl;
-        for (auto link : linksToFiles) {
-            std::cout << link << std::endl;
-        }
         return linksToFiles;
     }
 };
 
-int main() {
+
+void showRoute(std::vector <std::string> foundRoute) {
+    std::cout << "links: " << std::endl;
+    for (auto link : foundRoute) {
+        std::cout << link << std::endl;
+    }
+}
+
+void test() {
     DataBase data;
     Search s1(data);
+    {
+        std::vector <std::string> foundRoute = s1.FindRoute("399u", "403u");
+        assert(foundRoute.size() == 4);
+        assert(foundRoute[0] == "9->1.txt");
+        assert(foundRoute[1] == "1->4.txt");
+        assert(foundRoute[2] == "4->3.txt");
+        assert(foundRoute[3] == "3->13.txt");
+    }
+    {
+        std::vector <std::string> foundRoute = s1.FindRoute("401u", "403u");
+        assert(foundRoute.size() == 2);
+        assert(foundRoute[0] == "11->2.txt");
+        assert(foundRoute[1] == "2->13.txt");
+    }
+    {
+        std::vector <std::string> foundRoute = s1.FindRoute("401u", "401u");
+        assert(foundRoute.size() == 0);
+    }
+
+}
+
+int main() {
+    test();
+    // DataBase data;
+    // Search s1(data);
     // s1.show();
-    std::cout << s1.HavePoint("501") << std::endl;
-    s1.FindRoute("399u", "403u");
+    // std::cout << s1.HavePoint("501") << std::endl;
+    // s1.FindRoute("399u", "403u");
     return 0;
 }
