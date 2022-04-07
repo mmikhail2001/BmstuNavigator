@@ -2,6 +2,8 @@
 #include <vector>
 #include <map>
 #include <queue>
+#include <iterator>
+#include <algorithm>
 
 class Point;
 class IsGreater {
@@ -42,47 +44,48 @@ public:
 
 std::vector <BasePoint> fillTestBasePoints() {
     BasePoint a, b, c, d;
+    Edge edge;
     a.id = 1;
     // base
-    Edge edge = {2, 2, "1->2.txt"};
+    edge = {2, 2, "1->2.txt"};
     a.BasePointEdges.push_back(edge);
-    edge = {4, 1, ".txt"};
+    edge = {4, 1, "1->4.txt"};
     a.BasePointEdges.push_back(edge);
     // infr
-    edge = {9, 5, "file0.txt"};
+    edge = {9, 5, "1->9.txt"};
     a.InfrastructureEdges.push_back(edge);
-    edge = {10, 2, "file10.txt"};
+    edge = {10, 2, "1->10.txt"};
     a.InfrastructureEdges.push_back(edge);
-    edge = {11, 2, "file11.txt"};
+    edge = {11, 2, "1->11.txt"};
     a.InfrastructureEdges.push_back(edge);
 
 
     b.id = 2;
     // base
-    edge = {1, 2, ".txt"};
+    edge = {1, 2, "2->1.txt"};
     b.BasePointEdges.push_back(edge);
-    edge = {3, 5, ".txt"};
+    edge = {3, 5, "2->3.txt"};
     b.BasePointEdges.push_back(edge);
     // infr
-    edge = {10, 0, ".txt"};
+    edge = {10, 0, "2->10.txt"};
     b.InfrastructureEdges.push_back(edge);
-    edge = {11, 1, ".txt"};
+    edge = {11, 1, "2->11.txt"};
     b.InfrastructureEdges.push_back(edge);
-    edge = {12, 2, ".txt"};
+    edge = {12, 2, "2->12.txt"};
     b.InfrastructureEdges.push_back(edge);
-    edge = {13, 3, ".txt"};
+    edge = {13, 3, "2->13.txt"};
     b.InfrastructureEdges.push_back(edge);
 
     c.id = 3;
     // base
-    edge = {2, 5, ".txt"};
+    edge = {2, 5, "3->2.txt"};
     c.BasePointEdges.push_back(edge);
-    edge = {4, 2, ".txt"};
+    edge = {4, 2, "3->4.txt"};
     c.BasePointEdges.push_back(edge);
     // infr
-    edge = {12, 1, ".txt"};
+    edge = {12, 1, "3->12.txt"};
     c.InfrastructureEdges.push_back(edge);
-    edge = {13, 1, ".txt"};
+    edge = {13, 1, "3->13.txt"};
     c.InfrastructureEdges.push_back(edge);
 
     d.id = 4;
@@ -101,35 +104,35 @@ std::vector <Infrastructure> fillInfrPoints() {
     Edge edge;
     i9.id = 9;
     i9.name = "399u";
-    edge = {1, 5, ".txt"};
+    edge = {1, 5, "9->1.txt"};
     i9.BasePointEdges.push_back(edge);
 
     i10.id = 10;
     i10.name = "400u";
-    edge = {1, 2, ".txt"};
+    edge = {1, 2, "10->1.txt"};
     i10.BasePointEdges.push_back(edge);
-    edge = {2, 0, ".txt"};
+    edge = {2, 0, "10->2.txt"};
     i10.BasePointEdges.push_back(edge);
 
     i11.id = 11;
     i11.name = "401u";
-    edge = {1, 2, ".txt"};
+    edge = {1, 2, "11->1.txt"};
     i11.BasePointEdges.push_back(edge);
-    edge = {2, 1, ".txt"};
+    edge = {2, 1, "11->2>1.txt"};
     i11.BasePointEdges.push_back(edge);
 
     i12.id = 12;
     i12.name = "402u";
-    edge = {2, 2, ".txt"};
+    edge = {2, 2, "12->2.txt"};
     i12.BasePointEdges.push_back(edge);
-    edge = {3, 1, ".txt"};
+    edge = {3, 1, "12->3.txt"};
     i12.BasePointEdges.push_back(edge);
 
     i13.id = 13;
     i13.name = "403u";
-    edge = {2, 2, ".txt"};
+    edge = {2, 2, "13->2.txt"};
     i13.BasePointEdges.push_back(edge);
-    edge = {3, 1, ".txt"};
+    edge = {3, 1, "13->3.txt"};
     i13.BasePointEdges.push_back(edge);
 
     std::vector <Infrastructure> graf = {i9, i10, i11, i12, i13};
@@ -147,12 +150,29 @@ public:
 };
 
 class Search {
+    struct OptimalDistData {
+        unsigned int dist;
+        unsigned int indexOfEdge;
+        // make enum 
+        // 1 is BasePoint
+        // 2 is infr
+        unsigned int type;
+        Point* prev;
+        OptimalDistData() {}
+        OptimalDistData(unsigned int getDist, 
+                        unsigned int getNumberOfEdge, 
+                        Point* getPrev, 
+                        unsigned int getType = 1) : dist(getDist),
+                        indexOfEdge(getNumberOfEdge),
+                        prev(getPrev),
+                        type(getType) {}
+
+    };
     std::vector <BasePoint> graf;
     std::vector <Infrastructure> infr;
     std::map <std::string, Infrastructure*> nameInfrMap;
     std::map <unsigned int, Infrastructure*> idInfrMap;
     std::map <unsigned int, BasePoint*> idBasePointsMap;
-    std::map <Point*, unsigned int> distToPoint;
 
     void create_map_points() {
         for (int i = 0; i < infr.size(); ++i) {
@@ -184,10 +204,12 @@ public:
             std::cout << "Search->FindRoute start and end must be known\n";
             std::cout << "HERE WILL BE RAISE!\n";
         }
-        std::vector <std::string> linksToPhotos;
+        std::vector <std::string> linksToFiles;
         std::priority_queue <std::pair<int, Point*>, std::vector <std::pair<int, Point*> >, IsGreater > pq;
+        std::map <Point*, OptimalDistData > distToPoint;
         Point* startVertex = nameInfrMap[startName];
-        distToPoint[startVertex] = 0;
+        OptimalDistData optDataFirst(0, 0, NULL);
+        distToPoint[startVertex] = optDataFirst;
         pq.push(std::make_pair(0, startVertex));
         int debug = 0;
         while (!pq.empty()) {
@@ -197,49 +219,62 @@ public:
             }
             Point* p = pq.top().second;
             unsigned int dist = pq.top().first;
-            std::cout << "dist: " << dist << std::endl;
-            std::cout << "id: " << p->id << std::endl;
+            // std::cout << "dist: " << dist << std::endl;
+            // std::cout << "id: " << p->id << std::endl;
             pq.pop();
-            if (distToPoint[p] < dist) continue;
+            if (distToPoint[p].dist < dist) continue;
             for (int i = 0; i < p->BasePointEdges.size(); ++i) {
                 // std::cout << (p->BasePointEdges[i]).dist << std::endl;
                 unsigned int localDistToPoint = dist + (p->BasePointEdges[i]).dist;
                 Point* neighbour = idBasePointsMap[(p->BasePointEdges[i]).vertexTo];
-                if (!distToPoint.count(neighbour) || distToPoint[neighbour] > localDistToPoint) {
-                    distToPoint[neighbour] = localDistToPoint;
+                if (!distToPoint.count(neighbour) || distToPoint[neighbour].dist > localDistToPoint) {
+                    OptimalDistData optData(localDistToPoint, i, p);
+                    distToPoint[neighbour] = optData;
                     pq.push(std::make_pair(localDistToPoint, neighbour));
-                }   
+                }
             }
             if (p->IsBasePoint()) {
-                BasePoint* t = (BasePoint *)p;
-                for (int i = 0; i < t->InfrastructureEdges.size(); ++i) {
-                    unsigned int localIdInfr = (t->InfrastructureEdges)[i].vertexTo;
+                BasePoint* bpPtr = (BasePoint *)p;
+                for (int i = 0; i < bpPtr->InfrastructureEdges.size(); ++i) {
+                    unsigned int localIdInfr = (bpPtr->InfrastructureEdges)[i].vertexTo;
                     Infrastructure* localInfr = idInfrMap[localIdInfr];
                     if (idInfrMap[localIdInfr] == nameInfrMap[endName]) {
                         Point* localPoint = (Point*) localInfr;
-                        unsigned int localDistToPoint = dist + (t->InfrastructureEdges)[i].dist;
-                        if (!distToPoint.count(localPoint) || distToPoint[localPoint] > localDistToPoint) {
-                            distToPoint[localPoint] = localDistToPoint;
+                        unsigned int localDistToPoint = dist + (bpPtr->InfrastructureEdges)[i].dist;
+                        if (!distToPoint.count(localPoint) || distToPoint[localPoint].dist > localDistToPoint) {
+                            OptimalDistData optData(localDistToPoint, i, p, 2);
+                            distToPoint[localPoint] = optData;
                         } 
                     }
                 }
-                // std::cout << "" << t->InfrastructureEdges.size();
-                // std::cout << "Id: " << p->id << " ";
-                // std::cout << "Is Base Point" << std::endl;
-                // pq.push(std::make_pair(p.BasePointEdges));
             }
-            // if (p->IsInfrastucture()) {
-                // std::cout << "Is Infrastructure" << std::endl;
-            // }
         }
 
         Point* localPoint = nameInfrMap[endName];
         if (!distToPoint.count(localPoint)) {
             std::cout << "We cant find this Route" << std::endl;
+            return linksToFiles;
         }
-        unsigned int dist = distToPoint[localPoint];
+        unsigned int dist = distToPoint[localPoint].dist;
+        OptimalDistData optData = distToPoint[localPoint];
+        while (true) {
+            Point* ptr = optData.prev;
+            if (ptr == NULL) break;
+            if (optData.type == 2) {
+                BasePoint* bpPtr = (BasePoint*)ptr;
+                linksToFiles.push_back((bpPtr->InfrastructureEdges)[optData.indexOfEdge].linkToFile);
+            } else {
+                linksToFiles.push_back((ptr->BasePointEdges)[optData.indexOfEdge].linkToFile);
+            }
+            optData = distToPoint[ptr];
+        }
+        std::reverse(linksToFiles.begin(), linksToFiles.end());
         std::cout << " dist to end: " << dist << std::endl;
-        return linksToPhotos;
+        std::cout << "links: " << std::endl;
+        for (auto link : linksToFiles) {
+            std::cout << link << std::endl;
+        }
+        return linksToFiles;
     }
 };
 
