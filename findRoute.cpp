@@ -151,16 +151,17 @@ public:
 };
 
 class Search {
-    struct OptimalDistData {
+    struct RoadData {
         unsigned int dist;
         unsigned int indexOfEdge;
         Point::PointType type;
         Point* prev;
-        OptimalDistData() {}
-        OptimalDistData(unsigned int getDist, 
+        RoadData() {}
+        RoadData(unsigned int getDist, 
                         unsigned int getNumberOfEdge, 
                         Point* getPrev, 
-                        Point::PointType getType = Point::PointType::BasePoint) : dist(getDist),
+                        Point::PointType getType = Point::PointType::BasePoint) : 
+                        dist(getDist),
                         indexOfEdge(getNumberOfEdge),
                         prev(getPrev),
                         type(getType) {}
@@ -183,6 +184,7 @@ class Search {
     }
 
 public:
+    enum class Exeptions { UNKNOWN_POINT };
     Search(DataBase &base) {
         graf = base.getBasePoints();
         infr = base.getInfrastructurePoints();
@@ -191,22 +193,16 @@ public:
     bool HavePoint(std::string name) {
         return nameInfrMap.count(name);
     }
-    void show() {
-        std::cout << "show: " << std::endl;
-        for (int i = 0; i < infr.size(); ++i) {
-            std::cout << infr[i].id << std::endl;
-        }
-    }
     std::vector <std::string> FindRoute(std::string startName, std::string endName) {
         if (!HavePoint(startName) || !HavePoint(endName)) {
-            std::cout << "Search->FindRoute start and end must be known\n";
-            std::cout << "HERE WILL BE RAISE!\n";
+            std::cout << "Search->FindRoute: unknown point was obtained" << std::endl;
+            throw Exeptions::UNKNOWN_POINT;
         }
         std::vector <std::string> linksToFiles;
         std::priority_queue <std::pair<int, Point*>, std::vector <std::pair<int, Point*> >, IsGreater > pq;
-        std::map <Point*, OptimalDistData > distToPoint;
+        std::map <Point*, RoadData > distToPoint;
         Point* startVertex = nameInfrMap[startName];
-        OptimalDistData optDataFirst(0, 0, NULL);
+        RoadData optDataFirst(0, 0, NULL);
         distToPoint[startVertex] = optDataFirst;
         pq.push(std::make_pair(0, startVertex));
         while (!pq.empty()) {
@@ -220,7 +216,7 @@ public:
                 unsigned int localDistToPoint = dist + (p->BasePointEdges[i]).dist;
                 Point* neighbour = idBasePointsMap[(p->BasePointEdges[i]).vertexTo];
                 if (!distToPoint.count(neighbour) || distToPoint[neighbour].dist > localDistToPoint) {
-                    OptimalDistData optData(localDistToPoint, i, p);
+                    RoadData optData(localDistToPoint, i, p);
                     distToPoint[neighbour] = optData;
                     pq.push(std::make_pair(localDistToPoint, neighbour));
                 }
@@ -234,9 +230,9 @@ public:
                         Point* localPoint = (Point*) localInfr;
                         unsigned int localDistToPoint = dist + (bpPtr->InfrastructureEdges)[i].dist;
                         if (!distToPoint.count(localPoint) || distToPoint[localPoint].dist > localDistToPoint) {
-                            OptimalDistData optData(localDistToPoint, i, p, Point::PointType::Infrastructure);
+                            RoadData optData(localDistToPoint, i, p, Point::PointType::Infrastructure);
                             distToPoint[localPoint] = optData;
-                        } 
+                        }
                     }
                 }
             }
@@ -248,7 +244,7 @@ public:
             return linksToFiles;
         }
         unsigned int dist = distToPoint[localPoint].dist;
-        OptimalDistData optData = distToPoint[localPoint];
+        RoadData optData = distToPoint[localPoint];
         while (true) {
             Point* ptr = optData.prev;
             if (ptr == NULL) break;
@@ -293,6 +289,18 @@ void test() {
     }
     {
         std::vector <std::string> foundRoute = s1.FindRoute("401u", "401u");
+        assert(foundRoute.size() == 0);
+    }
+    {
+        std::vector <std::string> foundRoute;
+        bool wasException = false;
+        try {
+            s1.FindRoute("cant find object", "401u");
+        } catch (Search::Exeptions exception) {
+            assert(exception == Search::Exeptions::UNKNOWN_POINT);
+            wasException = true;
+        }
+        assert(wasException == true);
         assert(foundRoute.size() == 0);
     }
 
