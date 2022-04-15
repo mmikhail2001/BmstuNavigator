@@ -19,6 +19,8 @@ std::vector <BasePoint> fillTestBasePoints() {
     a.InfrastructureEdges.push_back(edge);
     edge = {11, 2, "1->11.txt"};
     a.InfrastructureEdges.push_back(edge);
+    edge = {102, 1, "1->canteen.txt"};
+    a.InfrastructureEdges.push_back(edge);
 
 
     b.id = 2;
@@ -64,7 +66,7 @@ std::vector <BasePoint> fillTestBasePoints() {
 }
 
 std::vector <Infrastructure> fillInfrPoints() {
-    Infrastructure i9, i10, i11, i12, i13, i103;
+    Infrastructure i9, i10, i11, i12, i13, i102, i103;
     Edge edge;
     i9.id = 9;
     i9.names.push_back("399u");
@@ -99,13 +101,20 @@ std::vector <Infrastructure> fillInfrPoints() {
     edge = {3, 1, "13->3.txt"};
     i13.BasePointEdges.push_back(edge);
 
+    i102.id = 102;
+    i102.names.push_back("canteen");
+    i102.names.push_back("canteen2");
+    edge = {1, 1, "canteen->1.txt"};
+    i102.BasePointEdges.push_back(edge);
+
     i103.id = 103;
     i103.names.push_back("canteen");
     i103.names.push_back("canteen3");
+    i103.names.push_back("canteen_near_physics");
     edge = {4, 1, "canteen->4.txt"};
     i103.BasePointEdges.push_back(edge);
 
-    std::vector <Infrastructure> graf = {i9, i10, i11, i12, i13, i103};
+    std::vector <Infrastructure> graf = {i9, i10, i11, i12, i13, i102, i103};
     return graf;
 }
 
@@ -163,7 +172,7 @@ TEST(TestRoute, test_cant_find_object) {
 TEST(TestRoute, find_by_diff_names) {
     DataBaseTest data;
     Search s1(&data);
-    std::vector <std::string> foundRoute = s1.FindRoute("399u", "canteen");
+    std::vector <std::string> foundRoute = s1.FindRoute("399u", "canteen_near_physics");
     EXPECT_EQ(foundRoute.size(), 3);
     EXPECT_EQ(foundRoute[0], "9->1.txt");
     EXPECT_EQ(foundRoute[1], "1->4.txt");
@@ -174,4 +183,13 @@ TEST(TestRoute, find_by_diff_names) {
     EXPECT_EQ(foundRoute[0], "9->1.txt");
     EXPECT_EQ(foundRoute[1], "1->4.txt");
     EXPECT_EQ(foundRoute[2], "4->canteen.txt");
+}
+
+TEST(TestRoute, find_nearest_infr) {
+    DataBaseTest data;
+    Search s1(&data);
+    std::vector <std::string> foundRoute = s1.FindRoute("399u", "canteen");
+    EXPECT_EQ(foundRoute.size(), 2);
+    EXPECT_EQ(foundRoute[0], "9->1.txt");
+    EXPECT_EQ(foundRoute[1], "1->canteen.txt");
 }
