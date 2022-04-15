@@ -32,8 +32,8 @@ bool Search::HavePoint(std::string name) {
 
 std::vector <std::string> Search::FindRoute(std::string startName, std::string endName) {
     if (!HavePoint(startName) || !HavePoint(endName)) {
-        std::cout << "Search->FindRoute: unknown point was obtained" << std::endl;
-        throw Exeptions::UNKNOWN_POINT;
+        // std::cout << "ERROR: Search->FindRoute: unknown point was obtained" << std::endl;
+        throw std::runtime_error("ERROR: Search->FindRoute: unknown point was obtained");
     }
     std::vector <std::string> linksToFiles;
     std::priority_queue <std::pair<int, Point*>, std::vector <std::pair<int, Point*> >, IsGreater > pq;
@@ -77,8 +77,7 @@ std::vector <std::string> Search::FindRoute(std::string startName, std::string e
 
     Point* localPoint = nameInfrMap[endName];
     if (!distToPoint.count(localPoint)) {
-        std::cout << "We cant find this Route" << std::endl;
-        return linksToFiles;
+        throw std::runtime_error("ERROR: We cant find this Route");
     }
     unsigned int dist = distToPoint[localPoint].dist;
     RoadData optData = distToPoint[localPoint];
@@ -94,7 +93,7 @@ std::vector <std::string> Search::FindRoute(std::string startName, std::string e
         optData = distToPoint[ptr];
     }
     std::reverse(linksToFiles.begin(), linksToFiles.end());
-    std::cout << " dist to end: " << dist << std::endl;
+    // std::cout << " dist to end: " << dist << std::endl;
     return linksToFiles;
 }
 
@@ -105,7 +104,7 @@ void showRoute(std::vector <std::string> foundRoute) {
         std::cout << link << std::endl;
     }
 }
-
+/*
 
 int main() {
     // DataBase data;
@@ -115,3 +114,4 @@ int main() {
     // s1.FindRoute("399u", "403u");
     return 0;
 }
+*/

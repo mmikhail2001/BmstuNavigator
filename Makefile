@@ -10,4 +10,4 @@ build:
 	cmake --build .
 
 test:
-	build/tests/test_dir
+	build/tests/test_search

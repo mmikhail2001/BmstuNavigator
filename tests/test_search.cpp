@@ -1,6 +1,7 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "search.h"
-
+#include "database.h"
+#include "points.h"
 
 std::vector <BasePoint> fillTestBasePoints() {
     BasePoint a, b, c, d;
@@ -112,7 +113,7 @@ public:
 
 
 
-TEST(Func, testCi) {
+TEST(TestRoute, test_399u_403u) {
     DataBaseTest data;
     Search s1(&data);
     std::vector <std::string> foundRoute = s1.FindRoute("399u", "403u");
@@ -122,25 +123,29 @@ TEST(Func, testCi) {
     EXPECT_EQ(foundRoute[2], "4->3.txt");
     EXPECT_EQ(foundRoute[3], "3->13.txt");
     {
-        std::vector <std::string> foundRoute = s1.FindRoute("401u", "403u");
-        assert(foundRoute.size() == 2);
-        assert(foundRoute[0] == "11->2.txt");
-        assert(foundRoute[1] == "2->13.txt");
+        
     }
-    {
-        std::vector <std::string> foundRoute = s1.FindRoute("401u", "401u");
-        assert(foundRoute.size() == 0);
-    }
-    {
-        std::vector <std::string> foundRoute;
-        bool wasException = false;
-        try {
-            s1.FindRoute("cant find object", "401u");
-        } catch (Search::Exeptions exception) {
-            assert(exception == Search::Exeptions::UNKNOWN_POINT);
-            wasException = true;
-        }
-        assert(wasException == true);
-        assert(foundRoute.size() == 0);
-    }
+}
+
+TEST(TestRoute, test_401u_403u) {
+    DataBaseTest data;
+    Search s1(&data);
+    std::vector <std::string> foundRoute = s1.FindRoute("401u", "403u");
+    EXPECT_EQ(foundRoute.size(), 2);
+    EXPECT_EQ(foundRoute[0], "11->2.txt");
+    EXPECT_EQ(foundRoute[1], "2->13.txt");
+}
+
+TEST(TestRoute, test_401u_401u) {
+    DataBaseTest data;
+    Search s1(&data);
+    std::vector <std::string> foundRoute = s1.FindRoute("401u", "401u");
+    EXPECT_EQ(foundRoute.size(), 0);
+}
+
+TEST(TestRoute, test_cant_find_object) {
+    DataBaseTest data;
+    Search s1(&data);
+    std::vector <std::string> foundRoute;
+    EXPECT_THROW(s1.FindRoute("cant find object", "401u"), std::runtime_error);
 }
