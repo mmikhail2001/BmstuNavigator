@@ -129,6 +129,12 @@ public:
     }
 };
 
+TEST(TestCheckExist, test_399u_403u) {
+    DataBaseTest data;
+    Search s1(&data);
+    EXPECT_TRUE(s1.HavePoint("399u"));
+    EXPECT_FALSE(s1.HavePoint("have not this infrastructure"));
+}
 
 
 TEST(TestRoute, test_399u_403u) {
@@ -140,9 +146,6 @@ TEST(TestRoute, test_399u_403u) {
     EXPECT_EQ(foundRoute[1], "1->4.txt");
     EXPECT_EQ(foundRoute[2], "4->3.txt");
     EXPECT_EQ(foundRoute[3], "3->13.txt");
-    {
-        
-    }
 }
 
 TEST(TestRoute, test_401u_403u) {
