@@ -12,7 +12,10 @@
 
 void Search::create_map_points() {
     for (int i = 0; i < infr.size(); ++i) {
-        nameInfrMap[infr[i].name] = &(infr[i]);
+        for (int j = 0; j < infr[i].names.size(); ++j) {
+            nameInfrMap[infr[i].names[j]] = &(infr[i]);
+        }
+        // TODO ADDED LIST OF VALUES
         idInfrMap[infr[i].id] = &(infr[i]);
     }
     for (int i = 0; i < graf.size(); ++i) {

@@ -55,48 +55,57 @@ std::vector <BasePoint> fillTestBasePoints() {
     d.BasePointEdges.push_back(edge);
     edge = {3, 2, "4->3.txt"};
     d.BasePointEdges.push_back(edge);
+    // infr
+    edge = {103, 1, "4->canteen.txt"};
+    d.InfrastructureEdges.push_back(edge);
 
     std::vector <BasePoint> graf = {a, b, c, d};
     return graf;
 }
 
 std::vector <Infrastructure> fillInfrPoints() {
-    Infrastructure i9, i10, i11, i12, i13;
+    Infrastructure i9, i10, i11, i12, i13, i103;
     Edge edge;
     i9.id = 9;
-    i9.name = "399u";
+    i9.names.push_back("399u");
     edge = {1, 5, "9->1.txt"};
     i9.BasePointEdges.push_back(edge);
 
     i10.id = 10;
-    i10.name = "400u";
+    i10.names.push_back("400u");
     edge = {1, 2, "10->1.txt"};
     i10.BasePointEdges.push_back(edge);
     edge = {2, 0, "10->2.txt"};
     i10.BasePointEdges.push_back(edge);
 
     i11.id = 11;
-    i11.name = "401u";
+    i11.names.push_back("401u");
     edge = {1, 2, "11->1.txt"};
     i11.BasePointEdges.push_back(edge);
     edge = {2, 1, "11->2.txt"};
     i11.BasePointEdges.push_back(edge);
 
     i12.id = 12;
-    i12.name = "402u";
+    i12.names.push_back("402u");
     edge = {2, 2, "12->2.txt"};
     i12.BasePointEdges.push_back(edge);
     edge = {3, 1, "12->3.txt"};
     i12.BasePointEdges.push_back(edge);
 
     i13.id = 13;
-    i13.name = "403u";
+    i13.names.push_back("403u");
     edge = {2, 2, "13->2.txt"};
     i13.BasePointEdges.push_back(edge);
     edge = {3, 1, "13->3.txt"};
     i13.BasePointEdges.push_back(edge);
 
-    std::vector <Infrastructure> graf = {i9, i10, i11, i12, i13};
+    i103.id = 103;
+    i103.names.push_back("canteen");
+    i103.names.push_back("canteen3");
+    edge = {4, 1, "canteen->4.txt"};
+    i103.BasePointEdges.push_back(edge);
+
+    std::vector <Infrastructure> graf = {i9, i10, i11, i12, i13, i103};
     return graf;
 }
 
@@ -148,4 +157,21 @@ TEST(TestRoute, test_cant_find_object) {
     Search s1(&data);
     std::vector <std::string> foundRoute;
     EXPECT_THROW(s1.FindRoute("cant find object", "401u"), std::runtime_error);
+}
+
+
+TEST(TestRoute, find_by_diff_names) {
+    DataBaseTest data;
+    Search s1(&data);
+    std::vector <std::string> foundRoute = s1.FindRoute("399u", "canteen");
+    EXPECT_EQ(foundRoute.size(), 3);
+    EXPECT_EQ(foundRoute[0], "9->1.txt");
+    EXPECT_EQ(foundRoute[1], "1->4.txt");
+    EXPECT_EQ(foundRoute[2], "4->canteen.txt");
+
+    foundRoute = s1.FindRoute("399u", "canteen3");
+    EXPECT_EQ(foundRoute.size(), 3);
+    EXPECT_EQ(foundRoute[0], "9->1.txt");
+    EXPECT_EQ(foundRoute[1], "1->4.txt");
+    EXPECT_EQ(foundRoute[2], "4->canteen.txt");
 }

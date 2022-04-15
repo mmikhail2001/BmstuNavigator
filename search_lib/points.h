@@ -26,7 +26,7 @@ public:
 
 class Infrastructure : public Point {
 public:
-    std::string name;
+    std::vector <std::string> names;
     PointType Type() override;
 };
 
