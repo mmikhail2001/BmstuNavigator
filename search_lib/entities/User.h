@@ -4,7 +4,7 @@
 #include <string>
 
 class User {
-private:
+public:
 
     int userId;
 
