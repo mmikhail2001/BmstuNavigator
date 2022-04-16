@@ -3,7 +3,7 @@
 
 DataBaseDAO *DataBaseDAO::dataBaseDao = nullptr;;
 
-DataBaseDAO *DataBaseDAO::GetInstance() {
+DataBaseDAO *DataBaseDAO::getInstance() {
     if (dataBaseDao == nullptr) {
         dataBaseDao = new DataBaseDAO();
         DataBaseConfigReader dataBaseConfigReader;
@@ -28,7 +28,7 @@ BasePoint DataBaseDAO::getBasePoint(unsigned int id) {
     return BasePoint();
 };
 
-unsigned int DataBaseDAO::addBasePoint(BasePoint basePoint) {
+unsigned unsigned int DataBaseDAO::addBasePoint(BasePoint basePoint) {
     // TODO
     return 0;
 }

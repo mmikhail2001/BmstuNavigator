@@ -11,19 +11,19 @@ private:
     DataBaseDAO() {
     }
 
-    static DataBaseConnection dataBaseConnection;
-
-public:
     // Singleton pattern
     static DataBaseDAO *dataBaseDao;
 
+    static DataBaseConnection dataBaseConnection;
+
+public:
     // Singleton should not be cloneable
     DataBaseDAO(DataBaseDAO &other) = delete;
 
     // Singleton should not be assignable
     void operator=(const DataBaseDAO &) = delete;
 
-    static DataBaseDAO *GetInstance();
+    static DataBaseDAO *getInstance();
 
     std::vector<BasePoint> getBasePoints() override;
 
@@ -31,7 +31,7 @@ public:
 
     BasePoint getBasePoint(unsigned int id);
 
-    unsigned int addBasePoint(BasePoint basePoint);
+    unsigned unsigned int addBasePoint(BasePoint basePoint);
 
     bool updateBasePoint(BasePoint basePoint);
 
