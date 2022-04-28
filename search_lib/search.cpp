@@ -10,7 +10,7 @@
 #include "database.h"
 
 
-void Search::create_map_points() {
+void Search::createMapPoints() {
     for (int i = 0; i < infr.size(); ++i) {
         for (int j = 0; j < infr[i].names.size(); ++j) {
             nameInfrMap[infr[i].names[j]] = &(infr[i]);
@@ -22,17 +22,29 @@ void Search::create_map_points() {
         idBasePointsMap[graf[i].id] = &(graf[i]);
     }
 }
+SearchInfo Search::CreateSearchInfo(std::string name) {
+    return SearchInfo(name);
+}
 
 Search::Search(DataBase* base) {
     graf = base->getBasePoints();
     infr = base->getInfrastructurePoints();
-    create_map_points();
+    createMapPoints();
 }
 
 bool Search::HavePoint(std::string name) {
     return nameInfrMap.count(name);
 }
 
+
+Route Search::FindRoute(SearchInfo from, SearchInfo to) {
+    Route route;
+    Edge edge = {1, 2, 3, "string"};
+    route.AddEdge(edge);
+    return route;
+}
+
+/*
 std::vector <std::string> Search::FindRoute(std::string startName, std::string endName) {
     if (!HavePoint(startName) || !HavePoint(endName)) {
         // std::cout << "ERROR: Search->FindRoute: unknown point was obtained" << std::endl;
@@ -100,6 +112,8 @@ std::vector <std::string> Search::FindRoute(std::string startName, std::string e
     return linksToFiles;
 }
 
+*/
+
 
 void showRoute(std::vector <std::string> foundRoute) {
     std::cout << "links: " << std::endl;
@@ -107,14 +121,3 @@ void showRoute(std::vector <std::string> foundRoute) {
         std::cout << link << std::endl;
     }
 }
-/*
-
-int main() {
-    // DataBase data;
-    // Search s1(data);
-    // s1.show();
-    // std::cout << s1.HavePoint("501") << std::endl;
-    // s1.FindRoute("399u", "403u");
-    return 0;
-}
-*/

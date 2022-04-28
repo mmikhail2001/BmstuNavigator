@@ -4,21 +4,33 @@
 #include "database.h"
 
 
+class Route {
+    std::vector <Edge> edges;
+public:
+    void AddEdge(Edge edge) {
+        edges.push_back(edge);
+    }
+    std::vector <Edge> GetEdges() {
+        return edges;
+    }
+    unsigned int Size() {
+        return edges.size();
+    }
+};
+
 class Search {
     struct RoadData {
         unsigned int dist;
         unsigned int indexOfEdge;
-        Point::PointType type;
+        // Point::PointType type;
         Point* prev;
         RoadData() {}
         RoadData(unsigned int getDist, 
                  unsigned int getNumberOfEdge, 
-                 Point* getPrev, 
-                 Point::PointType getType = Point::PointType::BasePoint) : 
+                 Point* getPrev) : 
                  dist(getDist),
                  indexOfEdge(getNumberOfEdge),
-                 prev(getPrev),
-                 type(getType) {}
+                 prev(getPrev){}
 
     };
     std::vector <BasePoint> graf;
@@ -27,11 +39,12 @@ class Search {
     std::map <unsigned int, Infrastructure*> idInfrMap;
     std::map <unsigned int, BasePoint*> idBasePointsMap;
 
-    void create_map_points();
+    void createMapPoints();
 
 public:
-    enum class Exeptions { UNKNOWN_POINT };
+    // enum class Exeptions { UNKNOWN_POINT };
     Search(DataBase* base);
     bool HavePoint(std::string name);
-    std::vector <std::string> FindRoute(std::string startName, std::string endName);
+    SearchInfo CreateSearchInfo(std::string name);
+    Route FindRoute(SearchInfo from, SearchInfo to);
 };

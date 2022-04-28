@@ -4,17 +4,28 @@
 
 class Edge {
 public:
-    unsigned int vertexTo;
+    unsigned int from;
+    unsigned int to;
     unsigned int dist;
     std::string linkToFile;
 };
 
+class SearchInfo {
+private:
+    std::string name;
+    unsigned int id;
+public:
+    std::string GetName() { return name; }
+    unsigned int GetId() { return id; }
+    SearchInfo(std::string name) : name(name) {}
+};
+
 class Point {
 public:
-    enum class PointType { Infrastructure, BasePoint };
     unsigned int id;
+    virtual bool IsMe(SearchInfo info) = 0;
+    virtual std::vector <Edge> GetWaysToPoint(SearchInfo info) = 0;
     std::vector <Edge> BasePointEdges;
-    virtual PointType Type() = 0;
 };
 
 class IsGreater {
@@ -27,11 +38,14 @@ public:
 class Infrastructure : public Point {
 public:
     std::vector <std::string> names;
-    PointType Type() override;
+    std::vector <Edge> GetWaysToPoint(SearchInfo info) override;
+    bool IsMe(SearchInfo info) override;
 };
 
 class BasePoint : public Point {
-public:
+private:
     std::vector <Edge> InfrastructureEdges;
-    PointType Type() override;
+public:
+    std::vector <Edge> GetWaysToPoint(SearchInfo info) override;
+    bool IsMe(SearchInfo info) override;
 };
