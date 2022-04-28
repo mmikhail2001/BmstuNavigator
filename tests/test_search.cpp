@@ -5,61 +5,97 @@
 
 std::vector <BasePoint> fillTestBasePoints() {
     BasePoint a, b, c, d;
-    Edge edge;
     a.id = 1;
     // base
-    edge = {2, 2, "1->2.txt"};
-    a.BasePointEdges.push_back(edge);
-    edge = {4, 1, "1->4.txt"};
-    a.BasePointEdges.push_back(edge);
+    {
+        Edge edge(1, 2, 2, "1->2.txt");
+        a.AddBasePointEdge(edge);
+    }
+    {
+        Edge edge(1, 4, 1, "1->4.txt");
+        a.AddBasePointEdge(edge);
+    }
     // infr
-    edge = {9, 5, "1->9.txt"};
-    a.InfrastructureEdges.push_back(edge);
-    edge = {10, 2, "1->10.txt"};
-    a.InfrastructureEdges.push_back(edge);
-    edge = {11, 2, "1->11.txt"};
-    a.InfrastructureEdges.push_back(edge);
-    edge = {102, 1, "1->canteen.txt"};
-    a.InfrastructureEdges.push_back(edge);
-
+    {
+        Edge edge(1, 9, 5, "1->9.txt");
+        a.InfrastructureEdges.push_back(edge);
+    }
+    {
+        Edge edge(1, 10, 2, "1->10.txt");
+        a.InfrastructureEdges.push_back(edge);
+    }
+    {
+        Edge edge(1, 11, 2, "1->11.txt");
+        a.InfrastructureEdges.push_back(edge);
+    }
+    {
+        Edge edge(1, 102, 1, "1->canteen.txt");
+        a.InfrastructureEdges.push_back(edge);
+    }
 
     b.id = 2;
     // base
-    edge = {1, 2, "2->1.txt"};
-    b.BasePointEdges.push_back(edge);
-    edge = {3, 5, "2->3.txt"};
-    b.BasePointEdges.push_back(edge);
+    {
+        Edge edge(2, 1, 2, "2->1.txt");
+        b.AddBasePointEdge(edge);
+    }
+    {
+        Edge edge(2, 3, 5, "2->3.txt");
+        b.AddBasePointEdge(edge);
+    }
     // infr
-    edge = {10, 0, "2->10.txt"};
-    b.InfrastructureEdges.push_back(edge);
-    edge = {11, 1, "2->11.txt"};
-    b.InfrastructureEdges.push_back(edge);
-    edge = {12, 2, "2->12.txt"};
-    b.InfrastructureEdges.push_back(edge);
-    edge = {13, 3, "2->13.txt"};
-    b.InfrastructureEdges.push_back(edge);
+    {
+        Edge edge(2, 10, 0, "2->10.txt");
+        b.InfrastructureEdges.push_back(edge);
+    }
+    {
+        Edge edge(2, 11, 1, "2->11.txt");
+        b.InfrastructureEdges.push_back(edge);
+    }
+    {
+        Edge edge(2, 12, 2, "2->12.txt");
+        b.InfrastructureEdges.push_back(edge);
+    }
+    {
+        Edge edge(2, 13, 3, "2->13.txt");
+        b.InfrastructureEdges.push_back(edge);
+    }
 
     c.id = 3;
     // base
-    edge = {2, 5, "3->2.txt"};
-    c.BasePointEdges.push_back(edge);
-    edge = {4, 2, "3->4.txt"};
-    c.BasePointEdges.push_back(edge);
+    {
+        Edge edge(3, 2, 5, "3->2.txt");
+        c.AddBasePointEdge(edge);
+    }
+    {
+        Edge edge(3, 4, 2, "3->4.txt");
+        c.AddBasePointEdge(edge);
+    }
     // infr
-    edge = {12, 1, "3->12.txt"};
-    c.InfrastructureEdges.push_back(edge);
-    edge = {13, 1, "3->13.txt"};
-    c.InfrastructureEdges.push_back(edge);
+    {
+        Edge edge(3, 12, 1, "3->12.txt");
+        c.InfrastructureEdges.push_back(edge);
+    }
+    {
+        Edge edge(3, 13, 1, "3->13.txt");
+        c.InfrastructureEdges.push_back(edge);
+    }
 
     d.id = 4;
     // base
-    edge = {1, 1, "4->1.txt"};
-    d.BasePointEdges.push_back(edge);
-    edge = {3, 2, "4->3.txt"};
-    d.BasePointEdges.push_back(edge);
+    {
+        Edge edge(d.id, 1, 1, "4->1.txt");
+        d.AddBasePointEdge(edge);
+    }
+    {
+        Edge edge(d.id, 3, 2, "4->3.txt");
+        d.AddBasePointEdge(edge);
+    }
     // infr
-    edge = {103, 1, "4->canteen.txt"};
-    d.InfrastructureEdges.push_back(edge);
+    {
+        Edge edge(d.id, 103, 1, "4->canteen.txt");
+        d.InfrastructureEdges.push_back(edge);
+    }
 
     std::vector <BasePoint> graf = {a, b, c, d};
     return graf;
@@ -67,52 +103,73 @@ std::vector <BasePoint> fillTestBasePoints() {
 
 std::vector <Infrastructure> fillInfrPoints() {
     Infrastructure i9, i10, i11, i12, i13, i102, i103;
-    Edge edge;
     i9.id = 9;
     i9.names.push_back("399u");
-    edge = {1, 5, "9->1.txt"};
-    i9.BasePointEdges.push_back(edge);
+    {
+        Edge edge(i9.id, 1, 5, "9->1.txt");
+        i9.AddBasePointEdge(edge);
+    }
 
     i10.id = 10;
     i10.names.push_back("400u");
-    edge = {1, 2, "10->1.txt"};
-    i10.BasePointEdges.push_back(edge);
-    edge = {2, 0, "10->2.txt"};
-    i10.BasePointEdges.push_back(edge);
+    {
+        Edge edge(i10.id, 1, 2, "10->1.txt");
+        i10.AddBasePointEdge(edge);
+    }
+    {
+        Edge edge(i10.id, 2, 0, "10->2.txt");
+        i10.AddBasePointEdge(edge);
+    }
 
     i11.id = 11;
     i11.names.push_back("401u");
-    edge = {1, 2, "11->1.txt"};
-    i11.BasePointEdges.push_back(edge);
-    edge = {2, 1, "11->2.txt"};
-    i11.BasePointEdges.push_back(edge);
+    {
+        Edge edge(i11.id, 1, 2, "11->1.txt");
+        i11.AddBasePointEdge(edge);
+    }
+    {
+        Edge edge(i11.id, 2, 1, "11->2.txt");
+        i11.AddBasePointEdge(edge);
+    }
 
     i12.id = 12;
     i12.names.push_back("402u");
-    edge = {2, 2, "12->2.txt"};
-    i12.BasePointEdges.push_back(edge);
-    edge = {3, 1, "12->3.txt"};
-    i12.BasePointEdges.push_back(edge);
+    {
+        Edge edge(i12.id, 2, 2, "12->2.txt");
+        i12.AddBasePointEdge(edge);
+    }
+    {
+        Edge edge(i12.id, 3, 1, "12->3.txt");
+        i12.AddBasePointEdge(edge);
+    }
 
     i13.id = 13;
     i13.names.push_back("403u");
-    edge = {2, 2, "13->2.txt"};
-    i13.BasePointEdges.push_back(edge);
-    edge = {3, 1, "13->3.txt"};
-    i13.BasePointEdges.push_back(edge);
+    {
+        Edge edge(i13.id, 2, 2, "13->2.txt");
+        i13.AddBasePointEdge(edge);
+    }
+    {
+        Edge edge(i13.id, 3, 1, "13->3.txt");
+        i13.AddBasePointEdge(edge);
+    }
 
     i102.id = 102;
     i102.names.push_back("canteen");
     i102.names.push_back("canteen2");
-    edge = {1, 1, "canteen->1.txt"};
-    i102.BasePointEdges.push_back(edge);
+    {
+        Edge edge(i102.id, 1, 1, "canteen->1.txt");
+        i102.AddBasePointEdge(edge);
+    }
 
     i103.id = 103;
     i103.names.push_back("canteen");
     i103.names.push_back("canteen3");
     i103.names.push_back("canteen_near_physics");
-    edge = {4, 1, "canteen->4.txt"};
-    i103.BasePointEdges.push_back(edge);
+    {
+        Edge edge(i103.id, 4, 1, "canteen->4.txt");
+        i103.BasePointEdges.push_back(edge);
+    }
 
     std::vector <Infrastructure> graf = {i9, i10, i11, i12, i13, i102, i103};
     return graf;
@@ -140,59 +197,86 @@ TEST(TestCheckExist, test_399u_403u) {
 TEST(TestRoute, test_399u_403u) {
     DataBaseTest data;
     Search s1(&data);
-    std::vector <std::string> foundRoute = s1.FindRoute("399u", "403u");
-    EXPECT_EQ(foundRoute.size(), 4);
-    EXPECT_EQ(foundRoute[0], "9->1.txt");
-    EXPECT_EQ(foundRoute[1], "1->4.txt");
-    EXPECT_EQ(foundRoute[2], "4->3.txt");
-    EXPECT_EQ(foundRoute[3], "3->13.txt");
+    SearchInfo from("399u");
+    SearchInfo to("403u");
+    Route route = s1.FindRoute(from, to);
+    ASSERT_EQ(route.Size(), 4);
+    std::vector <Edge> foundRoute = route.GetEdges();
+    EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
+    EXPECT_EQ(foundRoute[1].linkToFile, "1->4.txt");
+    EXPECT_EQ(foundRoute[2].linkToFile, "4->3.txt");
+    EXPECT_EQ(foundRoute[3].linkToFile, "3->13.txt");
 }
 
 TEST(TestRoute, test_401u_403u) {
     DataBaseTest data;
     Search s1(&data);
-    std::vector <std::string> foundRoute = s1.FindRoute("401u", "403u");
-    EXPECT_EQ(foundRoute.size(), 2);
-    EXPECT_EQ(foundRoute[0], "11->2.txt");
-    EXPECT_EQ(foundRoute[1], "2->13.txt");
+
+    SearchInfo from("401u");
+    SearchInfo to("403u");
+    Route route = s1.FindRoute(from, to);
+    std::vector <Edge> foundRoute = route.GetEdges();
+
+    ASSERT_EQ(foundRoute.size(), 2);
+    EXPECT_EQ(foundRoute[0].linkToFile, "11->2.txt");
+    EXPECT_EQ(foundRoute[1].linkToFile, "2->13.txt");
 }
 
 TEST(TestRoute, test_401u_401u) {
     DataBaseTest data;
     Search s1(&data);
-    std::vector <std::string> foundRoute = s1.FindRoute("401u", "401u");
-    EXPECT_EQ(foundRoute.size(), 0);
+    SearchInfo from("401u");
+    SearchInfo to("401u");
+    Route route = s1.FindRoute(from, to);
+    EXPECT_EQ(route.Size(), 0);
 }
 
 TEST(TestRoute, test_cant_find_object) {
     DataBaseTest data;
     Search s1(&data);
-    std::vector <std::string> foundRoute;
-    EXPECT_THROW(s1.FindRoute("cant find object", "401u"), std::runtime_error);
+
+    SearchInfo from("cant find object");
+    SearchInfo to("401u");
+    
+    EXPECT_THROW(s1.FindRoute(from, to), std::runtime_error);
 }
 
 
 TEST(TestRoute, find_by_diff_names) {
     DataBaseTest data;
     Search s1(&data);
-    std::vector <std::string> foundRoute = s1.FindRoute("399u", "canteen_near_physics");
-    EXPECT_EQ(foundRoute.size(), 3);
-    EXPECT_EQ(foundRoute[0], "9->1.txt");
-    EXPECT_EQ(foundRoute[1], "1->4.txt");
-    EXPECT_EQ(foundRoute[2], "4->canteen.txt");
 
-    foundRoute = s1.FindRoute("399u", "canteen3");
-    EXPECT_EQ(foundRoute.size(), 3);
-    EXPECT_EQ(foundRoute[0], "9->1.txt");
-    EXPECT_EQ(foundRoute[1], "1->4.txt");
-    EXPECT_EQ(foundRoute[2], "4->canteen.txt");
+    SearchInfo from("399u");
+    SearchInfo to("canteen_near_physics");
+    Route route = s1.FindRoute(from, to);
+    std::vector <Edge> foundRoute = route.GetEdges();
+
+    ASSERT_EQ(foundRoute.size(), 3);
+    EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
+    EXPECT_EQ(foundRoute[1].linkToFile, "1->4.txt");
+    EXPECT_EQ(foundRoute[2].linkToFile, "4->canteen.txt");
+
+    SearchInfo from2("399u");
+    SearchInfo to2("canteen3");
+    route = s1.FindRoute(from2, to2);
+    foundRoute = route.GetEdges();
+
+    ASSERT_EQ(foundRoute.size(), 3);
+    EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
+    EXPECT_EQ(foundRoute[1].linkToFile, "1->4.txt");
+    EXPECT_EQ(foundRoute[2].linkToFile, "4->canteen.txt");
 }
 
 TEST(TestRoute, find_nearest_infr) {
     DataBaseTest data;
     Search s1(&data);
-    std::vector <std::string> foundRoute = s1.FindRoute("399u", "canteen");
-    EXPECT_EQ(foundRoute.size(), 2);
-    EXPECT_EQ(foundRoute[0], "9->1.txt");
-    EXPECT_EQ(foundRoute[1], "1->canteen.txt");
+
+    SearchInfo from("399u");
+    SearchInfo to("canteen");
+    Route route = s1.FindRoute(from, to);
+    std::vector <Edge> foundRoute = route.GetEdges();
+
+    ASSERT_EQ(foundRoute.size(), 2);
+    EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
+    EXPECT_EQ(foundRoute[1].linkToFile, "1->canteen.txt");
 }

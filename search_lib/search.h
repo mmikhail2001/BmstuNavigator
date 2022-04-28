@@ -45,6 +45,6 @@ public:
     // enum class Exeptions { UNKNOWN_POINT };
     Search(DataBase* base);
     bool HavePoint(std::string name);
-    SearchInfo CreateSearchInfo(std::string name);
+    // SearchInfo CreateSearchInfo(std::string name);
     Route FindRoute(SearchInfo from, SearchInfo to);
 };

@@ -4,10 +4,15 @@
 
 class Edge {
 public:
-    unsigned int from;
-    unsigned int to;
-    unsigned int dist;
-    std::string linkToFile;
+    const unsigned int from;
+    const unsigned int to;
+    const unsigned int dist;
+    const std::string linkToFile;
+    Edge(const unsigned int from, 
+         const unsigned int to,
+         const unsigned int dist,
+         const std::string linkToFile) : 
+         from(from), to(to), dist(dist), linkToFile(linkToFile) {}
 };
 
 class SearchInfo {
@@ -26,6 +31,7 @@ public:
     virtual bool IsMe(SearchInfo info) = 0;
     virtual std::vector <Edge> GetWaysToPoint(SearchInfo info) = 0;
     std::vector <Edge> BasePointEdges;
+    void AddBasePointEdge(Edge edge);
 };
 
 class IsGreater {
@@ -43,9 +49,8 @@ public:
 };
 
 class BasePoint : public Point {
-private:
-    std::vector <Edge> InfrastructureEdges;
 public:
+    std::vector <Edge> InfrastructureEdges;
     std::vector <Edge> GetWaysToPoint(SearchInfo info) override;
     bool IsMe(SearchInfo info) override;
 };

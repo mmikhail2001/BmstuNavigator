@@ -2,6 +2,9 @@
 #include <string>
 #include "points.h"
 
+void Point::AddBasePointEdge(Edge edge) {
+    BasePointEdges.push_back(edge);
+}
 
 bool Infrastructure::IsMe(SearchInfo info) {
     for (auto name : names) {

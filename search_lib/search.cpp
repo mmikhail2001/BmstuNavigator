@@ -22,9 +22,6 @@ void Search::createMapPoints() {
         idBasePointsMap[graf[i].id] = &(graf[i]);
     }
 }
-SearchInfo Search::CreateSearchInfo(std::string name) {
-    return SearchInfo(name);
-}
 
 Search::Search(DataBase* base) {
     graf = base->getBasePoints();
@@ -39,7 +36,7 @@ bool Search::HavePoint(std::string name) {
 
 Route Search::FindRoute(SearchInfo from, SearchInfo to) {
     Route route;
-    Edge edge = {1, 2, 3, "string"};
+    Edge edge(1, 2, 3, "string");
     route.AddEdge(edge);
     return route;
 }
