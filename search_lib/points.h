@@ -4,10 +4,14 @@
 
 class Edge {
 public:
-    const unsigned int from;
-    const unsigned int to;
-    const unsigned int dist;
-    const std::string linkToFile;
+    unsigned int from;
+    unsigned int to;
+    unsigned int dist;
+    std::string linkToFile;
+    // const unsigned int from;
+    // const unsigned int to;
+    // const unsigned int dist;
+    // const std::string linkToFile;
     Edge(const unsigned int from, 
          const unsigned int to,
          const unsigned int dist,
@@ -22,7 +26,7 @@ private:
 public:
     std::string GetName() { return name; }
     unsigned int GetId() { return id; }
-    SearchInfo(std::string name) : name(name) {}
+    SearchInfo(std::string name, unsigned int id) : name(name), id(id) {}
 };
 
 class Point {
@@ -32,13 +36,7 @@ public:
     virtual std::vector <Edge> GetWaysToPoint(SearchInfo info) = 0;
     std::vector <Edge> BasePointEdges;
     void AddBasePointEdge(Edge edge);
-};
-
-class IsGreater {
-public:
-    bool operator ()(const std::pair <int, Point*> &l, const std::pair <int, Point*> &r) {
-        return l.first > r.first;
-    }
+    unsigned int GetId() { return id; }
 };
 
 class Infrastructure : public Point {

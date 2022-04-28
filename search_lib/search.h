@@ -1,7 +1,11 @@
 #pragma once
 #include <vector>
+#include <iterator>
+#include <algorithm>
 #include "points.h"
 #include "database.h"
+
+
 
 
 class Route {
@@ -10,41 +14,48 @@ public:
     void AddEdge(Edge edge) {
         edges.push_back(edge);
     }
-    std::vector <Edge> GetEdges() {
-        return edges;
-    }
-    unsigned int Size() {
-        return edges.size();
-    }
+    std::vector <Edge> GetEdges() { return edges; }
+    unsigned int Size() { return edges.size(); }
+    void Reverse() { std::reverse(edges.begin(), edges.end()); }
 };
 
 class Search {
-    struct RoadData {
+    struct DistToPointWithPoint {
         unsigned int dist;
-        unsigned int indexOfEdge;
-        // Point::PointType type;
-        Point* prev;
-        RoadData() {}
-        RoadData(unsigned int getDist, 
-                 unsigned int getNumberOfEdge, 
-                 Point* getPrev) : 
-                 dist(getDist),
-                 indexOfEdge(getNumberOfEdge),
-                 prev(getPrev){}
-
+        Point* point;
+        DistToPointWithPoint() : dist(0), point(nullptr) {}
+        DistToPointWithPoint(int dist, Point* point) : dist(dist), point(point) {}
     };
+    struct DistToPointWithEdge {
+        unsigned int dist;
+        Edge edge;
+        DistToPointWithEdge() : dist(0), edge(0, 0, 0, "") {}
+        DistToPointWithEdge(int dist, Edge edge) : dist(dist), edge(edge) {}
+    };
+
+    class IsGreater {
+    public:
+        bool operator ()(const DistToPointWithPoint &l, const DistToPointWithPoint &r) {
+            return l.dist > r.dist;
+        }
+    };
+
     std::vector <BasePoint> graf;
     std::vector <Infrastructure> infr;
     std::map <std::string, Infrastructure*> nameInfrMap;
+    
     std::map <unsigned int, Infrastructure*> idInfrMap;
     std::map <unsigned int, BasePoint*> idBasePointsMap;
+    std::map <unsigned int, Point*> idPointMap;
 
     void createMapPoints();
+    bool CheckSearchInfo(SearchInfo info);
+
 
 public:
     // enum class Exeptions { UNKNOWN_POINT };
     Search(DataBase* base);
     bool HavePoint(std::string name);
-    // SearchInfo CreateSearchInfo(std::string name);
+    SearchInfo CreateSearchInfo(std::string name);
     Route FindRoute(SearchInfo from, SearchInfo to);
 };

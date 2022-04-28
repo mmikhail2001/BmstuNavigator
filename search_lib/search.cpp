@@ -17,9 +17,11 @@ void Search::createMapPoints() {
         }
         // TODO ADDED LIST OF VALUES
         idInfrMap[infr[i].id] = &(infr[i]);
+        idPointMap[infr[i].id] = &(infr[i]);
     }
     for (int i = 0; i < graf.size(); ++i) {
         idBasePointsMap[graf[i].id] = &(graf[i]);
+        idPointMap[graf[i].id] = &(graf[i]);
     }
 }
 
@@ -34,10 +36,65 @@ bool Search::HavePoint(std::string name) {
 }
 
 
+
 Route Search::FindRoute(SearchInfo from, SearchInfo to) {
+    // check valid:
+    if (!CheckSearchInfo(from) || !CheckSearchInfo(to)) {
+        throw std::runtime_error("ERROR: SEARCH->FindRoute: SearchInfo was not found!");
+    }
+
     Route route;
-    Edge edge(1, 2, 3, "string");
-    route.AddEdge(edge);
+
+    std::priority_queue <DistToPointWithPoint, std::vector <DistToPointWithPoint>, IsGreater > pq;
+    std::map <Point*, DistToPointWithEdge > pointWithRoad;
+    Point* start = idPointMap[from.GetId()];
+
+    DistToPointWithPoint distAndPoint(0, start);
+    DistToPointWithEdge distAndEdge;
+    pointWithRoad[start] = distAndEdge;
+    pq.push(distAndPoint);
+    while (!pq.empty()) {
+        // std::cout << "." << std::endl;
+        Point* point = pq.top().point;
+        unsigned int dist = pq.top().dist;
+
+        pq.pop();
+
+        // if we already found better road to this point we need to skip iteration
+        if (pointWithRoad.count(point) && pointWithRoad[point].dist < dist) continue;
+
+        for (auto edge : point->GetWaysToPoint(to)) {
+            // std::cout << "In" << std::endl;
+            int distToNext = dist + edge.dist;
+            Point* nextPoint = idPointMap[edge.to];
+            if (pointWithRoad.count(nextPoint) == 0 || pointWithRoad[nextPoint].dist > distToNext) {
+                DistToPointWithPoint distAndNextPoint(distToNext, nextPoint);
+                pq.push(distAndNextPoint);
+
+                DistToPointWithEdge distAndEdgeToNext(distToNext, edge);
+                pointWithRoad[nextPoint] = distAndEdgeToNext;
+            }
+        }
+    }
+
+    // TODO: WE WANT TO UNDERSTAND THE ID ONLY AT THE END!
+    Point* end = idPointMap[to.GetId()];
+    // std::cout << "dist from: " << from.GetName() << " " << " to: " << to.GetName();
+    // std::cout << " is: " << pointWithRoad[end].dist << std::endl;
+
+
+    // restablish route
+    unsigned int idOfPoint = to.GetId();
+    while (true) {
+        if (idOfPoint == from.GetId()) {
+            break;
+        }
+        Point* pointOfWay = idPointMap[idOfPoint];
+        Edge tmpEdge = pointWithRoad[pointOfWay].edge;
+        idOfPoint = tmpEdge.from;
+        route.AddEdge(tmpEdge);
+    }
+    route.Reverse();
     return route;
 }
 
@@ -57,8 +114,6 @@ std::vector <std::string> Search::FindRoute(std::string startName, std::string e
     while (!pq.empty()) {
         Point* p = pq.top().second;
         unsigned int dist = pq.top().first;
-        // std::cout << "dist: " << dist << std::endl;
-        // std::cout << "id: " << p->id << std::endl;
         pq.pop();
         if (distToPoint[p].dist < dist) continue;
         for (int i = 0; i < p->BasePointEdges.size(); ++i) {
@@ -111,6 +166,23 @@ std::vector <std::string> Search::FindRoute(std::string startName, std::string e
 
 */
 
+
+
+
+SearchInfo Search::CreateSearchInfo(std::string name) {
+    if (nameInfrMap.count(name) == 0 || nameInfrMap[name] == nullptr) {
+        throw std::runtime_error("ERROR: SEARCH->CreateSearchInfo: name was not found!");
+    }
+    SearchInfo info(name, nameInfrMap[name]->id);
+    return info;
+}
+
+bool Search::CheckSearchInfo(SearchInfo info) {
+    if (idInfrMap.count(info.GetId()) == 0) {
+        return false;
+    }
+    return true;
+}
 
 void showRoute(std::vector <std::string> foundRoute) {
     std::cout << "links: " << std::endl;
