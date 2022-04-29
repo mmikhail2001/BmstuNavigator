@@ -22,33 +22,51 @@ public:
 class SearchInfo {
 private:
     std::string name;
-    unsigned int id;
 public:
     std::string GetName() { return name; }
+    SearchInfo(std::string name) : name(name) {}
+};
+
+
+class UniqueSearchInfo : public SearchInfo {
+private:
+    unsigned int id;
+
+public:
     unsigned int GetId() { return id; }
-    SearchInfo(std::string name, unsigned int id) : name(name), id(id) {}
+    UniqueSearchInfo(std::string name, unsigned int id) : SearchInfo(name), id(id) {}
 };
 
 class Point {
 public:
     unsigned int id;
-    virtual bool IsMe(SearchInfo info) = 0;
-    virtual std::vector <Edge> GetWaysToPoint(SearchInfo info) = 0;
     std::vector <Edge> BasePointEdges;
+    std::vector <std::string> names;
+
+    virtual bool IsMe(SearchInfo info) = 0;
+    virtual std::vector <Edge> GetEdgesToNeighbours() = 0;
     void AddBasePointEdge(Edge edge);
+    std::vector <std::string> GetNames() { return names; };
     unsigned int GetId() { return id; }
+
+    // may be worth to make one more class with this method
+    virtual bool IsPartOfRouteTo(SearchInfo info) = 0;
+
 };
+
+
 
 class Infrastructure : public Point {
 public:
-    std::vector <std::string> names;
-    std::vector <Edge> GetWaysToPoint(SearchInfo info) override;
+    std::vector <Edge> GetEdgesToNeighbours() override;
     bool IsMe(SearchInfo info) override;
+    bool IsPartOfRouteTo(SearchInfo info) override;
 };
 
 class BasePoint : public Point {
 public:
     std::vector <Edge> InfrastructureEdges;
-    std::vector <Edge> GetWaysToPoint(SearchInfo info) override;
+    std::vector <Edge> GetEdgesToNeighbours() override;
     bool IsMe(SearchInfo info) override;
+    bool IsPartOfRouteTo(SearchInfo info) override;
 };

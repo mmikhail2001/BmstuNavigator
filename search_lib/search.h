@@ -42,13 +42,15 @@ class Search {
 
     std::vector <BasePoint> graf;
     std::vector <Infrastructure> infr;
-    std::map <std::string, Infrastructure*> nameInfrMap;
-    
-    std::map <unsigned int, Infrastructure*> idInfrMap;
-    std::map <unsigned int, BasePoint*> idBasePointsMap;
+    std::map <std::string, std::vector <Point*> > namePointsMap;
     std::map <unsigned int, Point*> idPointMap;
 
-    void createMapPoints();
+    // std::map <unsigned int, Infrastructure*> idInfrMap;
+    // std::map <unsigned int, BasePoint*> idBasePointsMap;
+
+
+    void createMapPoints(std::vector <Point*> points);
+    void initMaps();
     bool CheckSearchInfo(SearchInfo info);
 
 
@@ -57,5 +59,7 @@ public:
     Search(DataBase* base);
     bool HavePoint(std::string name);
     SearchInfo CreateSearchInfo(std::string name);
-    Route FindRoute(SearchInfo from, SearchInfo to);
+    Route FindRoute(UniqueSearchInfo from, SearchInfo to);
+    UniqueSearchInfo CreateUniqueSearchInfo(std::string name);
+    bool IsUniquePoint(std::string name);
 };
