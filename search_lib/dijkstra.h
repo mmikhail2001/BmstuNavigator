@@ -30,7 +30,6 @@ private:
     map <T, T> dists;
 };
 
-void debugPrintMap(map <int, int> m);
 
 template <class T>
 Dijkstra<T>::Dijkstra() {}
@@ -96,13 +95,13 @@ void Dijkstra<T>::PrintDists() {
 }
 
 
-void debugPrintMap(map <int, int> m) {
-    cout << "Print map:" << endl;
-    for (auto v : m) {
-        cout << v.first << "   " << v.second << endl;
-    }
-    cout << endl;
-}
+// void debugPrintMap(map <int, int> m) {
+//     cout << "Print map:" << endl;
+//     for (auto v : m) {
+//         cout << v.first << "   " << v.second << endl;
+//     }
+//     cout << endl;
+// }
 
 template <class T>
 void Dijkstra<T>::PrintGraf() {

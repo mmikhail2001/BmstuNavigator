@@ -4,9 +4,9 @@
 #include <algorithm>
 #include "points.h"
 #include "database.h"
+#include "dijkstra.h"
 
-
-
+using std::vector;
 
 class Route {
     std::vector <Edge> edges;
@@ -44,6 +44,7 @@ class Search {
     std::vector <Infrastructure> infr;
     std::map <std::string, std::vector <Point*> > namePointsMap;
     std::map <unsigned int, Point*> idPointMap;
+    Dijkstra <unsigned int> dijkstraSearcher;
 
     // std::map <unsigned int, Infrastructure*> idInfrMap;
     // std::map <unsigned int, BasePoint*> idBasePointsMap;
@@ -51,6 +52,7 @@ class Search {
 
     void createMapPoints(std::vector <Point*> points);
     void initMaps();
+    void initDijkstra();
     bool CheckSearchInfo(SearchInfo info);
     Point* getMinPoint(SearchInfo to, std::map <Point*, DistToPointWithEdge > pointWithRoad);
 
@@ -59,8 +61,8 @@ public:
     // enum class Exeptions { UNKNOWN_POINT };
     Search(DataBase* base);
     bool HavePoint(std::string name);
-    SearchInfo CreateSearchInfo(std::string name);
-    Route FindRoute(UniqueSearchInfo from, SearchInfo to);
-    UniqueSearchInfo CreateUniqueSearchInfo(std::string name);
+    Point* GetById(unsigned int id);
+    vector <Point*> GetByName(std::string name);
+    Route FindRoute(unsigned int id, std::string name);
     bool IsUniquePoint(std::string name);
 };
