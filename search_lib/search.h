@@ -52,6 +52,7 @@ class Search {
     void createMapPoints(std::vector <Point*> points);
     void initMaps();
     bool CheckSearchInfo(SearchInfo info);
+    Point* getMinPoint(SearchInfo to, std::map <Point*, DistToPointWithEdge > pointWithRoad);
 
 
 public:

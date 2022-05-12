@@ -42,6 +42,18 @@ bool Search::HavePoint(std::string name) {
     return namePointsMap.count(name);
 }
 
+Point* Search::getMinPoint(SearchInfo to, std::map <Point*, DistToPointWithEdge > pointWithRoad) {
+    std::vector <Point*> points = namePointsMap[to.GetName()];
+    Point* minPoint;
+    DistToPointWithEdge bestEdge;
+    for (auto point : points) {
+        if (pointWithRoad[point].dist < bestEdge.dist) {
+            minPoint = point;
+            bestEdge = pointWithRoad[point];
+        }
+    }
+    return minPoint;
+}
 
 
 Route Search::FindRoute(UniqueSearchInfo from, SearchInfo to) {
@@ -90,12 +102,14 @@ Route Search::FindRoute(UniqueSearchInfo from, SearchInfo to) {
         }
     }
 
+    Point* minPoint = getMinPoint(to, pointWithRoad);
     // TODO: WE WANT TO UNDERSTAND THE ID ONLY AT THE END!
     // Point* end = idPointMap[to.GetId()];
 
 
-    // std::cout << "dist from: " << from.GetName() << " " << " to: " << to.GetName();
-    // std::cout << " is: " << pointWithRoad[end].dist << std::endl;
+    std::cout << "dist from: " << from.GetName() << " " << " to: " << to.GetName();
+    std::cout << " is: " << pointWithRoad[minPoint].dist << std::endl;
+    std::cout << " pointName: " << minPoint->id;
 
 
     // restablish route
