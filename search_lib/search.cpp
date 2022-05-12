@@ -5,6 +5,7 @@
 #include <iterator>
 #include <algorithm>
 #include <cassert>
+#include <iterator>
 #include "points.h"
 #include "search.h"
 #include "database.h"
@@ -77,6 +78,10 @@ Route Search::FindRoute(unsigned int id, std::string name) {
     vector <Point*> points = GetByName(name);
     dijkstraSearcher.FindRoute(id);
     unsigned int dist = dijkstraSearcher.GetDistTo(points[0]->GetId());
+    std::vector <unsigned int> road = dijkstraSearcher.GetRoadTo(points[0]->GetId());
+    std::cout << "THIS IS RESULTED ROAD:\n";
+    std::copy(road.begin(), road.end(), 
+                std::ostream_iterator<unsigned int> (std::cout, " "));
     std::cout << "dist is: " << dist << std::endl;
     return route;
 }

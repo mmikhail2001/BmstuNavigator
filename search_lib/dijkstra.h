@@ -4,6 +4,7 @@
 #include <iostream>
 #include <set>
 #include <optional>
+#include <algorithm>
 
 using std::map;
 using std::vector;
@@ -19,15 +20,18 @@ public:
     void AddDirectedEdge(const T from, const T to, unsigned int weight);
     void FindRoute(const T source);
     unsigned int GetDistTo(const T& id);
-    void PrintDists();
+    vector <T> GetRoadTo(const T& id);
+    void PrintDist();
     void PrintGraf();
 
 private:
     const int INF = 1e9;
     set <T> vertexes;
-    map <T, vector <int>> graf;
-    map <T, vector <int>> grafWeights;
-    map <T, T> dists;
+    map <T, vector <int> > graf;
+    map <T, vector <int> > grafWeights;
+    map <T, T> dist;
+    map <T, T> prev;
+    T sourceVertex;
 };
 
 
@@ -45,7 +49,10 @@ void Dijkstra<T>::AddDirectedEdge(const T from, const T to, unsigned int weight)
 
 template <class T>
 void Dijkstra<T>::FindRoute(const T source) {
-    std::map <T, T> dist, prev, used;
+    sourceVertex = source;
+    prev.clear();
+    dist.clear();
+    std::map <T, T> used;
     for (auto v : vertexes) {
         dist[v] = INF;
     }
@@ -76,19 +83,30 @@ void Dijkstra<T>::FindRoute(const T source) {
 			}
 		}
 	}
-    dists = dist;
 }
 
 template <class T>
 unsigned int Dijkstra<T>::GetDistTo(const T& id) {
-    return dists[id];
+    return dist[id];
+}
+
+template <class T>
+vector <T> Dijkstra<T>::GetRoadTo(const T& id) {
+    vector <T> path;
+    for (T v = id; v != sourceVertex; v = prev[v]) {
+        path.push_back(v);
+    }
+    path.push_back(sourceVertex);
+    std::reverse(path.begin(), path.end());
+    return path;
 }
 
 
+
 template <class T>
-void Dijkstra<T>::PrintDists() {
+void Dijkstra<T>::PrintDist() {
     cout << "Print distances" << endl;
-    for (auto v : dists) {
+    for (auto v : dist) {
         cout << "dist to: " << v.first << " is: " << v.second << endl;
     }
     cout << endl;
