@@ -37,12 +37,12 @@ void Search::createMapPoints(std::vector <Point*> ptrsToPoints) {
 
 void Search::initDijkstra() {
     for (auto point : graf) {
-        for (auto edge : point.GetEdgesToNeighbours()) {
+        for (auto edge : point.GetEdges()) {
             dijkstraSearcher.AddDirectedEdge(edge.from, edge.to, edge.dist);
         }
     }
     for (auto point : infr) {
-        for (auto edge : point.GetEdgesToNeighbours()) {
+        for (auto edge : point.GetEdges()) {
             dijkstraSearcher.AddDirectedEdge(edge.from, edge.to, edge.dist);
         }
     }
@@ -59,18 +59,6 @@ bool Search::HavePoint(std::string name) {
     return namePointsMap.count(name);
 }
 
-Point* Search::getMinPoint(SearchInfo to, std::map <Point*, DistToPointWithEdge > pointWithRoad) {
-    std::vector <Point*> points = namePointsMap[to.GetName()];
-    Point* minPoint;
-    DistToPointWithEdge bestEdge;
-    for (auto point : points) {
-        if (pointWithRoad[point].dist < bestEdge.dist) {
-            minPoint = point;
-            bestEdge = pointWithRoad[point];
-        }
-    }
-    return minPoint;
-}
 
 
 Route Search::FindRoute(unsigned int id, std::string name) {

@@ -20,25 +20,6 @@ public:
 };
 
 class Search {
-    struct DistToPointWithPoint {
-        unsigned int dist;
-        Point* point;
-        DistToPointWithPoint() : dist(0), point(nullptr) {}
-        DistToPointWithPoint(int dist, Point* point) : dist(dist), point(point) {}
-    };
-    struct DistToPointWithEdge {
-        unsigned int dist;
-        Edge edge;
-        DistToPointWithEdge() : dist(0), edge(0, 0, 0, "") {}
-        DistToPointWithEdge(int dist, Edge edge) : dist(dist), edge(edge) {}
-    };
-
-    class IsGreater {
-    public:
-        bool operator ()(const DistToPointWithPoint &l, const DistToPointWithPoint &r) {
-            return l.dist > r.dist;
-        }
-    };
 
     std::vector <BasePoint> graf;
     std::vector <Infrastructure> infr;
@@ -53,8 +34,6 @@ class Search {
     void createMapPoints(std::vector <Point*> points);
     void initMaps();
     void initDijkstra();
-    bool CheckSearchInfo(SearchInfo info);
-    Point* getMinPoint(SearchInfo to, std::map <Point*, DistToPointWithEdge > pointWithRoad);
 
 
 public:

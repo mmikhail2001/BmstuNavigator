@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 
 
 
@@ -12,6 +13,7 @@ public:
     // const unsigned int to;
     // const unsigned int dist;
     // const std::string linkToFile;
+    Edge() : from(0), to(0), dist(0) {}
     Edge(const unsigned int from, 
          const unsigned int to,
          const unsigned int dist,
@@ -28,29 +30,20 @@ public:
 };
 
 
-class UniqueSearchInfo : public SearchInfo {
-private:
-    unsigned int id;
-
-public:
-    unsigned int GetId() { return id; }
-    UniqueSearchInfo(std::string name, unsigned int id) : SearchInfo(name), id(id) {}
-};
 
 class Point {
-public:
+    std::map <unsigned int, Edge> idPointMap;
     unsigned int id;
-    std::vector <Edge> BasePointEdges;
+    std::vector <Edge> Edges;
     std::vector <std::string> names;
-
-    virtual bool IsMe(SearchInfo info) = 0;
-    virtual std::vector <Edge> GetEdgesToNeighbours() = 0;
-    void AddBasePointEdge(Edge edge);
+public:
+    Point(unsigned int id) : id(id) {}
+    void AddName(std::string name);
+    std::vector <Edge> GetEdges();
+    Edge GetEdgeById(const unsigned int& id);
+    void AddEdge(Edge edge);
     std::vector <std::string> GetNames() { return names; };
     unsigned int GetId() { return id; }
-
-    // may be worth to make one more class with this method
-    virtual bool IsPartOfRouteTo(SearchInfo info) = 0;
 
 };
 
@@ -58,15 +51,17 @@ public:
 
 class Infrastructure : public Point {
 public:
-    std::vector <Edge> GetEdgesToNeighbours() override;
-    bool IsMe(SearchInfo info) override;
-    bool IsPartOfRouteTo(SearchInfo info) override;
+    Infrastructure(const unsigned int id) : Point(id) {}
+    // std::vector <Edge> GetEdges() override;
+    // bool IsMe(SearchInfo info) override;
+    // bool IsPartOfRouteTo(SearchInfo info) override;
 };
 
 class BasePoint : public Point {
 public:
-    std::vector <Edge> InfrastructureEdges;
-    std::vector <Edge> GetEdgesToNeighbours() override;
-    bool IsMe(SearchInfo info) override;
-    bool IsPartOfRouteTo(SearchInfo info) override;
+    BasePoint(const unsigned int id) : Point(id) {}
+    // std::vector <Edge> InfrastructureEdges;
+    // std::vector <Edge> GetEdges() override;
+    // bool IsMe(SearchInfo info) override;
+    // bool IsPartOfRouteTo(SearchInfo info) override;
 };

@@ -2,23 +2,29 @@
 #include <string>
 #include "points.h"
 
-void Point::AddBasePointEdge(Edge edge) {
-    BasePointEdges.push_back(edge);
+
+void Point::AddName(std::string name) {
+    names.push_back(name);
 }
 
-bool Infrastructure::IsMe(SearchInfo info) {
-    for (auto name : names) {
-        if (info.GetName() == name) {
-            return true;
-        }
-    }
-    return false;
+Edge Point::GetEdgeById(const unsigned int& id) {
+    return idPointMap[id];
 }
 
-bool BasePoint::IsMe(SearchInfo info) {
-    return false;
+
+std::vector <Edge> Point::GetEdges() {
+    return Edges;
 }
 
+void Point::AddEdge(Edge edge) {
+    Edges.push_back(edge);
+    idPointMap[edge.to] = edge;
+}
+
+
+
+
+/*
 std::vector <Edge> BasePoint::GetEdgesToNeighbours() {
     std::vector <Edge> neighbours = BasePointEdges;
     for (auto edge : InfrastructureEdges) {
@@ -26,12 +32,15 @@ std::vector <Edge> BasePoint::GetEdgesToNeighbours() {
     }
     return neighbours;
 }
+*/
 
+/*
 std::vector <Edge> Infrastructure::GetEdgesToNeighbours() {
     return BasePointEdges;
 }
+*/
 
-
+/*
 bool Infrastructure::IsPartOfRouteTo(SearchInfo info) {
     std::string myName = info.GetName();
     for (auto name : names) {
@@ -41,7 +50,11 @@ bool Infrastructure::IsPartOfRouteTo(SearchInfo info) {
     }
     return false;
 }
+*/
 
+
+/*
 bool BasePoint::IsPartOfRouteTo(SearchInfo info) {
     return true;
 }
+*/

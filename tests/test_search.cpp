@@ -5,97 +5,93 @@
 
 
 std::vector <BasePoint> fillTestBasePoints() {
-    BasePoint a, b, c, d;
-    a.id = 1;
+    BasePoint a(1), b(2), c(3), d(4);
     // base
     {
         Edge edge(1, 2, 2, "1->2.txt");
-        a.AddBasePointEdge(edge);
+        a.AddEdge(edge);
     }
     {
         Edge edge(1, 4, 1, "1->4.txt");
-        a.AddBasePointEdge(edge);
+        a.AddEdge(edge);
     }
     // infr
     {
         Edge edge(1, 9, 5, "1->9.txt");
-        a.InfrastructureEdges.push_back(edge);
+        a.AddEdge(edge);
     }
     {
         Edge edge(1, 10, 2, "1->10.txt");
-        a.InfrastructureEdges.push_back(edge);
+        a.AddEdge(edge);
     }
     {
         Edge edge(1, 11, 2, "1->11.txt");
-        a.InfrastructureEdges.push_back(edge);
+        a.AddEdge(edge);
     }
     {
         Edge edge(1, 102, 1, "1->canteen.txt");
-        a.InfrastructureEdges.push_back(edge);
+        a.AddEdge(edge);
     }
 
-    b.id = 2;
     // base
     {
         Edge edge(2, 1, 2, "2->1.txt");
-        b.AddBasePointEdge(edge);
+        b.AddEdge(edge);
     }
     {
         Edge edge(2, 3, 5, "2->3.txt");
-        b.AddBasePointEdge(edge);
+        b.AddEdge(edge);
     }
     // infr
     {
         Edge edge(2, 10, 0, "2->10.txt");
-        b.InfrastructureEdges.push_back(edge);
+        b.AddEdge(edge);
     }
     {
         Edge edge(2, 11, 1, "2->11.txt");
-        b.InfrastructureEdges.push_back(edge);
+        b.AddEdge(edge);
     }
     {
         Edge edge(2, 12, 2, "2->12.txt");
-        b.InfrastructureEdges.push_back(edge);
+        b.AddEdge(edge);
     }
     {
         Edge edge(2, 13, 3, "2->13.txt");
-        b.InfrastructureEdges.push_back(edge);
+        b.AddEdge(edge);
     }
 
-    c.id = 3;
     // base
     {
         Edge edge(3, 2, 5, "3->2.txt");
-        c.AddBasePointEdge(edge);
+        c.AddEdge(edge);
     }
     {
         Edge edge(3, 4, 2, "3->4.txt");
-        c.AddBasePointEdge(edge);
+        c.AddEdge(edge);
     }
     // infr
     {
         Edge edge(3, 12, 1, "3->12.txt");
-        c.InfrastructureEdges.push_back(edge);
+        c.AddEdge(edge);
     }
     {
         Edge edge(3, 13, 1, "3->13.txt");
-        c.InfrastructureEdges.push_back(edge);
+        c.AddEdge(edge);
     }
 
-    d.id = 4;
     // base
     {
-        Edge edge(d.id, 1, 1, "4->1.txt");
-        d.AddBasePointEdge(edge);
+        Edge edge(d.GetId(), 1, 1, "4->1.txt");
+        d.AddEdge(edge);
     }
     {
-        Edge edge(d.id, 3, 2, "4->3.txt");
-        d.AddBasePointEdge(edge);
+        Edge edge(d.GetId(), 3, 2, "4->3.txt");
+        d.AddEdge(edge);
     }
     // infr
     {
-        Edge edge(d.id, 103, 1, "4->canteen.txt");
-        d.InfrastructureEdges.push_back(edge);
+        Edge edge(d.GetId(), 103, 1, "4->canteen.txt");
+        d.AddEdge(edge);
     }
 
     std::vector <BasePoint> graf = {a, b, c, d};
@@ -103,73 +99,67 @@ std::vector <BasePoint> fillTestBasePoints() {
 }
 
 std::vector <Infrastructure> fillInfrPoints() {
-    Infrastructure i9, i10, i11, i12, i13, i102, i103;
-    i9.id = 9;
-    i9.names.push_back("399u");
+    Infrastructure i9(9), i10(10), i11(11), i12(12), i13(13), i102(102), i103(103);
+
+    i9.AddName("399u");
     {
-        Edge edge(i9.id, 1, 5, "9->1.txt");
-        i9.AddBasePointEdge(edge);
+        Edge edge(i9.GetId(), 1, 5, "9->1.txt");
+        i9.AddEdge(edge);
     }
 
-    i10.id = 10;
-    i10.names.push_back("400u");
+    i10.AddName("400u");
     {
-        Edge edge(i10.id, 1, 2, "10->1.txt");
-        i10.AddBasePointEdge(edge);
+        Edge edge(i10.GetId(), 1, 2, "10->1.txt");
+        i10.AddEdge(edge);
     }
     {
-        Edge edge(i10.id, 2, 0, "10->2.txt");
-        i10.AddBasePointEdge(edge);
-    }
-
-    i11.id = 11;
-    i11.names.push_back("401u");
-    {
-        Edge edge(i11.id, 1, 2, "11->1.txt");
-        i11.AddBasePointEdge(edge);
-    }
-    {
-        Edge edge(i11.id, 2, 1, "11->2.txt");
-        i11.AddBasePointEdge(edge);
+        Edge edge(i10.GetId(), 2, 0, "10->2.txt");
+        i10.AddEdge(edge);
     }
 
-    i12.id = 12;
-    i12.names.push_back("402u");
+    i11.AddName("401u");
     {
-        Edge edge(i12.id, 2, 2, "12->2.txt");
-        i12.AddBasePointEdge(edge);
+        Edge edge(i11.GetId(), 1, 2, "11->1.txt");
+        i11.AddEdge(edge);
     }
     {
-        Edge edge(i12.id, 3, 1, "12->3.txt");
-        i12.AddBasePointEdge(edge);
-    }
-
-    i13.id = 13;
-    i13.names.push_back("403u");
-    {
-        Edge edge(i13.id, 2, 2, "13->2.txt");
-        i13.AddBasePointEdge(edge);
-    }
-    {
-        Edge edge(i13.id, 3, 1, "13->3.txt");
-        i13.AddBasePointEdge(edge);
+        Edge edge(i11.GetId(), 2, 1, "11->2.txt");
+        i11.AddEdge(edge);
     }
 
-    i102.id = 102;
-    i102.names.push_back("canteen");
-    i102.names.push_back("canteen2");
+    i12.AddName("402u");
     {
-        Edge edge(i102.id, 1, 1, "canteen->1.txt");
-        i102.AddBasePointEdge(edge);
+        Edge edge(i12.GetId(), 2, 2, "12->2.txt");
+        i12.AddEdge(edge);
+    }
+    {
+        Edge edge(i12.GetId(), 3, 1, "12->3.txt");
+        i12.AddEdge(edge);
     }
 
-    i103.id = 103;
-    i103.names.push_back("canteen");
-    i103.names.push_back("canteen3");
-    i103.names.push_back("canteen_near_physics");
+    i13.AddName("403u");
     {
-        Edge edge(i103.id, 4, 1, "canteen->4.txt");
-        i103.BasePointEdges.push_back(edge);
+        Edge edge(i13.GetId(), 2, 2, "13->2.txt");
+        i13.AddEdge(edge);
+    }
+    {
+        Edge edge(i13.GetId(), 3, 1, "13->3.txt");
+        i13.AddEdge(edge);
+    }
+
+    i102.AddName("canteen");
+    i102.AddName("canteen2");
+    {
+        Edge edge(i102.GetId(), 1, 1, "canteen->1.txt");
+        i102.AddEdge(edge);
+    }
+
+    i103.AddName("canteen");
+    i103.AddName("canteen3");
+    i103.AddName("canteen_near_physics");
+    {
+        Edge edge(i103.GetId(), 4, 1, "canteen->4.txt");
+        i103.AddEdge(edge);
     }
 
     std::vector <Infrastructure> graf = {i9, i10, i11, i12, i13, i102, i103};
@@ -200,7 +190,7 @@ TEST(TestRoute, test_399u_403u) {
     Search s1(&data);
     vector <Point*> from = s1.GetByName("399u");
     // vector <Point*> to = s1.GetByN("403u");
-    Route route = s1.FindRoute(from[0]->id, "403u");
+    Route route = s1.FindRoute(from[0]->GetId(), "403u");
     ASSERT_EQ(route.Size(), 4);
     std::vector <Edge> foundRoute = route.GetEdges();
     EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
