@@ -1,0 +1,111 @@
+{
+    "category" :
+    {
+        "dining" :
+        {
+            "text" : "Столовая",
+            "callback" : "dining",
+            "select" :
+            {
+                "canteen1" : {
+                    "text" : "Столовая 1",
+                    "callback" : "canteen"
+                },
+                "canteen2" : {
+                    "text" : "Столовая 2",
+                    "callback" : "canteen2"
+                    },
+                "canteen3" : {
+                    "text" : "Столовая 3",
+                    "callback" : "canteen3"
+                }
+            }
+        },
+        "audit" :
+        {
+            "text" : "Актовый зал",
+            "callback" : "audit",
+            "select" :
+            {
+                "audit1" : {
+                    "text" : "Актовый зал 1",
+                    "callback" : "audit1"
+                },
+                "audit2" : {
+                    "text" : "Актовый зал 2",
+                    "callback" : "audit2"
+                },
+                "audit3" : {
+                    "text" : "Актовый зал 3",
+                    "callback" : "audit3"
+                }
+            }
+        },
+        "toilet" :
+        {
+            "text" : "Туалет",
+            "callback" : "toilet",
+            "select" :
+            {
+                "toilet1" : {
+                    "text" : "Туалет 1",
+                    "callback" : "toilet1"
+                },
+                "toilet2" : {
+                    "text" : "Туалет 2",
+                    "callback" : "toilet2"
+                },
+                "toilet3" : {
+                    "text" : "Туалет 3",
+                    "callback" : "toilet3"
+                }
+            }
+        },  
+        "technopark" :
+        {
+            "text" : "Технопарк",
+            "callback" : "techopark"
+        },
+        "military" :
+        {
+            "text" : "Военная кафедра",
+            "callback" : "military"
+        }
+    },
+    "commands" :
+    {
+        "/reset" :
+        {
+            "callback" :  "/reset",
+            "text" : "Начальное и конечное положение сброшены\nВыберите категорию или введите  кабинет"
+        },
+        "/start" :
+        {
+            "callback" : "/start",
+            "text" : "Бот готов!\nВыберите категорию или введите кабинет"
+        },
+        "/go" :
+        {
+            "callback" : "/go",
+            "text" : "Пока что проложить маршрут нельзя"
+        },
+        "/categ" :
+        {
+            "callback" : "/categ",
+            "text" : "Выберите категорию или введите кабинет"
+        }
+    },
+    "messages" :
+    {
+        "fail" : 
+        {
+            "id" : 1,
+            "text" : "Позиция не найдена"
+        },
+        "fill" : 
+        {
+            "id" : 2,
+            "text" : "Позиции уже установлены"
+        }
+    }
+}

@@ -19,8 +19,9 @@ public:
     std::vector<Edge> GetEdges() { return edges; }
     unsigned int Size() { return edges.size(); }
     void Reverse() { std::reverse(edges.begin(), edges.end()); }
-    std::vector<string>::iterator begin() { return edges.begin(); }
-    std::vector<string>::iterator end() { return edges.end(); }
+    std::vector<string>::iterator begin() { return links.begin(); }
+    std::vector<string>::iterator end() { return links.end(); }
+    vector<string> GetLinks() { return links; }
     // void ShowRoute() {
     //     cout << "Route:" << endl;
     //     for (auto edge : edges) {

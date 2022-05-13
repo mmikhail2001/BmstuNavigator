@@ -21,6 +21,10 @@ using std::vector;
 using std::string;
 
 #include "lib/tg_bot.cpp"
+#include "search_lib/search.h"
+#include "search_lib/database.h"
+
+
 
 int main()
 {
@@ -34,8 +38,9 @@ int main()
     vecViews.push_back(new MessageView(TEXT, &bot));
     vecViews.push_back(new VideoView(VIDEO, &bot));
 
-    DataBase *db = new DataBaseBMSTU;
-    IModel *model = new Model(db);
+    // DataBaseTest data;
+    DataBase *data = new DataBaseTest;
+    IModel *model = new Model(data);
 
     Presenter presenter(vecViews, model, j);
 
