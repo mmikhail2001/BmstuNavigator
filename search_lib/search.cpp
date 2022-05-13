@@ -10,7 +10,8 @@
 #include "search.h"
 #include "database.h"
 
-
+using std::cout;
+using std::endl;
 
 void Search::initMaps() {
     std::vector <Point*> vectorOfPtrsToPoints;
@@ -65,12 +66,32 @@ Route Search::FindRoute(unsigned int id, std::string name) {
     Route route;
     vector <Point*> points = GetByName(name);
     dijkstraSearcher.FindRoute(id);
-    unsigned int dist = dijkstraSearcher.GetDistTo(points[0]->GetId());
-    std::vector <unsigned int> road = dijkstraSearcher.GetRoadTo(points[0]->GetId());
-    std::cout << "THIS IS RESULTED ROAD:\n";
-    std::copy(road.begin(), road.end(), 
-                std::ostream_iterator<unsigned int> (std::cout, " "));
-    std::cout << "dist is: " << dist << std::endl;
+    unsigned int minDist = 1e9;
+    Point* minPoint = nullptr;
+    for (auto point : points) {
+        unsigned int dist = dijkstraSearcher.GetDistTo(point->GetId());
+        if (!minPoint || dist < minDist) {
+            minPoint = point;
+            minDist = dist;
+        }
+    }
+    std::vector<unsigned int> road = dijkstraSearcher.GetRoadTo(minPoint->GetId());
+
+    for (int i = 0; i < ((int)road.size()) - 1; ++i) {
+        route.AddEdge(GetById(road[i])->GetEdgeById(road[i + 1]));
+    }
+
+
+    // DEBUG:
+    // std::cout << "THIS IS RESULTED ROAD:" << endl;
+    // for (auto edge : route) {
+    //     std::cout << edge.linkToFile << " ";
+    // }
+    // std::copy(road.begin(), road.end(), 
+    //             std::ostream_iterator<unsigned int> (std::cout, " "));
+
+    // unsigned int dist = dijkstraSearcher.GetDistTo(minPoint->GetId());
+    // std::cout << "dist is: " << dist << std::endl;
     return route;
 }
 

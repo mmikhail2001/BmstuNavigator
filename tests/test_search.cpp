@@ -189,8 +189,8 @@ TEST(TestRoute, test_399u_403u) {
     DataBaseTest data;
     Search s1(&data);
     vector <Point*> from = s1.GetByName("399u");
-    // vector <Point*> to = s1.GetByN("403u");
-    Route route = s1.FindRoute(from[0]->GetId(), "403u");
+    unsigned int id = from[0]->GetId();
+    Route route = s1.FindRoute(id, "403u");
     ASSERT_EQ(route.Size(), 4);
     std::vector <Edge> foundRoute = route.GetEdges();
     EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
@@ -198,14 +198,15 @@ TEST(TestRoute, test_399u_403u) {
     EXPECT_EQ(foundRoute[2].linkToFile, "4->3.txt");
     EXPECT_EQ(foundRoute[3].linkToFile, "3->13.txt");
 }
-/*
+
 TEST(TestRoute, test_401u_403u) {
     DataBaseTest data;
     Search s1(&data);
 
-    UniqueSearchInfo from = s1.CreateUniqueSearchInfo("401u");
-    SearchInfo to = s1.CreateSearchInfo("403u");
-    Route route = s1.FindRoute(from, to);
+    vector <Point*> from = s1.GetByName("401u");
+    unsigned int id = from[0]->GetId();
+    Route route = s1.FindRoute(id, "403u");
+    
     std::vector <Edge> foundRoute = route.GetEdges();
 
     ASSERT_EQ(foundRoute.size(), 2);
@@ -216,12 +217,15 @@ TEST(TestRoute, test_401u_403u) {
 TEST(TestRoute, test_401u_401u) {
     DataBaseTest data;
     Search s1(&data);
-    UniqueSearchInfo from = s1.CreateUniqueSearchInfo("401u");
-    SearchInfo to = s1.CreateSearchInfo("401u");
-    Route route = s1.FindRoute(from, to);
+
+    vector <Point*> from = s1.GetByName("401u");
+    unsigned int id = from[0]->GetId();
+    Route route = s1.FindRoute(id, "401u");
+
     EXPECT_EQ(route.Size(), 0);
 }
 
+/*
 TEST(TestRoute, test_cant_find_object) {
     DataBaseTest data;
     Search s1(&data);
@@ -234,15 +238,17 @@ TEST(TestRoute, test_cant_find_object) {
     ASSERT_EQ(1, 0);
     EXPECT_THROW(s1.FindRoute(from, to), std::runtime_error);
 }
+*/
 
 
 TEST(TestRoute, find_by_diff_names) {
     DataBaseTest data;
     Search s1(&data);
+    
+    vector <Point*> from = s1.GetByName("399u");
+    unsigned int id = from[0]->GetId();
+    Route route = s1.FindRoute(id, "canteen_near_physics");
 
-    UniqueSearchInfo from = s1.CreateUniqueSearchInfo("399u");
-    SearchInfo to = s1.CreateSearchInfo("canteen_near_physics");
-    Route route = s1.FindRoute(from, to);
     std::vector <Edge> foundRoute = route.GetEdges();
 
     ASSERT_EQ(foundRoute.size(), 3);
@@ -250,9 +256,10 @@ TEST(TestRoute, find_by_diff_names) {
     EXPECT_EQ(foundRoute[1].linkToFile, "1->4.txt");
     EXPECT_EQ(foundRoute[2].linkToFile, "4->canteen.txt");
 
-    from = s1.CreateUniqueSearchInfo("399u");
-    to = s1.CreateSearchInfo("canteen3");
-    route = s1.FindRoute(from, to);
+    from = s1.GetByName("399u");
+    id = from[0]->GetId();
+    route = s1.FindRoute(id, "canteen3");
+
     foundRoute = route.GetEdges();
 
     ASSERT_EQ(foundRoute.size(), 3);
@@ -265,12 +272,13 @@ TEST(TestRoute, find_nearest_infr) {
     DataBaseTest data;
     Search s1(&data);
 
-    UniqueSearchInfo from = s1.CreateUniqueSearchInfo("399u");
-    SearchInfo to = s1.CreateSearchInfo("canteen");
-    Route route = s1.FindRoute(from, to);
+    vector <Point*> from = s1.GetByName("399u");
+    unsigned int id = from[0]->GetId();
+    Route route = s1.FindRoute(id, "canteen");
+
     std::vector <Edge> foundRoute = route.GetEdges();
 
     ASSERT_EQ(foundRoute.size(), 2);
     EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
     EXPECT_EQ(foundRoute[1].linkToFile, "1->canteen.txt");
-}*/
+}

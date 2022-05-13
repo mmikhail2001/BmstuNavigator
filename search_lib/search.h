@@ -7,16 +7,25 @@
 #include "dijkstra.h"
 
 using std::vector;
+using std::cout;
+using std::endl;
 
 class Route {
     std::vector <Edge> edges;
 public:
-    void AddEdge(Edge edge) {
-        edges.push_back(edge);
-    }
-    std::vector <Edge> GetEdges() { return edges; }
+    void AddEdge(Edge edge) { edges.push_back(edge); }
+    std::vector<Edge> GetEdges() { return edges; }
     unsigned int Size() { return edges.size(); }
     void Reverse() { std::reverse(edges.begin(), edges.end()); }
+    std::vector<Edge>::iterator begin() { return edges.begin(); }
+    std::vector<Edge>::iterator end() { return edges.end(); }
+    // void ShowRoute() {
+    //     cout << "Route:" << endl;
+    //     for (auto edge : edges) {
+    //         cout << edge.linkToFile << endl;
+    //     }
+    //     cout << "END of Route" << endl << endl;
+    // }
 };
 
 class Search {
@@ -27,17 +36,11 @@ class Search {
     std::map <unsigned int, Point*> idPointMap;
     Dijkstra <unsigned int> dijkstraSearcher;
 
-    // std::map <unsigned int, Infrastructure*> idInfrMap;
-    // std::map <unsigned int, BasePoint*> idBasePointsMap;
-
-
     void createMapPoints(std::vector <Point*> points);
     void initMaps();
     void initDijkstra();
 
-
 public:
-    // enum class Exeptions { UNKNOWN_POINT };
     Search(DataBase* base);
     bool HavePoint(std::string name);
     Point* GetById(unsigned int id);

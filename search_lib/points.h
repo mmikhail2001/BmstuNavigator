@@ -36,14 +36,17 @@ class Point {
     unsigned int id;
     std::vector <Edge> Edges;
     std::vector <std::string> names;
+    
 public:
     Point(unsigned int id) : id(id) {}
     void AddName(std::string name);
-    std::vector <Edge> GetEdges();
-    Edge GetEdgeById(const unsigned int& id);
-    void AddEdge(Edge edge);
     std::vector <std::string> GetNames() { return names; };
+
+    void AddEdge(Edge edge);
+    std::vector <Edge> GetEdges();
+
     unsigned int GetId() { return id; }
+    Edge GetEdgeById(const unsigned int& id);
 
 };
 

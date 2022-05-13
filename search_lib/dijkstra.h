@@ -56,12 +56,10 @@ void Dijkstra<T>::FindRoute(const T source) {
     for (auto v : vertexes) {
         dist[v] = INF;
     }
-    // debugPrintMap(dist);
 	dist[source] = 0;
 
 	for (int i = 0; i < vertexes.size(); ++i) {
 		optional <T> minVertex;
-        // debugPrintMap(dist);
 		for (auto vertex : vertexes) {
             if (!used[vertex] && (!minVertex || dist[vertex] < dist[*minVertex])) {
 				minVertex = vertex;
@@ -72,7 +70,6 @@ void Dijkstra<T>::FindRoute(const T source) {
 			break;
 
 		used[*minVertex] = true;
-        cout << "DEBUG: minVertex is: " << *minVertex << endl;
  
 		for (int j = 0; j < graf[*minVertex].size(); ++j) {
 			int to = graf[*minVertex][j];
@@ -102,15 +99,6 @@ vector <T> Dijkstra<T>::GetRoadTo(const T& id) {
 }
 
 
-
-template <class T>
-void Dijkstra<T>::PrintDist() {
-    cout << "Print distances" << endl;
-    for (auto v : dist) {
-        cout << "dist to: " << v.first << " is: " << v.second << endl;
-    }
-    cout << endl;
-}
 
 
 // void debugPrintMap(map <int, int> m) {
