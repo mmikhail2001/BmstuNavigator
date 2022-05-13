@@ -9,16 +9,18 @@
 using std::vector;
 using std::cout;
 using std::endl;
+using std::string;
 
 class Route {
     std::vector <Edge> edges;
+    std::vector <string> links;
 public:
-    void AddEdge(Edge edge) { edges.push_back(edge); }
+    void AddEdge(Edge edge) { edges.push_back(edge); links.push_back(edge.linkToFile); }
     std::vector<Edge> GetEdges() { return edges; }
     unsigned int Size() { return edges.size(); }
     void Reverse() { std::reverse(edges.begin(), edges.end()); }
-    std::vector<Edge>::iterator begin() { return edges.begin(); }
-    std::vector<Edge>::iterator end() { return edges.end(); }
+    std::vector<string>::iterator begin() { return edges.begin(); }
+    std::vector<string>::iterator end() { return edges.end(); }
     // void ShowRoute() {
     //     cout << "Route:" << endl;
     //     for (auto edge : edges) {
