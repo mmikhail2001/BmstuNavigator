@@ -14,9 +14,14 @@ private:
     // Singleton pattern
     static DataBaseDAO *dataBaseDao;
 
-    static DataBaseConnection dataBaseConnection;
+    static DataBaseConnection *dataBaseConnection;
+
+    MYSQL_RES *performQuery(const char *sqlQuery);
 
 public:
+
+    ~DataBaseDAO();
+
     // Singleton should not be cloneable
     DataBaseDAO(DataBaseDAO &other) = delete;
 
@@ -31,7 +36,7 @@ public:
 
     BasePoint getBasePoint(unsigned int id);
 
-    unsigned unsigned int addBasePoint(BasePoint basePoint);
+    unsigned int addBasePoint(BasePoint basePoint);
 
     bool updateBasePoint(BasePoint basePoint);
 
@@ -58,5 +63,3 @@ public:
 };
 
 #endif //SEARCH_LIB_DATABASEDAO_H
-
-

@@ -2,5 +2,5 @@
 
 DataBaseConfig DataBaseConfigReader::readConfig(std::string filePath) {
     // TODO
-    return DataBaseConfig();
+    return DataBaseConfig("configFilePath.txt");
 }

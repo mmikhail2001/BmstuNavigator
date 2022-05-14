@@ -1,0 +1,334 @@
+CREATE DATABASE bmstuNavigatorMain;
+-- DROP DATABASE bmstuNavigatorMain;
+USE bmstuNavigatorMain;
+
+CREATE TABLE points (
+    id INTEGER PRIMARY KEY, 
+    isInfr INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE point_names (
+    id_fk INTEGER NOT NULL, 
+    name VARCHAR(30) NOT NULL,
+    FOREIGN KEY (id_fk) REFERENCES points (id)
+);
+
+CREATE TABLE edges (
+    from_fk INTEGER NOT NULL, 
+    to_ INTEGER NOT NULL, 
+    dist INTEGER NOT NULL,
+    link_to_file VARCHAR(30) NOT NULL,
+    FOREIGN KEY (from_fk) REFERENCES points (id)
+);
+
+-- floor 1 =================================
+INSERT INTO points (id, isInfr)  
+VALUES (105, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (105, '105');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (105, 104, 5, '105->104.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (104, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (104, '104');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (104, 105, 6, '104->105.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (104, 102, 6, '104->102.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (102, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (102, '102');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (102, 104, 8, '102->104.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (102, 100, 8, '102->100.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (100, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (100, '100');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (100, 102, 11, '100->102.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (100, 103, 5, '100->103.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (103, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (103, '103');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (103, 100, 3, '103->100.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (103, 106, 7, '103->106.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (106, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (106, '106');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (106, 103, 2, '106->103.txt');
+
+
+-- floor 2 =================================
+
+INSERT INTO points (id, isInfr)  
+VALUES (208, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (208, '208');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (208, 207, 2, '208->207.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (208, 209, 3, '208->209.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (209, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (209, '209');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (209, 208, 2, '209->208.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (209, 210, 3, '209->210.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (210, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (210, '210');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (210, 209, 4, '210->209.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (210, 211, 2, '210->211.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (211, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (211, '211');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (211, 210, 6, '211->210.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (211, 212, 3, '211->212.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (212, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (212, '212');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (212, 211, 2, '212->211.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (212, 214, 4, '212->214.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (212, 213, 5, '212->213.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (214, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (214, '214');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (214, 212, 3, '214->212.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (214, 215, 6, '214->215.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (215, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (215, '215');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (215, 214, 4, '215->214.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (215, 216, 5, '215->216.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (216, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (216, '216');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (216, 215, 4, '216->215.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (213, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (213, '213');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (213, 212, 4, '213->212.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (213, 202, 4, '213->202.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (207, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (207, '207');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (207, 208, 4, '207->208.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (207, 206, 4, '207->206.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (206, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (206, '206');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (206, 207, 4, '206->207.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (206, 205, 4, '206->205.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (205, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (205, '205');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (205, 206, 4, '205->206.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (205, 204, 4, '205->204.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (204, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (204, '204');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (204, 205, 4, '204->205.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (204, 200, 4, '204->200.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (200, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (200, '200');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (200, 204, 4, '200->204.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (200, 201, 4, '200->201.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (202, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (202, '202');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (202, 201, 4, '202->201.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (202, 203, 4, '202->203.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (203, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (203, '203');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (203, 202, 4, '203->202.txt');
+
+
+-- floor 3 =================================
+
+INSERT INTO points (id, isInfr)  
+VALUES (312, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (312, '312');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (312, 311, 4, '312->311.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (311, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (311, '311');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (311, 312, 4, '311->312.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (311, 310, 4, '311->310.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (310, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (310, '310');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (310, 311, 4, '310->311.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (310, 309, 4, '310->309.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (309, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (309, '309');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (309, 310, 4, '309->310.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (309, 308, 4, '309->308.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (308, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (308, '308');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (308, 309, 4, '308->309.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (308, 307, 4, '308->307.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (307, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (307, '307');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (307, 308, 4, '307->308.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (307, 306, 4, '307->306.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (306, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (306, '306');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (306, 307, 4, '306->307.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (306, 305, 4, '306->305.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (305, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (305, '305');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (305, 306, 4, '305->306.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (305, 304, 4, '305->304.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (304, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (304, '304');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (304, 305, 4, '304->305.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (304, 300, 4, '304->300.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (300, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (300, '300');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (300, 304, 4, '300->304.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (300, 301, 4, '300->301.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (301, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (301, '301');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (301, 300, 4, '301->300.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (301, 302, 4, '301->302.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (302, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (302, '302');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (302, 301, 4, '302->301.txt');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (302, 303, 4, '302->303.txt');
+
+INSERT INTO points (id, isInfr)  
+VALUES (303, 0);
+INSERT INTO point_names (id_fk, name)
+VALUES (303, '303');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (303, 302, 4, '303->302.txt');

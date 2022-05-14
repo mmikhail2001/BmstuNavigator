@@ -5,13 +5,23 @@
 
 class DataBaseConfig {
 public:
+    DataBaseConfig(const char *server, const char *user, const char *password, const char *databaseName);
 
-    std::string connectionURL;
+    DataBaseConfig(const std::string &configFilePath);
 
-    std::string login;
+    ~DataBaseConfig();
 
-    std::string password;
+    const char *server;
 
+    const char *user;
+
+    const char *password;
+
+    const char *databaseName;
+
+private:
+
+    void readConfigFile(const std::string &configFilePath);
 };
 
 #endif //SEARCH_LIB_DATABASECONFIG_H
