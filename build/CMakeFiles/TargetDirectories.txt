@@ -1,0 +1,5 @@
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/edit_cache.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/tests.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/tgbot.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/TGBOT_LIB.dir

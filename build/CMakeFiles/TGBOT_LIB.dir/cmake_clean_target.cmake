@@ -1,0 +1,3 @@
+file(REMOVE_RECURSE
+  "libTGBOT_LIB.a"
+)

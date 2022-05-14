@@ -157,11 +157,12 @@ public:
 
     virtual void Check(Message &msg) = 0;
 
-    IView *FindView(std::string type);
 
 protected:
     IModel *model;
 
+    IView *FindView(std::string type);
+    
     // устанавливает начальную или конечную точку
     SET_POS SetPosition(std::string pos_id, std::string pos_view);
 

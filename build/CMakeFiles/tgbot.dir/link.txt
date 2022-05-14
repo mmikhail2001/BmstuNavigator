@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++17 -Wall  -rdynamic CMakeFiles/tgbot.dir/main.cpp.o  -o tgbot  libTGBOT_LIB.a /usr/local/lib/libTgBot.a -lpthread -lssl -lcrypto /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0 -lcurl 
