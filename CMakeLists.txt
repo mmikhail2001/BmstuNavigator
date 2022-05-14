@@ -26,27 +26,14 @@ target_link_libraries(tgbot PRIVATE TGBOT_LIB)
 target_link_libraries(tgbot /usr/local/lib/libTgBot.a ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES})
 
 find_package(GTest REQUIRED)
-# find_package(GMock REQUIRED)
-# include_directories(${GTEST_INCLUDE_DIRS})
 
 set(GMOCK_INCLUDE_DIRS /usr/include/gmock)
 
 set(GMOCK_BOTH_LIBRARIES /usr/local/lib/libgmock.a /usr/local/lib/libgmock_main.a /usr/local/lib/libgtest.a /usr/local/lib/libgtest_main.a)
 
-# usr\home\mikhail\googletest\googlemock\include\gmock\gmock.h
-# home/mikhail/googletest/build/lib
-# set(GMOCK_INCLUDE_DIRS usr/home/mikhail/googletest/googlemock/include/gmock)
-# set(GTEST_INCLUDE_DIRS usr/home/mikhail/googletest/googletest/include/gtest)
-# set(GMOCK_BOTH_LIBRARIES /usr/home/mikhail/googletest/build/lib/libgmock.a 
-# /usr/home/mikhail/googletest/build/lib/libgmock_main.a
-#  /usr/home/mikhail/googletest/build/lib/libgtest.a 
-#  /usr/home/mikhail/googletest/build/lib/libgtest_main.a)
 
 
 include_directories(${GMOCK_INCLUDE_DIRS})
 include_directories(${GTEST_INCLUDE_DIRS})
 add_executable(tests tests/gtests.cpp)
 target_link_libraries(tests ${GMOCK_BOTH_LIBRARIES} TGBOT_LIB GTest::GTest gtest_main)
-# target_link_libraries(tests ${GMOCK_LIBRARIES} TGBOT_LIB GTest::GTest gtest_main)
-# target_link_libraries(tests gmock)
-

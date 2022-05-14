@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 
+#include "tg_bot.h"
+
 using TgBot::Bot;
 using TgBot::ReplyKeyboardMarkup;
 using TgBot::InlineKeyboardMarkup;
@@ -31,6 +33,7 @@ int main()
 
     std::vector<IView *> vecViews;
     CreateViews(vecViews, CATEG, j[CATEG], bot);
+
     vecViews.push_back(new MessageView(TEXT, &bot));
     vecViews.push_back(new VideoView(VIDEO, &bot));
 

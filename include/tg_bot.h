@@ -1,103 +1,208 @@
-#pragma once
+#ifndef TG_BOT_H
+#define TG_BOT_H
 
-#include <csignal>
-#include <cstdio>
-#include <cstdlib>
-#include <cassert>
 #include <iostream>
-#include <exception>
-#include <string>
 #include <vector>
+#include <exception>
+#include <cassert>
 #include <tgbot/tgbot.h>
+#include <nlohmann/json.hpp>
+#include <string_view>
+#include <iostream>
+#include <string>
 
-using namespace std;
-using namespace TgBot;
+using TgBot::Bot;
+using TgBot::ReplyKeyboardMarkup;
+using TgBot::InlineKeyboardMarkup;
+using TgBot::KeyboardButton;
+using TgBot::InlineKeyboardButton;
+using TgBot::ReplyKeyboardRemove;
+using TgBot::InputFile;
+using TgBot::InputMediaPhoto;
+using TgBot::InputMedia;
+using std::vector;
+using std::string;
 
-class Keyboard
+
+enum SET_POS {DONE, NOT_FOUND, POS_FILLED};
+enum TYPE_INPUT {NONE = 0, SHEET, NODE};
+
+
+struct Positions
 {
-public:
-    Keyboard(const vector<string>& buttonStrings);
-    ~Keyboard();
-protected:
-    ReplyKeyboardMarkup::Ptr *kb = nullptr;
+    std::string start_id = std::string();
+    std::string start_view = std::string();
+
+    std::string end_id = std::string();
+    std::string end_view = std::string();
 };
 
+// заглушки классов сокомандника
+struct Route;
 
-//_________________________________________________________________________________
+class DataBase;
+
+class DataBaseBMSTU;
+
 
 class Search
 {
 public:
-    Search();
-    virtual vector<string> FindRoute(const string& point1, const string& point2);
-    virtual bool HavePoint(const string &point);
+    Search (DataBase *db);
+
+    Route *FindRoute(const Positions &pos);
+
+    bool HavePoint(std::string point);
+    
+private:
+    DataBase *db;
 };
 
-//_________________________________________________________________________________
-
-class StartKeyboard : public Keyboard 
+// мои классы 
+class IModel
 {
 public:
-    StartKeyboard(const vector<string>& buttonStrings);
-};
+    IModel(DataBase *db);
 
-//_________________________________________________________________________________
+    virtual std::string FindRouteModel(const Positions &pos) = 0;
+    
+    virtual bool isValid(std::string point) = 0;
 
-
-class CategoricalKeyboard : public Keyboard 
-{
-public:
-    CategoricalKeyboard(const vector<string>& buttonStrings, const vector<vector<string>>& inlineKeyboards);
-
-    void CreateInlineKeyboard(const string& category, const vector<string>& inButtonStrings);
 protected:
-    // unordered_map<std::string, InlineKeyboardMarkup::Ptr> map_inline_kbs; 
-    unordered_map<string, vector<string>> map_inline_kbs; 
-};
-
-//_________________________________________________________________________________
-
-
-class BotManager
-{
-public:
-    BotManager();
-    void Create_CategoricalKeyboard(const vector<string>& buttons_category_kb,
-                             const vector<vector<string>>& buttons_inline_kbs);
-    void Create_StartKeyboard(const vector<string>& buttons_start_kb);
-    int SetStartEnd(string value);
-    bool Find();
-    ~BotManager();
-protected:
-    CategoricalKeyboard *categoricalKeyboard = nullptr; 
-    StartKeyboard *startKeyboard = nullptr; 
     Search search;
-    vector<string> images; 
-    string *start_point = nullptr;
-    string *end_point = nullptr;
 };
 
-//_________________________________________________________________________________
-
-class VideoRoute
+class Model : public IModel
 {
 public:
-    VideoRoute();
-    string ConvertVideo(const vector<string> &images);
+    Model(DataBase *db);
+
+    std::string FindRouteModel(const Positions &pos);
+
+    bool isValid(std::string point);
+
 private:
-    string video_path;  
+    std::string convertVideo(std::vector<std::string> images);
 };
 
-//_________________________________________________________________________________
 
-class Messenger : public BotManager
+class Message
 {
 public:
-    Messenger();
-    void MessageProcessing(int code_msg);
-    virtual void SendMessage(string message);
-    void ShowResults();
-    ~Messenger();
+    Message(std::string text, int chatId);
+
+    std::string GetText();
+
+    int GetChatId();
+
 private:
-    VideoRoute *video = nullptr;
+    std::string text;
+    int chatId;
 };
+
+class IView
+{
+public:
+    IView(std::string type);
+
+    virtual void SendMessage(Message &msg) = 0;
+
+    std::string GetTypeView();
+
+protected:
+    std::string type;
+};
+
+
+class InlineView : public IView
+{
+public:
+    InlineView(std::string type, InlineKeyboardMarkup::Ptr inlineKb, Bot *bot);
+
+    void SendMessage(Message &msg);
+
+private:
+    InlineKeyboardMarkup::Ptr inlineKb;
+    Bot *bot;
+};
+
+
+class MessageView : public IView
+{
+public:
+    MessageView(std::string type, Bot *bot);
+
+    void SendMessage(Message &msg);
+
+private:
+    Bot *bot;
+};
+
+class VideoView : public IView
+{
+public:
+    VideoView(std::string type, Bot *bot);
+
+    void SendMessage(Message &msg);
+
+private:
+    Bot *bot;
+};
+
+
+class IPresenter
+{
+public:
+    IPresenter(vector<IView *> vecViews_, IModel *model);
+
+    virtual void Check(Message &msg) = 0;
+
+    IView *FindView(std::string type);
+
+protected:
+    IModel *model;
+
+    // устанавливает начальную или конечную точку
+    SET_POS SetPosition(std::string pos_id, std::string pos_view);
+
+    const Positions &GetPos();
+
+    // проверка готовности построить маршрут
+    bool isReady();
+
+    // генерирует сообщение о текущем состоянии
+    void Info(int chatId);
+
+    void Clear();
+
+private:
+    Positions pos;
+    std::vector<IView *> vecViews;
+};
+
+class Presenter : public IPresenter
+{
+public:
+    Presenter(vector<IView *> vecViews_, IModel *model, nlohmann::json j);
+
+    // обработка входящего сообщения
+    void Check(Message &msg);
+private:
+    nlohmann::json j;
+
+    void CheckCallback(Message &msg);
+    // определяет тип входящего сообщение
+    std::pair<TYPE_INPUT, std::string> TypeInput(nlohmann::json j, const std::string &input);
+
+    void CheckCommand(Message &msg);
+};
+
+void createInlineKeyboard(const std::vector<std::string>& buttonStrings, const std::vector<std::string>& callbacks, InlineKeyboardMarkup::Ptr& kb);
+
+// подготовка данных для создания клавиатуры
+InlineKeyboardMarkup::Ptr CreateKeyboard(const nlohmann::json &j);
+
+// парсит json и создает все представления
+void CreateViews(std::vector<IView *> &vecViews, const std::string &parent_name, const nlohmann::json &j, Bot &bot);
+
+#endif

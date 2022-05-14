@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 
-// #include "tg_bot.h"
+#include "../include/tg_bot.h"
 
 using TgBot::Bot;
 using TgBot::ReplyKeyboardMarkup;
@@ -27,407 +27,299 @@ static const std::string VIDEO = "video";
 static const std::string TEXT = "text";
 static const std::string CALLBACK = "callback";
 static const std::string SELECT = "select";
-static const std::string SYS= "commands";
+static const std::string SYS = "commands";
+static const std::string WARNING = "warnings";
 
-enum STATE_MESSAGE {DONE, NOT_FOUND, POS_FILLED};
 
-inline constexpr auto hash_djb2a(const std::string_view sv) {
+// switch-case for std::string
+inline constexpr auto hash_djb2a(const std::string_view sv) 
+{
     unsigned long hash{ 5381 };
-    for (unsigned char c : sv) {
+    for (unsigned char c : sv) 
+    {
         hash = ((hash << 5) + hash) ^ c;
     }
     return hash;
 }
  
-inline constexpr auto operator"" _sh(const char *str, size_t len) {
+inline constexpr auto operator"" _sh(const char *str, size_t len) 
+{
     return hash_djb2a(std::string_view{ str, len });
 }
+
+// заглушки классов сокомандника
 struct Route
 {
-    std::vector<std::string> images;
+    std::vector<std::string> images = { "123->127.jpg", "127->134.jpg" };
 };
 
-struct Positions
+class DataBase {};
+
+class DataBaseBMSTU : public DataBase {};
+
+
+
+Search::Search (DataBase *db) : db(db) {}
+
+Route *Search::FindRoute(const Positions &pos)
 {
-    Positions() : currentPointer(0) {}
-    std::string start = std::string();
-    std::string end = std::string();
-    int currentPointer; 
-};
-
-class DataBase
+    Route *route = new Route; 
+    return route;
+}
+bool Search::HavePoint(std::string point)
 {
+    return true;
+}
 
-};
+// мои классы 
 
-class DataBaseBMSTU : public DataBase
+IModel::IModel(DataBase *db) : search(db) {};
+
+Model::Model(DataBase *db) : IModel(db) {}
+std::string Model::FindRouteModel(const Positions &pos) 
 {
-
-};
-
-
-class Search
+    return convertVideo(search.FindRoute(pos)->images);
+}
+bool Model::isValid(std::string point)
 {
-public:
-    Search (DataBase *db) : db(db) {}
-    Route *FindRoute(const Positions &pos)
+    return search.HavePoint(point);
+}
+std::string Model::convertVideo(std::vector<std::string> images)
+{
+    return "video.mp4";
+}
+
+
+
+Message::Message(std::string text, int chatId) : text(text), chatId(chatId) {}
+
+std::string Message::GetText()
+{
+    return text;
+}
+int Message::GetChatId()
+{
+    return chatId;
+}
+
+IView::IView(std::string type) : type(type) {}
+std::string IView::GetTypeView()
+{
+    return type;
+}
+
+
+InlineView::InlineView(std::string type, InlineKeyboardMarkup::Ptr inlineKb, Bot *bot) : IView(type), bot(bot), inlineKb(inlineKb) {};
+
+void InlineView::SendMessage(Message &msg)
+{
+    bot->getApi().sendMessage(msg.GetChatId(), msg.GetText(), false, 0, inlineKb);
+}
+
+
+
+MessageView::MessageView(std::string type, Bot *bot) : IView(type), bot(bot) {};
+
+void MessageView::SendMessage(Message &msg)
+{
+    bot->getApi().sendMessage(msg.GetChatId(), msg.GetText());
+}
+
+
+VideoView::VideoView(std::string type, Bot *bot) : IView(type), bot(bot) {};
+void VideoView::SendMessage(Message &msg)
+{
+    bot->getApi().sendVideo(msg.GetChatId(), InputFile::fromFile("../" + msg.GetText(), "video/mp4"));   
+}
+
+
+IPresenter::IPresenter(vector<IView *> vecViews_, IModel *model) :  model(model), vecViews(vecViews_) {}
+IView *IPresenter::FindView(std::string type)
+{
+    auto view = std::find_if(vecViews.begin(), vecViews.end(), [&type](IView *view){
+        return type == view->GetTypeView();
+    });
+    if (view != vecViews.end())
     {
-        Route *route = new Route; 
-        route->images.push_back("mem.jpg"); 
-        route->images.push_back("apple.jpg"); 
-        // route->images.push_back("video.mp4"); 
-        return route;
+        return *view;
     }
-    bool HavePoint(std::string point)
-    {
-        return true;
-    }
-private:
-    DataBase *db;
-};
-
-class IModel
+    return nullptr;
+}
+SET_POS IPresenter::SetPosition(std::string pos_id, std::string pos_view)
 {
-public:
-    IModel(DataBase *db) : search(db) {};
-    virtual Route *FindRouteModel(const Positions &pos) = 0;
-    virtual bool isValid(std::string point) = 0;
-protected:
-    Search search;
-};
-
-class Model : public IModel
-{
-public:
-    Model(DataBase *db) : IModel(db) {}
-    Route *FindRouteModel(const Positions &pos) 
+    if (model->isValid(pos_id))
     {
-        Route *route = search.FindRoute(pos);
-        return route;
-    }
-    bool isValid(std::string point)
-    {
-        return search.HavePoint(point);
-    }
-};
-
-
-class Message
-{
-public:
-    Message(std::vector<std::string> vecImages, int chatId) : vecImages(vecImages), chatId(chatId) {}
-    Message(std::string text, int chatId) : text(text), chatId(chatId) {}
-    Message(const Message &other) = delete;
-    std::string GetText()
-    {
-        return text;
-    }
-    int GetChatId()
-    {
-        return chatId;
-    }
-    std::vector<std::string> vecImages;
-private:
-    std::string text = std::string();
-    int chatId = int();
-};
-
-class IView
-{
-public:
-    IView(std::string type) : type(type) {}
-    virtual void SendMessage(Message &msg) = 0;
-    std::string GetTypeView()
-    {
-        return type;
-    }
-protected:
-    std::string type;
-};
-
-
-class InlineView : public IView
-{
-public:
-    InlineView(std::string type, InlineKeyboardMarkup::Ptr inlineKb, Bot *bot) : IView(type), bot(bot), inlineKb(inlineKb) {};
-    void SendMessage(Message &msg)
-    {
-        bot->getApi().sendMessage(msg.GetChatId(), msg.GetText(), false, 0, inlineKb);
-    }
-    // void SendRoute(Images &images)
-    // {
-    //     // std::vector<InputMedia::Ptr> vec;
-    //     // for (auto &image : images.GetImages())
-    //     // {
-    //     //     InputMediaPhoto::Ptr photo(new InputMediaPhoto);
-    //     //     photo->media = image;
-    //     //     photo->media = InputFile::fromFile(image, "image/jpeg")
-    //     //     vec.push_back(photo);
-    //     // }
-    //     // bot->getApi().sendMediaGroup(images.GetChatId(), vec);
-        
-    //     bot->getApi().sendPhoto(images.GetChatId(), InputFile::fromFile(images.GetImages()[0], "image/jpeg"));
-    // }
-private:
-    InlineKeyboardMarkup::Ptr inlineKb;
-    Bot *bot;
-};
-
-
-class MessageView : public IView
-{
-public:
-    MessageView(std::string type, Bot *bot) : IView(type), bot(bot) {};
-    void SendMessage(Message &msg)
-    {
-        bot->getApi().sendMessage(msg.GetChatId(), msg.GetText());
-    }
-    // void SendRoute(Images &images)
-    // {
-        // bot->getApi().sendPhoto(images.GetChatId(), InputFile::fromFile(images.GetImages()[0], "image/jpeg"));
-    // }
-private:
-    Bot *bot;
-};
-
-class VideoView : public IView
-{
-public:
-    VideoView(std::string type, Bot *bot) : IView(type), bot(bot) {};
-    // void SendMessage(Message &msg)
-    // {
-    //     // bot->getApi().sendPhoto(msg.GetChatId(), InputFile::fromFile(msg.GetText(), "image/jpeg"));
-    //     // bot->getApi().sendMessage(msg.GetChatId(), msg.GetText());
-    //     bot->getApi().sendVideo(msg.GetChatId(), InputFile::fromFile(msg.GetText(), "video/mp4"));
-        
-    // }
-    void SendMessage(Message &msg)
-    {
-        std::vector<InputMedia::Ptr> vec;
-        for (auto &image : msg.vecImages)
+        if (pos.start_id.empty())
         {
-            InputMediaPhoto::Ptr photo(new InputMediaPhoto);
-            // photo->media = "attach://" + image;
-            photo->media = "https://img.mvideo.ru/Big/small_pic/480/30063081bb.jpg";
-            // photo->media = InputFile::fromFile(image, "image/jpeg");
-            vec.push_back(photo);
+            pos.start_view = pos_view;
+            pos.start_id = pos_id;
+            return DONE;
         }
-        // std::string js = "{\"type\": \"photo\", \"media\": \"mem.jpg\"}";
-        bot->getApi().sendMediaGroup(msg.GetChatId(), vec);
-        
-        // bot->getApi().sendPhoto(images.GetChatId(), InputFile::fromFile(images.GetImages()[0], "image/jpeg"));
-    }
-private:
-    Bot *bot;
-};
-
-
-class IPresenter
-{
-public:
-    IPresenter(vector<IView *> vecViews_, IModel *model) :  model(model), vecViews(vecViews_) {}
-    virtual void Check(Message &msg) = 0;
-    IView *FindView(std::string type)
-    {
-        auto view = std::find_if(vecViews.begin(), vecViews.end(), [&type](IView *view){
-            return type == view->GetTypeView();
-        });
-        if (view != vecViews.end())
-        {
-            return *view;
+        else if (pos.end_id.empty()) 
+        {   
+            pos.end_view = pos_view;
+            pos.end_id = pos_id;
+            return DONE;
         }
-        return nullptr;
     }
-protected:
-    IModel *model;
-    STATE_MESSAGE SetPosition(std::string str_point)
+    else 
     {
-        if (model->isValid(str_point))
+        return NOT_FOUND;
+    }
+    return POS_FILLED;
+}
+const Positions &IPresenter::GetPos()
+{
+    return pos;
+}
+// проверка готовности построить маршрут
+bool IPresenter::isReady()
+{
+    return !pos.start_id.empty() && !pos.end_id.empty();
+}
+// генерирует сообщение о текущем состоянии
+void IPresenter::Info(int chatId)
+{
+    std::string currentState = "Текущее состояние.\nНачальная позиция: " + (pos.start_view.empty() ? "-" : pos.start_view) + "\nКонечная позиция: " + (pos.end_view.empty() ? "-" : pos.end_view);
+    Message outputMsg(currentState, chatId);
+    if (IView *view = FindView(TEXT))
+    {
+        view->SendMessage(outputMsg);
+    }
+}
+void IPresenter::Clear()
+{
+    pos = std::move(Positions{}); 
+}
+
+
+
+Presenter::Presenter(vector<IView *> vecViews_, IModel *model, nlohmann::json j) : IPresenter(vecViews_, model), j(j) {}
+// обработка входящего сообщения
+void Presenter::Check(Message &msg) 
+{
+    if (StringTools::startsWith(msg.GetText(), "/"))
+    {
+        CheckCommand(msg);
+    }
+    else 
+    {
+        CheckCallback(msg);
+    }
+}
+void Presenter::CheckCallback(Message &msg) 
+{
+    // p = pair<код для switch-case, текст кнопки>
+    auto p = TypeInput(j.at(CATEG), msg.GetText());
+    switch(p.first)
+    {
+        case NODE:
         {
-            if (pos.start.empty())
+            Message outputMsg("Выберите: " + p.second, msg.GetChatId());
+            if (IView *view = FindView(msg.GetText()))
             {
-                pos.start = str_point;
-                return DONE;
+                view->SendMessage(outputMsg);
             }
-            else if (pos.end.empty()) 
-            {   
-                pos.end = str_point;
-                return DONE;
-            }
+            break;    
         }
-        else 
+        case SHEET:
+        case NONE:
         {
-            return NOT_FOUND;
-        }
-        return POS_FILLED;
-    }
-    const Positions &GetPos()
-    {
-        return pos;
-    }
-    bool isReady()
-    {
-        return !pos.start.empty() && !pos.end.empty();
-    }
-    void Info(int chatId)
-    {
-        std::string currentState = "Текущее состояние.\nНачальная позиция: " + (pos.start.empty() ? "-" : pos.start) + "\nКонечная позиция: " + (pos.end.empty() ? "-" : pos.end);
-        Message outputMsg(currentState, chatId);
-        if (IView *view = FindView(TEXT))
-        {
-            view->SendMessage(outputMsg);
-        }
-    }
-    void Clear()
-    {
-        pos.start.clear();
-        pos.end.clear();
-    }
-private:
-    Positions pos;
-    std::vector<IView *> vecViews;
-};
-
-class Presenter : public IPresenter
-{
-public:
-    Presenter(vector<IView *> vecViews_, IModel *model, nlohmann::json j) : IPresenter(vecViews_, model), j(j) {}
-    void Check(Message &msg) 
-    {
-        if (StringTools::startsWith(msg.GetText(), "/"))
-        {
-            CheckCommand(msg);
-        }
-        else 
-        {
-            CheckCallback(msg);
-        }
-    }
-private:
-    nlohmann::json j;
-    void CheckCallback(Message &msg) 
-    {
-        // std::cout << TypeInput(j.at(CATEG), msg.GetText()) << std::endl;
-        switch(hash_djb2a(msg.GetText()))
-        {
-            case "dining"_sh:
-            case "audit"_sh:
-            case "dining2"_sh:
-            case "toilet"_sh:
+            SET_POS code = SetPosition(msg.GetText(), p.second); 
+            for (auto &elem : j.at(WARNING))
             {
-                Message outputMsg("Выберите: " + std::string(j.at(CATEG).at(msg.GetText()).at(TEXT)), msg.GetChatId());
-                if (IView *view = FindView(msg.GetText()))
+                if (elem.at("id") == code)
                 {
-                    view->SendMessage(outputMsg);
-                }
-                break;
-            }
-            default:
-            {
-                std::string message = msg.GetText();
-                for (auto &elem : j.at(CATEG))
-                {
-                    if (elem.at(CALLBACK) == msg.GetText())
-                    {
-                        message = elem.at(TEXT);
-                        break;
-                    }
-                    if (elem.contains(SELECT) && elem.at(SELECT).contains(msg.GetText()))
-                    {
-                        message = elem.at(SELECT).at(msg.GetText()).at(TEXT);
-                        break;
-                    }
-                }
-                STATE_MESSAGE code = SetPosition(message);
-                for (auto &elem : j.at("messages"))
-                {
-                    if (elem.at("id") == code)
-                    {
-                        Message outputMsg(std::string(elem.at("text")), msg.GetChatId()); 
-                        if (IView *view = FindView(TEXT))
-                        {
-                            view->SendMessage(outputMsg);
-                        }
-                        break;
-                    }
-                }
-                Info(msg.GetChatId());
-            }
-        }
-    }
-
-    // int TypeInput(nlohmann::json j, const std::string &input)
-    // {
-    //     for (auto &object : j)
-    //     {   
-    //         if (object.contains(SELECT))
-    //         {
-    //             std::cout << "S " << std::string(object.at(CALLBACK)) << " " << input << std::endl;
-    //             if (std::string(object.at(CALLBACK)) == input)
-    //             {
-    //                 return 2;
-    //             }
-    //             return TypeInput(object.at(SELECT), input);
-    //         }
-    //         else
-    //         {
-    //             std::cout << "NS " << object.at(CALLBACK) << std::endl;
-    //             if (std::string(object.at(CALLBACK)) == input)
-    //             {
-    //                 return 1;
-    //             }
-    //         }
-    //     }
-    //     return 0;
-    // }
-
-    void CheckCommand(Message &msg) 
-    {
-        switch(hash_djb2a(msg.GetText()))
-        {
-            case "/start"_sh:
-            case "/reset"_sh:
-            {
-                Clear();
-            }
-            case "/categ"_sh:
-            {
-                Message outputMsg(std::string(j.at(SYS).at(msg.GetText()).at(TEXT)), msg.GetChatId());
-                if (IView *view = FindView(CATEG))
-                {
-                    view->SendMessage(outputMsg);
-                }
-                break;
-            }
-            case "/go"_sh:
-            {
-                if (isReady())
-                {
-                    Route *route = model->FindRouteModel(GetPos());
-                    Message videoMsg(route->images, msg.GetChatId());
-                    if (IView *view = FindView(VIDEO))
-                    {
-                        view->SendMessage(videoMsg);
-                    }
-                }
-                else 
-                {
-                    Message outputMsg(std::string(j.at(SYS).at(msg.GetText()).at(TEXT)), msg.GetChatId());
+                    Message outputMsg(std::string(elem.at(TEXT)), msg.GetChatId()); 
                     if (IView *view = FindView(TEXT))
                     {
                         view->SendMessage(outputMsg);
                     }
-                    Info(msg.GetChatId());
+                    break;
                 }
-                break;
-            }
-            default:
+            }   
+            Info(msg.GetChatId()); 
+        }
+    }
+}
+
+// определяет тип входящего сообщение: конечная точка (SHEET - лист json), категория (NODE - узел), данные введены с клавиатуры (NONE - не найдено в json)
+std::pair<TYPE_INPUT, std::string> Presenter::TypeInput(nlohmann::json j, const std::string &input)
+{
+    for (auto &object : j)
+    {   
+        if (object.contains(SELECT))
+        {
+            if (std::string(object.at(CALLBACK)) == input)
             {
-                Message outputMsg(std::string(j.at(SYS).at(msg.GetText()).at(TEXT)), msg.GetChatId());
+                auto p = std::make_pair(NODE, std::string(object.at(TEXT)));
+                return p;
+            }
+            auto check_inside = TypeInput(object.at(SELECT), input);
+            if (check_inside.first)
+            {
+                return check_inside;
+            }
+        }
+        else
+        {
+            if (std::string(object.at(CALLBACK)) == input)
+            {
+                auto p = std::make_pair(SHEET, std::string(object.at(TEXT)));
+                return p;
             }
         }
     }
-};
+    auto p = std::make_pair(NONE, input);
+    return p;
+}
+
+void Presenter::CheckCommand(Message &msg) 
+{
+    switch(hash_djb2a(msg.GetText()))
+    {
+        case "/start"_sh:
+        case "/reset"_sh:
+        {
+            Clear();
+        }
+        case "/categ"_sh:
+        {
+            Message outputMsg(std::string(j.at(SYS).at(msg.GetText()).at(TEXT)), msg.GetChatId());
+            if (IView *view = FindView(CATEG))
+            {
+                view->SendMessage(outputMsg);
+            }
+            break;
+        }
+        case "/go"_sh:
+        {
+            if (isReady())
+            {
+                std::string pathVideo = model->FindRouteModel(GetPos());
+                Message videoMsg(pathVideo, msg.GetChatId());
+                if (IView *view = FindView(VIDEO))
+                {
+                    view->SendMessage(videoMsg);
+                }
+            }
+            else 
+            {
+                Message outputMsg(std::string(j.at(SYS).at(msg.GetText()).at(TEXT)), msg.GetChatId());
+                if (IView *view = FindView(TEXT))
+                {
+                    view->SendMessage(outputMsg);
+                }
+                Info(msg.GetChatId());
+            }
+            break;
+        }
+        default:
+        {
+            Message outputMsg(std::string(j.at(SYS).at(msg.GetText()).at(TEXT)), msg.GetChatId());
+        }
+    }
+}
 
 void createInlineKeyboard(const std::vector<std::string>& buttonStrings, const std::vector<std::string>& callbacks, InlineKeyboardMarkup::Ptr& kb)
 {
@@ -442,6 +334,7 @@ void createInlineKeyboard(const std::vector<std::string>& buttonStrings, const s
     }
 }
 
+// подготовка данных для создания клавиатуры
 InlineKeyboardMarkup::Ptr CreateKeyboard(const nlohmann::json &j)
 {
     std::vector<std::string> vecButtons;
@@ -456,6 +349,7 @@ InlineKeyboardMarkup::Ptr CreateKeyboard(const nlohmann::json &j)
     return inlineKb;
 }
 
+// парсит json и создает все представления
 void CreateViews(std::vector<IView *> &vecViews, const std::string &parent_name, const nlohmann::json &j, Bot &bot)
 {
     {
@@ -466,7 +360,6 @@ void CreateViews(std::vector<IView *> &vecViews, const std::string &parent_name,
     {
         if (object.value().contains(SELECT))
         {
-            // std::cout << object.key() << std::endl;
             CreateViews(vecViews, std::string(object.key()), object.value().at(SELECT), bot);
         }
     }
