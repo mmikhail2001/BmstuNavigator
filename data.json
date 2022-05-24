@@ -7,17 +7,30 @@
             "callback" : "dining",
             "select" :
             {
-                "canteen1" : {
-                    "text" : "Столовая 1",
-                    "callback" : "canteen"
+                "buffet" : {
+                    "text" : "Буфет",
+                    "callback" : "buffet",
+                    "select" :
+                    {
+                        "buffet1" : 
+                        {
+                            "text" : "Буфет 1",
+                            "callback" : "buffet1"
+                        },
+                        "buffet2" : 
+                        {
+                            "text" : "Буфет 2",
+                            "callback" : "buffet2"
+                        }
+                    }
                 },
-                "canteen2" : {
+                "dining2" : {
                     "text" : "Столовая 2",
-                    "callback" : "canteen2"
+                    "callback" : "dining2"
                     },
-                "canteen3" : {
+                "dining3" : {
                     "text" : "Столовая 3",
-                    "callback" : "canteen3"
+                    "callback" : "dining3"
                 }
             }
         },
@@ -34,10 +47,6 @@
                 "audit2" : {
                     "text" : "Актовый зал 2",
                     "callback" : "audit2"
-                },
-                "audit3" : {
-                    "text" : "Актовый зал 3",
-                    "callback" : "audit3"
                 }
             }
         },
@@ -95,7 +104,7 @@
             "text" : "Выберите категорию или введите кабинет"
         }
     },
-    "messages" :
+    "warnings" :
     {
         "fail" : 
         {

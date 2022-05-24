@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 
+#include "tg_bot.h"
+
 using TgBot::Bot;
 using TgBot::ReplyKeyboardMarkup;
 using TgBot::InlineKeyboardMarkup;
@@ -20,14 +22,11 @@ using TgBot::InputMedia;
 using std::vector;
 using std::string;
 
-#include "lib/tg_bot.cpp"
-#include "search_lib/search.h"
-#include "search_lib/database.h"
+// #include "lib/tg_bot.cpp"
 
-
-
-int main()
+int main(int argc, char *argv[])
 {
+    std::cout << argv[0] << '\n';
     Bot bot("5181505545:AAHTLmsoVKRTby02w54aVI8Y7j-s5NuoSNk");
 
     std::ifstream ifs("data.json");
@@ -35,12 +34,12 @@ int main()
 
     std::vector<IView *> vecViews;
     CreateViews(vecViews, CATEG, j[CATEG], bot);
+
     vecViews.push_back(new MessageView(TEXT, &bot));
     vecViews.push_back(new VideoView(VIDEO, &bot));
 
-    // DataBaseTest data;
-    DataBase *data = new DataBaseTest;
-    IModel *model = new Model(data);
+    DataBase *db = new DataBaseBMSTU;
+    IModel *model = new Model(db);
 
     Presenter presenter(vecViews, model, j);
 
