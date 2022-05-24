@@ -1,2 +1,0 @@
-/usr/bin/ar qc libsearch_lib.a  CMakeFiles/search_lib.dir/database.cpp.o CMakeFiles/search_lib.dir/points.cpp.o CMakeFiles/search_lib.dir/search.cpp.o
-/usr/bin/ranlib libsearch_lib.a
