@@ -46,10 +46,14 @@ struct Route
 };
 
 
-Search::Search (DataBase *db) : db(db) {}
+Search::Search(DataBase *db) : db(db) {}
 
 Route *Search::FindRoute(const Positions &pos)
 {
+    // ---------------------- Работает
+    Point point(1);
+    std::cout << point.GetId() << std::endl;
+     // ----------------------
     Route *route = new Route; 
     return route;
 }
@@ -117,7 +121,6 @@ VideoView::VideoView(std::string type, Bot *bot) : IView(type), bot(bot) {};
 void VideoView::SendMessage(Message &msg)
 {
     bot->getApi().sendVideo(msg.GetChatId(), InputFile::fromFile("../" + msg.GetText(), "video/mp4"));  
-    // bot->getApi().sendMessage(msg.GetChatId(), "video"); 
 }
 
 

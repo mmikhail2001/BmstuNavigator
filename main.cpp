@@ -9,6 +9,7 @@
 #include <string>
 
 #include "tg_bot.h"
+#include "db.h"
 
 using TgBot::Bot;
 using TgBot::ReplyKeyboardMarkup;
@@ -22,14 +23,16 @@ using TgBot::InputMedia;
 using std::vector;
 using std::string;
 
-// #include "lib/tg_bot.cpp"
-
 int main(int argc, char *argv[])
 {
+    Point point_(2);
+    std::cout << point_.GetId() << std::endl;
+    db_print();
+
     std::cout << argv[0] << '\n';
     Bot bot("5181505545:AAHTLmsoVKRTby02w54aVI8Y7j-s5NuoSNk");
 
-    std::ifstream ifs("data.json");
+    std::ifstream ifs("../data.json");
     nlohmann::json j = nlohmann::json::parse(ifs);
 
     std::vector<IView *> vecViews;

@@ -11,6 +11,11 @@
 #include <iostream>
 #include <string>
 
+//-----------------------
+#include "db.h"
+#include "points.h"
+//-----------------------
+
 using TgBot::Bot;
 using TgBot::ReplyKeyboardMarkup;
 using TgBot::InlineKeyboardMarkup;

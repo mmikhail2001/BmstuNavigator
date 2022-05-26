@@ -6,6 +6,10 @@
 #include "database.h"
 #include "dijkstra.h"
 
+//-----------------------
+#include "db.h"
+//-----------------------
+
 using std::vector;
 using std::cout;
 using std::endl;
