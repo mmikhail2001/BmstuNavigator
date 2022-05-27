@@ -24,13 +24,6 @@ public:
     vector<string>::iterator begin() { return links.begin(); }
     vector<string>::iterator end() { return links.end(); }
     vector<string> GetLinks() { return links; }
-    // void ShowRoute() {
-    //     cout << "Route:" << endl;
-    //     for (auto edge : edges) {
-    //         cout << edge.linkToFile << endl;
-    //     }
-    //     cout << "END of Route" << endl << endl;
-    // }
 };
 
 class Search {

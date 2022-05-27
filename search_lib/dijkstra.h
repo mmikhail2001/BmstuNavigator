@@ -103,17 +103,6 @@ vector <T> Dijkstra<T>::GetRoadTo(const T& id) {
     return path;
 }
 
-
-
-
-// void debugPrintMap(map <int, int> m) {
-//     cout << "Print map:" << endl;
-//     for (auto v : m) {
-//         cout << v.first << "   " << v.second << endl;
-//     }
-//     cout << endl;
-// }
-
 template <class T>
 void Dijkstra<T>::PrintGraf() {
     cout << "Print graf" << endl;

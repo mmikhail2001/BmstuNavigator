@@ -80,6 +80,11 @@ optional <Route> Search::FindRoute(unsigned int id, std::string name) {
             minDist = *dist;
         }
     }
+    
+    if (!minPoint) {
+        return optRoute;
+    }
+
     vector <unsigned int> road = dijkstraSearcher.GetRoadTo(minPoint->GetId());
     // optional<vector <unsigned int>> optRoad;
 
