@@ -92,7 +92,6 @@ protected:
     Search search;
 };
 
-
 class Model : public IModel
 {
 public:
