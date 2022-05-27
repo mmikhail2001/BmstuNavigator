@@ -196,10 +196,6 @@ TEST(TestRoute, test_399u_403u) {
     optional <Route> optRoute = s1.FindRoute(id, "403u");
     EXPECT_TRUE(optRoute);
     Route route = *optRoute;
-    std::cout << "elems: " << std::endl;
-    for (auto elem : route) {
-        std::cout << elem << std::endl;
-    }
     ASSERT_EQ(route.Size(), 4);
     vector <Edge> foundRoute = route.GetEdges();
     EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
@@ -238,20 +234,15 @@ TEST(TestRoute, test_401u_401u) {
     EXPECT_EQ(route.Size(), 0);
 }
 
-/*
 TEST(TestRoute, test_cant_find_object) {
     DataBaseTest data;
     Search s1(&data);
 
-    EXPECT_THROW(s1.CreateUniqueSearchInfo("cant find object"), std::runtime_error);
-    UniqueSearchInfo from("cant find object", 0);
-    SearchInfo to = s1.CreateSearchInfo("401u");
-
-    // TODO: DELETE THIS
-    ASSERT_EQ(1, 0);
-    EXPECT_THROW(s1.FindRoute(from, to), std::runtime_error);
+    vector <Point*> from = s1.GetByName("399u");
+    unsigned int id = from[0]->GetId();
+    optional <Route> optRoute = s1.FindRoute(id, "this is some bad");
+    EXPECT_FALSE(optRoute);
 }
-*/
 
 
 TEST(TestRoute, find_by_diff_names) {
