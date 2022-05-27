@@ -17,13 +17,25 @@ class Route {
     std::vector <Edge> edges;
     std::vector <string> links;
 public:
+    class iterator {
+        vector<string>::iterator cur;
+    public:
+        iterator (vector<string>::iterator start) : cur(start) {}
+        string& operator*() { return *cur; }
+        string* operator++() { return &(*(++cur)); }
+        string* operator--() { return &(*(--cur)); }
+        bool operator==(const iterator& other) const { return cur == other.cur; }
+        bool operator!=(const iterator& other) const { return !(*this == other); }
+    };
     void AddEdge(Edge edge) { edges.push_back(edge); links.push_back(edge.linkToFile); }
     std::vector<Edge> GetEdges() { return edges; }
     unsigned int Size() { return edges.size(); }
     void Reverse() { std::reverse(edges.begin(), edges.end()); }
-    vector<string>::iterator begin() { return links.begin(); }
-    vector<string>::iterator end() { return links.end(); }
+    iterator begin() { return links.begin(); }
+    iterator end() { return links.end(); }
     vector<string> GetLinks() { return links; }
+
+    
 };
 
 class Search {

@@ -196,6 +196,10 @@ TEST(TestRoute, test_399u_403u) {
     optional <Route> optRoute = s1.FindRoute(id, "403u");
     EXPECT_TRUE(optRoute);
     Route route = *optRoute;
+    std::cout << "elems: " << std::endl;
+    for (auto elem : route) {
+        std::cout << elem << std::endl;
+    }
     ASSERT_EQ(route.Size(), 4);
     vector <Edge> foundRoute = route.GetEdges();
     EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
