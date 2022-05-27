@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <exception>
+#include <optional>
 #include <cassert>
 #include <tgbot/tgbot.h>
 #include <nlohmann/json.hpp>
@@ -84,7 +85,7 @@ class IModel
 public:
     IModel(DataBase *db);
 
-    virtual std::string FindRouteModel(const Positions &pos) = 0;
+    virtual std::optional<std::string> FindRouteModel(const Positions &pos) = 0;
 
     virtual bool isValid(std::string point) = 0;
 
@@ -97,7 +98,7 @@ class Model : public IModel
 public:
     Model(DataBase *db);
 
-    std::string FindRouteModel(const Positions &pos);
+    std::optional<std::string> FindRouteModel(const Positions &pos);
 
     bool isValid(std::string point);
 

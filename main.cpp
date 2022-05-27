@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     db_print();
 
     DataBase *db = DataBaseDAO::getInstance();
+    
     // std::vector <Infrastructure> infrPoints = test->getInfrastructurePoints();
     // for (auto bp : infrPoints) {
     //     std::vector <std::string> names = bp.GetNames();

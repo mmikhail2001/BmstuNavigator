@@ -5,10 +5,11 @@
 #include <tgbot/tgbot.h>
 #include <nlohmann/json.hpp>
 #include <string_view>
-#include <iostream>
+#include <regex>
 #include <string>
 
 #include "tg_bot.h"
+#include <stdlib.h>
 
 using TgBot::Bot;
 using TgBot::ReplyKeyboardMarkup;
@@ -39,53 +40,42 @@ inline constexpr auto operator"" _sh(const char *str, size_t len)
     return hash_djb2a(std::string_view{ str, len });
 }
 
-// заглушки классов сокомандника
-// struct Route
-// {
-//     std::vector<std::string> images = { "123->127.jpg", "127->134.jpg" };
-// };
-
-
-// Search::Search(DataBase *db) : db(db) {}
-
-// Route *Search::FindRoute(const Positions &pos)
-// {
-//     Route *route = new Route; 
-//     return route;
-// }
-// bool Search::HavePoint(std::string point)
-// {
-//     return true;
-// }
-
-// мои классы 
-
 IModel::IModel(DataBase *db) : search(db) {};
 
 Model::Model(DataBase *db) : IModel(db) {}
-std::string Model::FindRouteModel(const Positions &pos) 
+
+std::optional<std::string> Model::FindRouteModel(const Positions &pos) 
 {
-    std::vector<Point *> points = search.GetByName(pos.start);
+    std::vector<Point *> points = search.GetByName(pos.start_id); 
     if (points.size())
     {
         unsigned int id = points[0]->GetId();
-        Route route = search.FindRoute(id, pos.end);
+        Route route = search.FindRoute(id, pos.end_id);
         std::vector<std::string> vecPath = route.GetLinks();
-        std::string resultString;
-        for (auto partPath : vecPath) {
-            resultString += partPath;
+
+        std::string resultCommand;
+        for (auto &path : vecPath)
+        {
+            resultCommand += "../" + path + " ";
         }
-        return resultString;
+        // system("python3 ../make_video.py " + resultCommand + "2>error.txt");
+        system("python3 ../make_video.py ../photos/4.jpg ../photos/2.jpg ../photos/3.jpg ../photos/2.jpg ../photos/2.jpg 2>error.txt");
+
+        std::ifstream fin;
+        fin.open("error.txt");
+        char error;
+        if (!(fin >> error)) 
+        {
+            return "../video.mp4";
+        }
+        return {};
     }
     throw std::runtime_error("error");
 }
+
 bool Model::isValid(std::string point)
 {
     return search.GetByName(point).size() > 0;
-}
-std::string Model::convertVideo(std::vector<std::string> images)
-{
-    return "video.mp4";
 }
 
 Message::Message(std::string text, int chatId) : text(text), chatId(chatId) {}
@@ -118,14 +108,14 @@ MessageView::MessageView(std::string type, Bot *bot) : IView(type), bot(bot) {};
 
 void MessageView::SendMessage(Message &msg)
 {
-    bot->getApi().sendMessage(msg.GetChatId(), msg.GetText());
+    bot->getApi().sendMessage(msg.GetChatId(), msg.GetText(), false, 0, 0, "Markdown");
 }
 
 
 VideoView::VideoView(std::string type, Bot *bot) : IView(type), bot(bot) {};
 void VideoView::SendMessage(Message &msg)
 {
-    bot->getApi().sendVideo(msg.GetChatId(), InputFile::fromFile("../" + msg.GetText(), "video/mp4"));  
+    bot->getApi().sendVideo(msg.GetChatId(), InputFile::fromFile(msg.GetText(), "video/mp4"));  
 }
 
 
@@ -143,6 +133,11 @@ IView *IPresenter::FindView(std::string type)
 }
 SET_POS IPresenter::SetPosition(std::string pos_id, std::string pos_view)
 {
+    if (std::regex_match (pos_id, std::regex("\\d\\d\\dю") ))
+    {
+        pos_id.replace(3,4, "u");
+    }
+
     if (model->isValid(pos_id))
     {
         if (pos.start_id.empty())
@@ -176,7 +171,7 @@ bool IPresenter::isReady()
 // генерирует сообщение о текущем состоянии
 void IPresenter::Info(int chatId)
 {
-    std::string currentState = "Текущее состояние.\nНачальная позиция: " + (pos.start_view.empty() ? "-" : pos.start_view) + "\nКонечная позиция: " + (pos.end_view.empty() ? "-" : pos.end_view);
+    std::string currentState = "*Текущее состояние.*\nНачальная позиция: " + (pos.start_view.empty() ? "-" : pos.start_view) + "\nКонечная позиция: " + (pos.end_view.empty() ? "-" : pos.end_view);
     Message outputMsg(currentState, chatId);
     if (IView *view = FindView(TEXT))
     {
@@ -291,11 +286,23 @@ void Presenter::CheckCommand(Message &msg)
         {
             if (isReady())
             {
-                std::string pathVideo = model->FindRouteModel(GetPos());
-                Message videoMsg(pathVideo, msg.GetChatId());
-                if (IView *view = FindView(VIDEO))
+                std::optional<std::string> data = model->FindRouteModel(GetPos());
+                if (data)
                 {
-                    view->SendMessage(videoMsg);
+                    std::string pathVideo = *data;
+                    Message videoMsg(pathVideo, msg.GetChatId());
+                    if (IView *view = FindView(VIDEO)) // VIDEO
+                    {
+                        view->SendMessage(videoMsg);
+                    }
+                }
+                else
+                {
+                    Message outputMsg(std::string(j.at(SYS).at(msg.GetText()).at(TEXT)), msg.GetChatId());
+                    if (IView *view = FindView(TEXT)) 
+                    {
+                        view->SendMessage(outputMsg);
+                    }
                 }
             }
             else 
