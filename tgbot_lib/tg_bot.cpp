@@ -65,13 +65,23 @@ IModel::IModel(DataBase *db) : search(db) {};
 Model::Model(DataBase *db) : IModel(db) {}
 std::string Model::FindRouteModel(const Positions &pos) 
 {
-    // return convertVideo(search.FindRoute(pos)->images);
-    return "hello";
+    std::vector<Point *> points = search.GetByName(pos.start);
+    if (points.size())
+    {
+        unsigned int id = points[0]->GetId();
+        Route route = search.FindRoute(id, pos.end);
+        std::vector<std::string> vecPath = route.GetLinks();
+        std::string resultString;
+        for (auto partPath : vecPath) {
+            resultString += partPath;
+        }
+        return resultString;
+    }
+    throw std::runtime_error("error");
 }
 bool Model::isValid(std::string point)
 {
-    return true;
-    // return search.HavePoint(point);
+    return search.GetByName(point).size() > 0;
 }
 std::string Model::convertVideo(std::vector<std::string> images)
 {
