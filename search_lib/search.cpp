@@ -6,15 +6,19 @@
 #include <algorithm>
 #include <cassert>
 #include <iterator>
+#include <optional>
 #include "points.h"
 #include "search.h"
 #include "database.h"
 
 using std::cout;
 using std::endl;
+using std::optional;
+using std::vector;
+using std::string;
 
 void Search::initMaps() {
-    std::vector <Point*> vectorOfPtrsToPoints;
+    vector <Point*> vectorOfPtrsToPoints;
     for (auto &point : graf) {
         vectorOfPtrsToPoints.push_back(&point);
     }
@@ -25,9 +29,9 @@ void Search::initMaps() {
     createMapPoints(vectorOfPtrsToPoints);
 }
 
-void Search::createMapPoints(std::vector <Point*> ptrsToPoints) {
+void Search::createMapPoints(vector <Point*> ptrsToPoints) {
     for (auto ptrToPoint : ptrsToPoints) {
-        std::vector <std::string> names = ptrToPoint->GetNames();
+        vector <string> names = ptrToPoint->GetNames();
         for (auto name : names) {
             namePointsMap[name].push_back(ptrToPoint);
         }
@@ -62,24 +66,32 @@ bool Search::HavePoint(std::string name) {
 
 
 
-Route Search::FindRoute(unsigned int id, std::string name) {
+optional <Route> Search::FindRoute(unsigned int id, std::string name) {
     Route route;
+    optional <Route> optRoute;
     vector <Point*> points = GetByName(name);
     dijkstraSearcher.FindRoute(id);
-    unsigned int minDist = 1e9;
+    unsigned int minDist;
     Point* minPoint = nullptr;
     for (auto point : points) {
-        unsigned int dist = dijkstraSearcher.GetDistTo(point->GetId());
-        if (!minPoint || dist < minDist) {
+        optional <unsigned int> dist = dijkstraSearcher.GetDistTo(point->GetId());
+        if (!minPoint || (dist && *dist < minDist)) {
             minPoint = point;
-            minDist = dist;
+            minDist = *dist;
         }
     }
-    std::vector<unsigned int> road = dijkstraSearcher.GetRoadTo(minPoint->GetId());
+    vector <unsigned int> road = dijkstraSearcher.GetRoadTo(minPoint->GetId());
+    // optional<vector <unsigned int>> optRoad;
+
+    if (road.size() == 0) {
+        return optRoute;
+    }
 
     for (int i = 0; i < ((int)road.size()) - 1; ++i) {
         route.AddEdge(GetById(road[i])->GetEdgeById(road[i + 1]));
     }
+    optRoute = route;
+    return optRoute;
 
 
     // DEBUG:

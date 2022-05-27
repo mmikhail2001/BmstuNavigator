@@ -19,7 +19,7 @@ public:
     Dijkstra();
     void AddDirectedEdge(const T from, const T to, unsigned int weight);
     void FindRoute(const T source);
-    unsigned int GetDistTo(const T& id);
+    optional <unsigned int> GetDistTo(const T& id);
     vector <T> GetRoadTo(const T& id);
     void PrintDist();
     void PrintGraf();
@@ -83,8 +83,13 @@ void Dijkstra<T>::FindRoute(const T source) {
 }
 
 template <class T>
-unsigned int Dijkstra<T>::GetDistTo(const T& id) {
-    return dist[id];
+optional <unsigned int> Dijkstra<T>::GetDistTo(const T& id) {
+    optional <unsigned int> optDist;
+    if (dist[id] == INF) {
+        return optDist;
+    }
+    optDist = dist[id];
+    return optDist;
 }
 
 template <class T>

@@ -1,10 +1,13 @@
 #include <gtest/gtest.h>
+#include <optional>
 #include "search.h"
 #include "database.h"
 #include "points.h"
 
+using std::vector;
+using std::optional;
 
-std::vector <BasePoint> fillTestBasePoints() {
+vector <BasePoint> fillTestBasePoints() {
     BasePoint a(1), b(2), c(3), d(4);
     // base
     {
@@ -94,11 +97,11 @@ std::vector <BasePoint> fillTestBasePoints() {
         d.AddEdge(edge);
     }
 
-    std::vector <BasePoint> graf = {a, b, c, d};
+    vector <BasePoint> graf = {a, b, c, d};
     return graf;
 }
 
-std::vector <Infrastructure> fillInfrPoints() {
+vector <Infrastructure> fillInfrPoints() {
     Infrastructure i9(9), i10(10), i11(11), i12(12), i13(13), i102(102), i103(103);
 
     i9.AddName("399u");
@@ -162,17 +165,17 @@ std::vector <Infrastructure> fillInfrPoints() {
         i103.AddEdge(edge);
     }
 
-    std::vector <Infrastructure> graf = {i9, i10, i11, i12, i13, i102, i103};
+    vector <Infrastructure> graf = {i9, i10, i11, i12, i13, i102, i103};
     return graf;
 }
 
 
 class DataBaseTest : public DataBase {
 public:
-    std::vector <BasePoint> getBasePoints() override {
+    vector <BasePoint> getBasePoints() override {
         return fillTestBasePoints();
     }
-    std::vector <Infrastructure> getInfrastructurePoints() override {
+    vector <Infrastructure> getInfrastructurePoints() override {
         return fillInfrPoints();
     }
 };
@@ -190,9 +193,11 @@ TEST(TestRoute, test_399u_403u) {
     Search s1(&data);
     vector <Point*> from = s1.GetByName("399u");
     unsigned int id = from[0]->GetId();
-    Route route = s1.FindRoute(id, "403u");
+    optional <Route> optRoute = s1.FindRoute(id, "403u");
+    EXPECT_TRUE(optRoute);
+    Route route = *optRoute;
     ASSERT_EQ(route.Size(), 4);
-    std::vector <Edge> foundRoute = route.GetEdges();
+    vector <Edge> foundRoute = route.GetEdges();
     EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
     EXPECT_EQ(foundRoute[1].linkToFile, "1->4.txt");
     EXPECT_EQ(foundRoute[2].linkToFile, "4->3.txt");
@@ -205,9 +210,11 @@ TEST(TestRoute, test_401u_403u) {
 
     vector <Point*> from = s1.GetByName("401u");
     unsigned int id = from[0]->GetId();
-    Route route = s1.FindRoute(id, "403u");
+    optional <Route> optRoute = s1.FindRoute(id, "403u");
+    EXPECT_TRUE(optRoute);
+    Route route = *optRoute;
     
-    std::vector <Edge> foundRoute = route.GetEdges();
+    vector <Edge> foundRoute = route.GetEdges();
 
     ASSERT_EQ(foundRoute.size(), 2);
     EXPECT_EQ(foundRoute[0].linkToFile, "11->2.txt");
@@ -220,7 +227,9 @@ TEST(TestRoute, test_401u_401u) {
 
     vector <Point*> from = s1.GetByName("401u");
     unsigned int id = from[0]->GetId();
-    Route route = s1.FindRoute(id, "401u");
+    optional <Route> optRoute = s1.FindRoute(id, "401u");
+    EXPECT_TRUE(optRoute);
+    Route route = *optRoute;
 
     EXPECT_EQ(route.Size(), 0);
 }
@@ -247,9 +256,11 @@ TEST(TestRoute, find_by_diff_names) {
     
     vector <Point*> from = s1.GetByName("399u");
     unsigned int id = from[0]->GetId();
-    Route route = s1.FindRoute(id, "canteen_near_physics");
+    optional <Route> optRoute = s1.FindRoute(id, "canteen_near_physics");
+    EXPECT_TRUE(optRoute);
+    Route route = *optRoute;
 
-    std::vector <Edge> foundRoute = route.GetEdges();
+    vector <Edge> foundRoute = route.GetEdges();
 
     ASSERT_EQ(foundRoute.size(), 3);
     EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");
@@ -258,7 +269,10 @@ TEST(TestRoute, find_by_diff_names) {
 
     from = s1.GetByName("399u");
     id = from[0]->GetId();
-    route = s1.FindRoute(id, "canteen3");
+
+    optRoute = s1.FindRoute(id, "canteen3");
+    EXPECT_TRUE(optRoute);
+    route = *optRoute;
 
     foundRoute = route.GetEdges();
 
@@ -274,9 +288,11 @@ TEST(TestRoute, find_nearest_infr) {
 
     vector <Point*> from = s1.GetByName("399u");
     unsigned int id = from[0]->GetId();
-    Route route = s1.FindRoute(id, "canteen");
+    optional <Route> optRoute = s1.FindRoute(id, "canteen");
+    EXPECT_TRUE(optRoute);
+    Route route = *optRoute;
 
-    std::vector <Edge> foundRoute = route.GetEdges();
+    vector <Edge> foundRoute = route.GetEdges();
 
     ASSERT_EQ(foundRoute.size(), 2);
     EXPECT_EQ(foundRoute[0].linkToFile, "9->1.txt");

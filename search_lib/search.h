@@ -2,6 +2,7 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
+#include <optional>
 #include "points.h"
 #include "database.h"
 #include "dijkstra.h"
@@ -10,6 +11,7 @@ using std::vector;
 using std::cout;
 using std::endl;
 using std::string;
+using std::optional;
 
 class Route {
     std::vector <Edge> edges;
@@ -48,6 +50,6 @@ public:
     bool HavePoint(std::string name);
     Point* GetById(unsigned int id);
     vector <Point*> GetByName(std::string name);
-    Route FindRoute(unsigned int id, std::string name);
+    optional <Route> FindRoute(unsigned int id, std::string name);
     bool IsUniquePoint(std::string name);
 };
