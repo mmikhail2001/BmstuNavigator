@@ -25,8 +25,6 @@ using std::string;
 
 int main(int argc, char *argv[])
 {
-    Point point_(2);
-    std::cout << point_.GetId() << std::endl;
     db_print();
 
     std::cout << argv[0] << '\n';

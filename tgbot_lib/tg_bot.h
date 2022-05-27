@@ -13,7 +13,6 @@
 
 //-----------------------
 #include "db.h"
-#include "points.h"
 //-----------------------
 
 using TgBot::Bot;

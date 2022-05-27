@@ -50,10 +50,10 @@ Search::Search(DataBase *db) : db(db) {}
 
 Route *Search::FindRoute(const Positions &pos)
 {
-    // ---------------------- Работает
-    Point point(1);
-    std::cout << point.GetId() << std::endl;
-     // ----------------------
+    // // ---------------------- Работает
+    // Point point(1);
+    // std::cout << point.GetId() << std::endl;
+    //  // ----------------------
     Route *route = new Route; 
     return route;
 }
