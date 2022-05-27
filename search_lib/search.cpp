@@ -101,18 +101,6 @@ optional <Route> Search::FindRoute(unsigned int id, std::string name) {
     optRoute = route;
     return optRoute;
 
-
-    // DEBUG:
-    // std::cout << "THIS IS RESULTED ROAD:" << endl;
-    // for (auto edge : route) {
-    //     std::cout << edge.linkToFile << " ";
-    // }
-    // std::copy(road.begin(), road.end(), 
-    //             std::ostream_iterator<unsigned int> (std::cout, " "));
-
-    // unsigned int dist = dijkstraSearcher.GetDistTo(minPoint->GetId());
-    // std::cout << "dist is: " << dist << std::endl;
-    return route;
 }
 
 

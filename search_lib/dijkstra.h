@@ -102,21 +102,3 @@ vector <T> Dijkstra<T>::GetRoadTo(const T& id) {
     std::reverse(path.begin(), path.end());
     return path;
 }
-
-template <class T>
-void Dijkstra<T>::PrintGraf() {
-    cout << "Print graf" << endl;
-    for (auto v : graf) {
-        cout << "vertex is: " << v.first << " array of edges: ";
-        for (auto to : v.second) {
-            cout << to << " ";
-        }
-        cout << endl;
-        cout << " array of weights: ";
-        for (auto weight : grafWeights[v.first]) {
-            cout << weight << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-}
