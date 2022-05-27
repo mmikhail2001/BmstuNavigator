@@ -204,6 +204,15 @@ TEST(TestRoute, test_399u_403u) {
     EXPECT_EQ(foundRoute[3].linkToFile, "3->13.txt");
 }
 
+TEST(TestRoute, test_1u) {
+    DataBaseTest data;
+    Search s1(&data);
+    vector <Point*> from = s1.GetByName("399u");
+    unsigned int id = from[0]->GetId();
+    optional <Route> optRoute = s1.FindRoute(1111111, "403u");
+    EXPECT_FALSE(optRoute);
+}
+
 TEST(TestRoute, test_401u_403u) {
     DataBaseTest data;
     Search s1(&data);
