@@ -87,7 +87,9 @@ public:
 
     virtual std::optional<std::string> FindRouteModel(const Positions &pos) = 0;
 
-    virtual bool isValid(std::string point) = 0;
+    virtual bool isValidFinishPoint(std::string point) = 0;
+
+    virtual bool isValidStartPoint(std::string point) = 0;
 
 protected:
     Search search;
@@ -100,7 +102,9 @@ public:
 
     std::optional<std::string> FindRouteModel(const Positions &pos);
 
-    bool isValid(std::string point);
+    bool isValidFinishPoint(std::string point);
+
+    bool isValidStartPoint(std::string point);
 
 private:
     std::string convertVideo(std::vector<std::string> images);

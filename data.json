@@ -27,40 +27,40 @@
                 },
                 "toilet_1_1_w" :
                 {
-                    "text" : "Туалет 1 этаж Ж",
+                    "text" : "Туалет этаж 1 Ж",
                     "callback" : "toilet_1_1_w"
                 },
                 "toilet_1_1_m" :
                 {
-                    "text" : "Туалет 1 этаж М",
+                    "text" : "Туалет этаж 1 М",
                     "callback" : "toilet_1_1_m"
                 },
                 "toilet_2_x_w" :
                 {
-                    "text" : "Туалет 2 этаж Ж",
+                    "text" : "Туалет этаж 2 Ж",
                     "callback" : "toilet_2_x_w",
                     "select" :
                     {
                         "toilet_2_2_w" :
                         {
-                            "text" : "Возле деканата",
+                            "text" : "Туалет этаж 2 Ж около дома-физики",
                             "callback" : "toilet_2_2_w" 
                         },
                         "toilet_2_1_w" : 
                         {
-                            "text" : "В середине",
+                            "text" : "Туалет этаж 2 Ж около лифта",
                             "callback" : "toilet_2_1_w" 
                         }
                     }
                 },
                 "toilet_2_1_m" :
                 {
-                    "text" : "Туалет 2 этаж М",
+                    "text" : "Туалет этаж 2 М",
                     "callback" : "toilet_2_1_m"
                 },
                 "toilet_3_1_w" :
                 {
-                    "text" : "Туалет 3 этаж Ж",
+                    "text" : "Туалет этаж 3 Ж",
                     "callback" : "toilet_3_1_w"
                 }
             }
@@ -76,15 +76,15 @@
                     "text" : "Ближайшая столовая",
                     "callback" : "canteen"
                 },
-                "canteen_3_1":
-                {
-                    "text" : "Столовая 3 этаж",
-                    "callback" : "canteen_3_1"
-                },
                 "canteen_2_1":
                 {
-                    "text" : "Столовая 2 этаж",
+                    "text" : "Столовая этаж 2",
                     "callback" : "canteen_2_1"
+                },
+                "canteen_3_1":
+                {
+                    "text" : "Столовая этаж 3",
+                    "callback" : "canteen_3_1"
                 }
             }
         },

@@ -49,7 +49,6 @@ std::optional<std::string> Model::FindRouteModel(const Positions &pos)
     std::vector<Point *> points = search.GetByName(pos.start_id); 
     if (points.size())
     {
-
         unsigned int id = points[0]->GetId();
 
         std::optional<Route> optRoute = search.FindRoute(id, pos.end_id);
@@ -69,6 +68,7 @@ std::optional<std::string> Model::FindRouteModel(const Positions &pos)
         std::string readyCommand = "python3 ../make_video.py " + resultCommand + "2>error.txt";
 
 
+
         system(readyCommand.c_str());
 
         std::ifstream fin;
@@ -83,9 +83,14 @@ std::optional<std::string> Model::FindRouteModel(const Positions &pos)
     return {};
 }
 
-bool Model::isValid(std::string point)
+bool Model::isValidFinishPoint(std::string point)
 {
     return search.GetByName(point).size() > 0;
+}
+
+bool Model::isValidStartPoint(std::string point)
+{
+    return search.GetByName(point).size() == 1;
 }
 
 Message::Message(std::string text, int chatId) : text(text), chatId(chatId) {}
@@ -148,26 +153,23 @@ SET_POS IPresenter::SetPosition(std::string pos_id, std::string pos_view)
         pos_id.replace(3,4, "u");
     }
 
-    if (model->isValid(pos_id))
+    if (pos.start_id.empty() && model->isValidStartPoint(pos_id))
     {
-        if (pos.start_id.empty())
-        {
-            pos.start_view = pos_view;
-            pos.start_id = pos_id;
-            return DONE;
-        }
-        else if (pos.end_id.empty()) 
-        {   
-            pos.end_view = pos_view;
-            pos.end_id = pos_id;
-            return DONE;
-        }
+        pos.start_view = pos_view;
+        pos.start_id = pos_id;
+        return DONE;
     }
-    else 
+    else if (!pos.start_id.empty() && pos.end_id.empty() && model->isValidFinishPoint(pos_id)) 
+    {   
+        pos.end_view = pos_view;
+        pos.end_id = pos_id;
+        return DONE;
+    }
+    else if (!pos.start_id.empty() && !pos.end_id.empty())
     {
-        return NOT_FOUND;
+        return POS_FILLED;
     }
-    return POS_FILLED;
+    return NOT_FOUND;
 }
 const Positions &IPresenter::GetPos()
 {
