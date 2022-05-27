@@ -1,5 +1,9 @@
 /mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/rebuild_cache.dir
 /mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/edit_cache.dir
-/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/tests.dir
-/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/tgbot.dir
-/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/TGBOT_LIB.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/CMakeFiles/main.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/tgbot_lib/CMakeFiles/rebuild_cache.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/tgbot_lib/CMakeFiles/edit_cache.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/tgbot_lib/CMakeFiles/tgbot_lib.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/tests/CMakeFiles/edit_cache.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/tests/CMakeFiles/rebuild_cache.dir
+/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/tests/CMakeFiles/test_tgbot.dir

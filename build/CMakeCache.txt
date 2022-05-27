@@ -153,7 +153,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=tgbot
+CMAKE_PROJECT_NAME:STATIC=main
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -259,6 +259,12 @@ boost_headers_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/boost_headers-1.71.0
 //The directory containing a CMake configuration file for boost_system.
 boost_system_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/boost_system-1.71.0
 
+//Value Computed by CMake
+main_BINARY_DIR:STATIC=/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build
+
+//Value Computed by CMake
+main_SOURCE_DIR:STATIC=/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator
+
 //Path to a library.
 pkgcfg_lib_PC_CURL_curl:FILEPATH=/usr/lib/x86_64-linux-gnu/libcurl.so
 
@@ -269,10 +275,16 @@ pkgcfg_lib__OPENSSL_crypto:FILEPATH=/usr/lib/x86_64-linux-gnu/libcrypto.so
 pkgcfg_lib__OPENSSL_ssl:FILEPATH=/usr/lib/x86_64-linux-gnu/libssl.so
 
 //Value Computed by CMake
-tgbot_BINARY_DIR:STATIC=/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build
+test_tgbot_BINARY_DIR:STATIC=/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/tests
 
 //Value Computed by CMake
-tgbot_SOURCE_DIR:STATIC=/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator
+test_tgbot_SOURCE_DIR:STATIC=/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/tests
+
+//Value Computed by CMake
+tgbot_lib_BINARY_DIR:STATIC=/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/build/tgbot_lib
+
+//Value Computed by CMake
+tgbot_lib_SOURCE_DIR:STATIC=/mnt/c/МГТУ/_Технопарк/C_С++/BmstuNavigator/tgbot_lib
 
 
 ########################
@@ -389,7 +401,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

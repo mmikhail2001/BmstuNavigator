@@ -1,2 +1,0 @@
-/usr/bin/ar qc libTGBOT_LIB.a  CMakeFiles/TGBOT_LIB.dir/lib/tg_bot.cpp.o
-/usr/bin/ranlib libTGBOT_LIB.a

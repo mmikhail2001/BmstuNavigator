@@ -111,70 +111,43 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named tests
+# Target rules for targets named main
 
 # Build rule for target.
-tests: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 tests
-.PHONY : tests
+main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 main
+.PHONY : main
 
 # fast build rule for target.
-tests/fast:
-	$(MAKE) -f CMakeFiles/tests.dir/build.make CMakeFiles/tests.dir/build
-.PHONY : tests/fast
+main/fast:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+.PHONY : main/fast
 
 #=============================================================================
-# Target rules for targets named tgbot
+# Target rules for targets named tgbot_lib
 
 # Build rule for target.
-tgbot: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 tgbot
-.PHONY : tgbot
+tgbot_lib: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tgbot_lib
+.PHONY : tgbot_lib
 
 # fast build rule for target.
-tgbot/fast:
-	$(MAKE) -f CMakeFiles/tgbot.dir/build.make CMakeFiles/tgbot.dir/build
-.PHONY : tgbot/fast
+tgbot_lib/fast:
+	$(MAKE) -f tgbot_lib/CMakeFiles/tgbot_lib.dir/build.make tgbot_lib/CMakeFiles/tgbot_lib.dir/build
+.PHONY : tgbot_lib/fast
 
 #=============================================================================
-# Target rules for targets named TGBOT_LIB
+# Target rules for targets named test_tgbot
 
 # Build rule for target.
-TGBOT_LIB: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 TGBOT_LIB
-.PHONY : TGBOT_LIB
+test_tgbot: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_tgbot
+.PHONY : test_tgbot
 
 # fast build rule for target.
-TGBOT_LIB/fast:
-	$(MAKE) -f CMakeFiles/TGBOT_LIB.dir/build.make CMakeFiles/TGBOT_LIB.dir/build
-.PHONY : TGBOT_LIB/fast
-
-lib/tg_bot.o: lib/tg_bot.cpp.o
-
-.PHONY : lib/tg_bot.o
-
-# target to build an object file
-lib/tg_bot.cpp.o:
-	$(MAKE) -f CMakeFiles/TGBOT_LIB.dir/build.make CMakeFiles/TGBOT_LIB.dir/lib/tg_bot.cpp.o
-.PHONY : lib/tg_bot.cpp.o
-
-lib/tg_bot.i: lib/tg_bot.cpp.i
-
-.PHONY : lib/tg_bot.i
-
-# target to preprocess a source file
-lib/tg_bot.cpp.i:
-	$(MAKE) -f CMakeFiles/TGBOT_LIB.dir/build.make CMakeFiles/TGBOT_LIB.dir/lib/tg_bot.cpp.i
-.PHONY : lib/tg_bot.cpp.i
-
-lib/tg_bot.s: lib/tg_bot.cpp.s
-
-.PHONY : lib/tg_bot.s
-
-# target to generate assembly for a file
-lib/tg_bot.cpp.s:
-	$(MAKE) -f CMakeFiles/TGBOT_LIB.dir/build.make CMakeFiles/TGBOT_LIB.dir/lib/tg_bot.cpp.s
-.PHONY : lib/tg_bot.cpp.s
+test_tgbot/fast:
+	$(MAKE) -f tests/CMakeFiles/test_tgbot.dir/build.make tests/CMakeFiles/test_tgbot.dir/build
+.PHONY : test_tgbot/fast
 
 main.o: main.cpp.o
 
@@ -182,7 +155,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/tgbot.dir/build.make CMakeFiles/tgbot.dir/main.cpp.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -191,7 +164,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/tgbot.dir/build.make CMakeFiles/tgbot.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -200,35 +173,8 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/tgbot.dir/build.make CMakeFiles/tgbot.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.s
 .PHONY : main.cpp.s
-
-tests/gtests.o: tests/gtests.cpp.o
-
-.PHONY : tests/gtests.o
-
-# target to build an object file
-tests/gtests.cpp.o:
-	$(MAKE) -f CMakeFiles/tests.dir/build.make CMakeFiles/tests.dir/tests/gtests.cpp.o
-.PHONY : tests/gtests.cpp.o
-
-tests/gtests.i: tests/gtests.cpp.i
-
-.PHONY : tests/gtests.i
-
-# target to preprocess a source file
-tests/gtests.cpp.i:
-	$(MAKE) -f CMakeFiles/tests.dir/build.make CMakeFiles/tests.dir/tests/gtests.cpp.i
-.PHONY : tests/gtests.cpp.i
-
-tests/gtests.s: tests/gtests.cpp.s
-
-.PHONY : tests/gtests.s
-
-# target to generate assembly for a file
-tests/gtests.cpp.s:
-	$(MAKE) -f CMakeFiles/tests.dir/build.make CMakeFiles/tests.dir/tests/gtests.cpp.s
-.PHONY : tests/gtests.cpp.s
 
 # Help Target
 help:
@@ -238,18 +184,12 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... tests"
-	@echo "... tgbot"
-	@echo "... TGBOT_LIB"
-	@echo "... lib/tg_bot.o"
-	@echo "... lib/tg_bot.i"
-	@echo "... lib/tg_bot.s"
+	@echo "... main"
+	@echo "... tgbot_lib"
+	@echo "... test_tgbot"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... tests/gtests.o"
-	@echo "... tests/gtests.i"
-	@echo "... tests/gtests.s"
 .PHONY : help
 
 

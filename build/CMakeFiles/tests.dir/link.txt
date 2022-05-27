@@ -1,1 +1,0 @@
-/usr/bin/c++   -std=c++17 -Wall  -rdynamic CMakeFiles/tests.dir/tests/gtests.cpp.o  -o tests  /usr/local/lib/libgmock.a /usr/local/lib/libgmock_main.a /usr/local/lib/libgtest.a /usr/local/lib/libgtest_main.a libTGBOT_LIB.a /usr/local/lib/libgtest.a -lgtest_main -lpthread 

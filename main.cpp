@@ -5,7 +5,6 @@
 #include <tgbot/tgbot.h>
 #include <nlohmann/json.hpp>
 #include <string_view>
-#include <iostream>
 #include <string>
 
 #include "tg_bot.h"
@@ -22,17 +21,17 @@ using TgBot::InputMedia;
 using std::vector;
 using std::string;
 
-#include "lib/tg_bot.cpp"
 
 int main()
 {
     Bot bot("5181505545:AAHTLmsoVKRTby02w54aVI8Y7j-s5NuoSNk");
 
-    std::ifstream ifs("data.json");
+    std::ifstream ifs("../data.json");
     nlohmann::json j = nlohmann::json::parse(ifs);
 
     std::vector<IView *> vecViews;
-    CreateViews(vecViews, CATEG, j[CATEG], bot);
+
+    CreateViews<InlineView>(vecViews, CATEG, j[CATEG], bot);
 
     vecViews.push_back(new MessageView(TEXT, &bot));
     vecViews.push_back(new VideoView(VIDEO, &bot));
