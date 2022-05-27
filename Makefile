@@ -3,7 +3,6 @@ clear:
 
 
 build:
-	make clear
 	mkdir build
 	cd build && \
 	cmake .. && \
