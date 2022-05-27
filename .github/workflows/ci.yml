@@ -1,0 +1,15 @@
+on: push
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container: leshiy1295/gcc_linters
+    steps:
+      - uses: actions/checkout@v2 
+      - run: |
+             apt update -y
+             apt install cmake -y
+             apt install -y cppcheck clang-tidy python3-pip libc6-dbg cmake libgtest-dev
+      - run: |
+             make build
+             make test

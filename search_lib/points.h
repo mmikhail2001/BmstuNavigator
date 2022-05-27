@@ -9,10 +9,6 @@ public:
     unsigned int to;
     unsigned int dist;
     std::string linkToFile;
-    // const unsigned int from;
-    // const unsigned int to;
-    // const unsigned int dist;
-    // const std::string linkToFile;
     Edge() : from(0), to(0), dist(0) {}
     Edge(const unsigned int from, 
          const unsigned int to,
@@ -55,16 +51,9 @@ public:
 class Infrastructure : public Point {
 public:
     Infrastructure(const unsigned int id) : Point(id) {}
-    // std::vector <Edge> GetEdges() override;
-    // bool IsMe(SearchInfo info) override;
-    // bool IsPartOfRouteTo(SearchInfo info) override;
 };
 
 class BasePoint : public Point {
 public:
     BasePoint(const unsigned int id) : Point(id) {}
-    // std::vector <Edge> InfrastructureEdges;
-    // std::vector <Edge> GetEdges() override;
-    // bool IsMe(SearchInfo info) override;
-    // bool IsPartOfRouteTo(SearchInfo info) override;
 };
