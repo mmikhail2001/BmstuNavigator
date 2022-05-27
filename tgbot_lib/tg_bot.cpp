@@ -40,27 +40,23 @@ inline constexpr auto operator"" _sh(const char *str, size_t len)
 }
 
 // заглушки классов сокомандника
-struct Route
-{
-    std::vector<std::string> images = { "123->127.jpg", "127->134.jpg" };
-};
+// struct Route
+// {
+//     std::vector<std::string> images = { "123->127.jpg", "127->134.jpg" };
+// };
 
 
-Search::Search(DataBase *db) : db(db) {}
+// Search::Search(DataBase *db) : db(db) {}
 
-Route *Search::FindRoute(const Positions &pos)
-{
-    // // ---------------------- Работает
-    // Point point(1);
-    // std::cout << point.GetId() << std::endl;
-    //  // ----------------------
-    Route *route = new Route; 
-    return route;
-}
-bool Search::HavePoint(std::string point)
-{
-    return true;
-}
+// Route *Search::FindRoute(const Positions &pos)
+// {
+//     Route *route = new Route; 
+//     return route;
+// }
+// bool Search::HavePoint(std::string point)
+// {
+//     return true;
+// }
 
 // мои классы 
 
@@ -69,18 +65,18 @@ IModel::IModel(DataBase *db) : search(db) {};
 Model::Model(DataBase *db) : IModel(db) {}
 std::string Model::FindRouteModel(const Positions &pos) 
 {
-    return convertVideo(search.FindRoute(pos)->images);
+    // return convertVideo(search.FindRoute(pos)->images);
+    return "hello";
 }
 bool Model::isValid(std::string point)
 {
-    return search.HavePoint(point);
+    return true;
+    // return search.HavePoint(point);
 }
 std::string Model::convertVideo(std::vector<std::string> images)
 {
     return "video.mp4";
 }
-
-
 
 Message::Message(std::string text, int chatId) : text(text), chatId(chatId) {}
 
@@ -98,7 +94,6 @@ std::string IView::GetTypeView()
 {
     return type;
 }
-
 
 InlineView::InlineView(std::string type, InlineKeyboardMarkup::Ptr inlineKb, Bot *bot) : IView(type), bot(bot), inlineKb(inlineKb) {};
 
@@ -183,8 +178,6 @@ void IPresenter::Clear()
     pos = std::move(Positions{}); 
 }
 
-
-
 Presenter::Presenter(vector<IView *> vecViews_, IModel *model, nlohmann::json j) : IPresenter(vecViews_, model), j(j) {}
 // обработка входящего сообщения
 void Presenter::Check(Message &msg) 
@@ -198,6 +191,7 @@ void Presenter::Check(Message &msg)
         CheckCallback(msg);
     }
 }
+
 void Presenter::CheckCallback(Message &msg) 
 {
     // p = pair<код для switch-case, текст кнопки>

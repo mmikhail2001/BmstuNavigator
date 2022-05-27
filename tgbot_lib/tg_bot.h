@@ -13,20 +13,20 @@
 
 //-----------------------
 #include "db.h"
+#include "search.h"
 //-----------------------
 
-using TgBot::Bot;
-using TgBot::ReplyKeyboardMarkup;
-using TgBot::InlineKeyboardMarkup;
-using TgBot::KeyboardButton;
-using TgBot::InlineKeyboardButton;
-using TgBot::ReplyKeyboardRemove;
-using TgBot::InputFile;
-using TgBot::InputMediaPhoto;
-using TgBot::InputMedia;
-using std::vector;
 using std::string;
-
+using std::vector;
+using TgBot::Bot;
+using TgBot::InlineKeyboardButton;
+using TgBot::InlineKeyboardMarkup;
+using TgBot::InputFile;
+using TgBot::InputMedia;
+using TgBot::InputMediaPhoto;
+using TgBot::KeyboardButton;
+using TgBot::ReplyKeyboardMarkup;
+using TgBot::ReplyKeyboardRemove;
 
 static const std::string CATEG = "category";
 static const std::string VIDEO = "video";
@@ -36,9 +36,18 @@ static const std::string SELECT = "select";
 static const std::string SYS = "commands";
 static const std::string WARNING = "warnings";
 
-enum SET_POS {DONE, NOT_FOUND, POS_FILLED};
-enum TYPE_INPUT {NONE = 0, SHEET, NODE};
-
+enum SET_POS
+{
+    DONE,
+    NOT_FOUND,
+    POS_FILLED
+};
+enum TYPE_INPUT
+{
+    NONE = 0,
+    SHEET,
+    NODE
+};
 
 struct Positions
 {
@@ -50,39 +59,39 @@ struct Positions
 };
 
 // заглушки классов сокомандника
-struct Route;
+// struct Route;
 
-class DataBase {};
+// class DataBase {};
 
-class DataBaseBMSTU : public DataBase {};
+// class DataBaseBMSTU : public DataBase {};
 
+// class Search
+// {
+// public:
+//     Search (DataBase *db);
 
-class Search
-{
-public:
-    Search (DataBase *db);
+//     Route *FindRoute(const Positions &pos);
 
-    Route *FindRoute(const Positions &pos);
+//     bool HavePoint(std::string point);
 
-    bool HavePoint(std::string point);
-    
-private:
-    DataBase *db;
-};
+// private:
+//     DataBase *db;
+// };
 
-// мои классы 
+// мои классы
 class IModel
 {
 public:
     IModel(DataBase *db);
 
     virtual std::string FindRouteModel(const Positions &pos) = 0;
-    
+
     virtual bool isValid(std::string point) = 0;
 
 protected:
     Search search;
 };
+
 
 class Model : public IModel
 {
@@ -96,7 +105,6 @@ public:
 private:
     std::string convertVideo(std::vector<std::string> images);
 };
-
 
 class Message
 {
@@ -125,7 +133,6 @@ protected:
     std::string type;
 };
 
-
 class InlineView : public IView
 {
 public:
@@ -137,7 +144,6 @@ private:
     InlineKeyboardMarkup::Ptr inlineKb;
     Bot *bot;
 };
-
 
 class MessageView : public IView
 {
@@ -161,7 +167,6 @@ private:
     Bot *bot;
 };
 
-
 class IPresenter
 {
 public:
@@ -169,12 +174,11 @@ public:
 
     virtual void Check(Message &msg) = 0;
 
-
 protected:
     IModel *model;
 
     IView *FindView(std::string type);
-    
+
     // устанавливает начальную или конечную точку
     SET_POS SetPosition(std::string pos_id, std::string pos_view);
 
@@ -200,6 +204,7 @@ public:
 
     // обработка входящего сообщения
     void Check(Message &msg);
+
 private:
     nlohmann::json j;
 
@@ -210,7 +215,7 @@ private:
     void CheckCommand(Message &msg);
 };
 
-void createInlineKeyboard(const std::vector<std::string>& buttonStrings, const std::vector<std::string>& callbacks, InlineKeyboardMarkup::Ptr& kb);
+void createInlineKeyboard(const std::vector<std::string> &buttonStrings, const std::vector<std::string> &callbacks, InlineKeyboardMarkup::Ptr &kb);
 
 // подготовка данных для создания клавиатуры
 InlineKeyboardMarkup::Ptr CreateKeyboard(const nlohmann::json &j);

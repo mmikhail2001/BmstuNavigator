@@ -6,9 +6,10 @@
 #include <algorithm>
 #include <cassert>
 #include <iterator>
-#include "points.h"
+
+// #include "points.h"
 #include "search.h"
-#include "database.h"
+// #include "database.h"
 
 using std::cout;
 using std::endl;

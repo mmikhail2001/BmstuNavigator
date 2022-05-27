@@ -2,6 +2,7 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
+
 #include "points.h"
 #include "database.h"
 #include "dijkstra.h"

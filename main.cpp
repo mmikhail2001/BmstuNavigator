@@ -10,6 +10,8 @@
 
 #include "tg_bot.h"
 #include "db.h"
+#include "DataBaseDAO.h"
+
 
 using TgBot::Bot;
 using TgBot::ReplyKeyboardMarkup;
@@ -27,7 +29,16 @@ int main(int argc, char *argv[])
 {
     db_print();
 
-    std::cout << argv[0] << '\n';
+    DataBase *db = DataBaseDAO::getInstance();
+    // std::vector <Infrastructure> infrPoints = test->getInfrastructurePoints();
+    // for (auto bp : infrPoints) {
+    //     std::vector <std::string> names = bp.GetNames();
+    //     for (auto name : names) {
+    //         std::cout << ">>>>" << name << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+
     Bot bot("5181505545:AAHTLmsoVKRTby02w54aVI8Y7j-s5NuoSNk");
 
     std::ifstream ifs("../data.json");
@@ -39,7 +50,7 @@ int main(int argc, char *argv[])
     vecViews.push_back(new MessageView(TEXT, &bot));
     vecViews.push_back(new VideoView(VIDEO, &bot));
 
-    DataBase *db = new DataBaseBMSTU;
+    // DataBase *db = new DataBaseBMSTU;
     IModel *model = new Model(db);
 
     Presenter presenter(vecViews, model, j);

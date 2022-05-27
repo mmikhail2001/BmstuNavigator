@@ -34,11 +34,12 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 target_include_directories(tgbot_lib PUBLIC ${DB_LIB_INCLUDE_DIRS})
 target_include_directories(tgbot_lib PUBLIC ${SEARCH_LIB_INCLUDE_DIRS})
+target_include_directories(tgbot_lib PUBLIC ${ENTITIES_LIB_INCLUDE_DIRS})
 
 target_include_directories(search_lib PUBLIC ${DB_LIB_INCLUDE_DIRS})
+target_include_directories(search_lib PUBLIC ${ENTITIES_LIB_INCLUDE_DIRS})
 
 target_include_directories(db_lib PUBLIC ${ENTITIES_LIB_INCLUDE_DIRS})
-target_include_directories(search_lib PUBLIC ${ENTITIES_LIB_INCLUDE_DIRS})
 
 # target_link_libraries(tgbot_lib PRIVATE ${SEARCH_LIB_LIBRARIES})
 # target_link_libraries(${TGBOT_LIB_LIBRARIES} PRIVATE ${SEARCH_LIB_LIBRARIES})
