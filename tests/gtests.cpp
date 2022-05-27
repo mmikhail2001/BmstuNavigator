@@ -171,13 +171,11 @@ TEST_F(ViewsTest, test_input_no_valid)
     presenter.Check(msg);
 }
 
-TEST_F(ViewsTest, test_input_no_valid) 
+TEST_F(ViewsTest, test_input_valid) 
 {
     MockModel mockModel;
     PresenterNoProtected presenter(vecViews, &mockModel, j);
 
-    // Сообщение 1 : "Позиция не найдена"
-    // Сообщение 2 : "Текущее состояние. Начальная позиция:"
     EXPECT_CALL(*dynamic_cast<MockMessageView*>(presenter.FindView(TEXT)), SendMessage(::testing::_)).Times(2);
     EXPECT_CALL(*dynamic_cast<MockMessageView*>(presenter.FindView(CATEG)), SendMessage(::testing::_)).Times(1);
     EXPECT_CALL(*dynamic_cast<MockMessageView*>(presenter.FindView("dining")), SendMessage(::testing::_)).Times(1);
@@ -202,11 +200,6 @@ TEST_F(ViewsTest, test_input_no_valid)
     {
         Message msg("buffet2", id); presenter.Check(msg);
     }
-    // {
-    //     Message msg("buffet2", id); presenter.Check(msg);
-    // }
-
-
 }
 
 int main(int argc, char** argv) {
