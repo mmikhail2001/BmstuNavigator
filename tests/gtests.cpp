@@ -162,13 +162,51 @@ TEST_F(ViewsTest, test_input_no_valid)
 
     // Сообщение 1 : "Позиция не найдена"
     // Сообщение 2 : "Текущее состояние. Начальная позиция:"
-    EXPECT_CALL(*dynamic_cast<MockMessageView*>(presenter.FindView("text")), SendMessage(::testing::_)).Times(2);
+    EXPECT_CALL(*dynamic_cast<MockMessageView*>(presenter.FindView(TEXT)), SendMessage(::testing::_)).Times(2);
 
     EXPECT_CALL(mockModel, isValid("qwerty"))
       .WillOnce(::testing::DoAll(::testing::Return(false)));
 
     Message msg("qwerty", id);
     presenter.Check(msg);
+}
+
+TEST_F(ViewsTest, test_input_no_valid) 
+{
+    MockModel mockModel;
+    PresenterNoProtected presenter(vecViews, &mockModel, j);
+
+    // Сообщение 1 : "Позиция не найдена"
+    // Сообщение 2 : "Текущее состояние. Начальная позиция:"
+    EXPECT_CALL(*dynamic_cast<MockMessageView*>(presenter.FindView(TEXT)), SendMessage(::testing::_)).Times(2);
+    EXPECT_CALL(*dynamic_cast<MockMessageView*>(presenter.FindView(CATEG)), SendMessage(::testing::_)).Times(1);
+    EXPECT_CALL(*dynamic_cast<MockMessageView*>(presenter.FindView("dining")), SendMessage(::testing::_)).Times(1);
+    EXPECT_CALL(*dynamic_cast<MockMessageView*>(presenter.FindView("buffet")), SendMessage(::testing::_)).Times(1);
+
+    EXPECT_CALL(mockModel, isValid("techopark"))
+      .WillOnce(::testing::DoAll(::testing::Return(true)));
+    EXPECT_CALL(mockModel, isValid("buffet2"))
+      .WillOnce(::testing::DoAll(::testing::Return(true)));
+    {
+        Message msg("/start", id); presenter.Check(msg);
+    }
+    {
+        Message msg("techopark", id); presenter.Check(msg);
+    }
+    {
+        Message msg("dining", id); presenter.Check(msg);
+    }
+    {
+        Message msg("buffet", id); presenter.Check(msg);
+    }
+    {
+        Message msg("buffet2", id); presenter.Check(msg);
+    }
+    // {
+    //     Message msg("buffet2", id); presenter.Check(msg);
+    // }
+
+
 }
 
 int main(int argc, char** argv) {
