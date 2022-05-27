@@ -62,12 +62,14 @@ void Dijkstra<T>::FindRoute(const T source) {
 		optional <T> minVertex;
 		for (auto vertex : vertexes) {
             if (!used[vertex] && (!minVertex || dist[vertex] < dist[*minVertex])) {
+                std::cout << "if_1" << std::endl;
 				minVertex = vertex;
             }
         }
 			
 		if (dist[*minVertex] == INF)
 			break;
+            
 
 		used[*minVertex] = true;
  
@@ -105,7 +107,6 @@ vector <T> Dijkstra<T>::GetRoadTo(const T& id) {
 
 template <class T>
 void Dijkstra<T>::PrintGraf() {
-    cout << "Print graf" << endl;
     for (auto v : graf) {
         cout << "vertex is: " << v.first << " array of edges: ";
         for (auto to : v.second) {

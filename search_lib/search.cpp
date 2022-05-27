@@ -70,6 +70,9 @@ optional <Route> Search::FindRoute(unsigned int id, std::string name) {
     Route route;
     optional <Route> optRoute;
     vector <Point*> points = GetByName(name);
+    if (!idPointMap.count(id)) {
+        return optRoute;
+    }
     dijkstraSearcher.FindRoute(id);
     unsigned int minDist;
     Point* minPoint = nullptr;

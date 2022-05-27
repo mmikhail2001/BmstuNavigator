@@ -49,9 +49,13 @@ std::optional<std::string> Model::FindRouteModel(const Positions &pos)
     std::vector<Point *> points = search.GetByName(pos.start_id); 
     if (points.size())
     {
+
         unsigned int id = points[0]->GetId();
+
         std::optional<Route> optRoute = search.FindRoute(id, pos.end_id);
-        if (!optRoute) {
+
+        if (!optRoute) 
+        {
             return {};
         }
         Route route = *optRoute;
@@ -62,8 +66,10 @@ std::optional<std::string> Model::FindRouteModel(const Positions &pos)
         {
             resultCommand += "../" + path + " ";
         }
-        // system("python3 ../make_video.py " + resultCommand + "2>error.txt");
-        system("python3 ../make_video.py ../photos/4.jpg ../photos/2.jpg ../photos/3.jpg ../photos/2.jpg ../photos/2.jpg 2>error.txt");
+        std::string readyCommand = "python3 ../make_video.py " + resultCommand + "2>error.txt";
+
+
+        system(readyCommand.c_str());
 
         std::ifstream fin;
         fin.open("error.txt");
@@ -74,7 +80,7 @@ std::optional<std::string> Model::FindRouteModel(const Positions &pos)
         }
         return {};
     }
-    throw std::runtime_error("error");
+    return {};
 }
 
 bool Model::isValid(std::string point)

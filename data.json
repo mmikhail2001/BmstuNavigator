@@ -76,10 +76,10 @@
                     "text" : "Ближайшая столовая",
                     "callback" : "canteen"
                 },
-                "canteen_1_1":
+                "canteen_3_1":
                 {
-                    "text" : "Столовая 1 этаж",
-                    "callback" : "canteen_1_1"
+                    "text" : "Столовая 3 этаж",
+                    "callback" : "canteen_3_1"
                 },
                 "canteen_2_1":
                 {
