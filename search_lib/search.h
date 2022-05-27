@@ -2,19 +2,16 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
-
+#include <optional>
 #include "points.h"
 #include "database.h"
 #include "dijkstra.h"
-
-//-----------------------
-#include "db.h"
-//-----------------------
 
 using std::vector;
 using std::cout;
 using std::endl;
 using std::string;
+using std::optional;
 
 class Route {
     std::vector <Edge> edges;
@@ -24,16 +21,9 @@ public:
     std::vector<Edge> GetEdges() { return edges; }
     unsigned int Size() { return edges.size(); }
     void Reverse() { std::reverse(edges.begin(), edges.end()); }
-    std::vector<string>::iterator begin() { return links.begin(); }
-    std::vector<string>::iterator end() { return links.end(); }
+    vector<string>::iterator begin() { return links.begin(); }
+    vector<string>::iterator end() { return links.end(); }
     vector<string> GetLinks() { return links; }
-    // void ShowRoute() {
-    //     cout << "Route:" << endl;
-    //     for (auto edge : edges) {
-    //         cout << edge.linkToFile << endl;
-    //     }
-    //     cout << "END of Route" << endl << endl;
-    // }
 };
 
 class Search {
@@ -53,6 +43,6 @@ public:
     bool HavePoint(std::string name);
     Point* GetById(unsigned int id);
     vector <Point*> GetByName(std::string name);
-    Route FindRoute(unsigned int id, std::string name);
+    optional <Route> FindRoute(unsigned int id, std::string name);
     bool IsUniquePoint(std::string name);
 };
