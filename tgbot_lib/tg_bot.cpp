@@ -50,7 +50,11 @@ std::optional<std::string> Model::FindRouteModel(const Positions &pos)
     if (points.size())
     {
         unsigned int id = points[0]->GetId();
-        Route route = search.FindRoute(id, pos.end_id);
+        std::optional<Route> optRoute = search.FindRoute(id, pos.end_id);
+        if (!optRoute) {
+            return {};
+        }
+        Route route = *optRoute;
         std::vector<std::string> vecPath = route.GetLinks();
 
         std::string resultCommand;
