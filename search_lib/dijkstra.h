@@ -62,7 +62,6 @@ void Dijkstra<T>::FindRoute(const T source) {
 		optional <T> minVertex;
 		for (auto vertex : vertexes) {
             if (!used[vertex] && (!minVertex || dist[vertex] < dist[*minVertex])) {
-                std::cout << "if_1" << std::endl;
 				minVertex = vertex;
             }
         }
