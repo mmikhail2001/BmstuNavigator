@@ -1,0 +1,158 @@
+{
+    "category" :
+    {
+        "_toilet" :
+        {
+            "text" : "Туалет",
+            "callback" : "_toilet",
+            "select" :
+            {
+                "toilet" :
+                {
+                    "text" : "Туалет ближайший",
+                    "callback" : "toilet",
+                    "select" :
+                    {
+                        "toilet_m":
+                        {
+                            "text" : "М",
+                            "callback" : "toilet_m"
+                        },
+                        "toilet_w":
+                        {
+                            "text" : "Ж",
+                            "callback" : "toilet_w"
+                        }
+                    }
+                },
+                "toilet_1_1_w" :
+                {
+                    "text" : "Туалет этаж 1 Ж",
+                    "callback" : "toilet_1_1_w"
+                },
+                "toilet_1_1_m" :
+                {
+                    "text" : "Туалет этаж 1 М",
+                    "callback" : "toilet_1_1_m"
+                },
+                "toilet_2_x_w" :
+                {
+                    "text" : "Туалет этаж 2 Ж",
+                    "callback" : "toilet_2_x_w",
+                    "select" :
+                    {
+                        "toilet_2_2_w" :
+                        {
+                            "text" : "Туалет этаж 2 Ж около дома-физики",
+                            "callback" : "toilet_2_2_w" 
+                        },
+                        "toilet_2_1_w" : 
+                        {
+                            "text" : "Туалет этаж 2 Ж около лифта",
+                            "callback" : "toilet_2_1_w" 
+                        }
+                    }
+                },
+                "toilet_2_1_m" :
+                {
+                    "text" : "Туалет этаж 2 М",
+                    "callback" : "toilet_2_1_m"
+                },
+                "toilet_3_1_w" :
+                {
+                    "text" : "Туалет этаж 3 Ж",
+                    "callback" : "toilet_3_1_w"
+                }
+            }
+        },
+        "_canteen" :
+        {
+            "text" : "Столовая",
+            "callback" : "_canteen",
+            "select" :
+            {
+                "canteen" :
+                {
+                    "text" : "Ближайшая столовая",
+                    "callback" : "canteen"
+                },
+                "canteen_2_1":
+                {
+                    "text" : "Столовая этаж 2",
+                    "callback" : "canteen_2_1"
+                },
+                "canteen_3_1":
+                {
+                    "text" : "Столовая этаж 3",
+                    "callback" : "canteen_3_1"
+                }
+            }
+        },
+        "buffet_3_1" :
+        {
+            "text" : "Буфет",
+            "callback" : "buffet_3_1"
+        },
+        "technopark" :
+        {
+            "text" : "Технопарк",
+            "callback" : "technopark"
+        },
+        "military" :
+        {
+            "text" : "Военная кафедра",
+            "callback" : "military"
+        },
+        "audit_2_1" :
+        {
+            "text" : "Актовый зал",
+            "callback" : "audit_2_1"
+        },
+        "lib_3_1" :
+        {
+            "text" : "Читальный зал",
+            "callback" : "lib_3_1"
+        },
+        "souvenir_2_1" :
+        {
+            "text" : "Сувенирный магазин",
+            "callback" : "souvenir_2_1"
+        }
+    },
+    "commands" :
+    {
+        "/reset" :
+        {
+            "callback" :  "/reset",
+            "text" : "Начальное и конечное положение сброшены\nВыберите категорию или введите  кабинет"
+        },
+        "/start" :
+        {
+            "callback" : "/start",
+            "text" : "Бот готов!\nВыберите категорию или введите кабинет"
+        },
+        "/go" :
+        {
+            "callback" : "/go",
+            "text" : "Пока что проложить маршрут нельзя"
+        },
+        "/categ" :
+        {
+            "callback" : "/categ",
+            "text" : "Выберите категорию или введите кабинет"
+        }
+    },
+    "warnings" :
+    {
+        "fail" : 
+        {
+            "id" : 1,
+            "text" : "Позиция не найдена"
+        },
+        "fill" : 
+        {
+            "id" : 2,
+            "text" : "Позиции уже установлены"
+        }
+    }
+}

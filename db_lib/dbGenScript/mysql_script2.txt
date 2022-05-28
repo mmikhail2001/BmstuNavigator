@@ -1,0 +1,457 @@
+CREATE DATABASE bmstuNavigator;
+-- DROP DATABASE bmstuNavigator;
+USE bmstuNavigator;
+
+CREATE TABLE points (
+    id INTEGER PRIMARY KEY, 
+    isInfr INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE point_names (
+    id_fk INTEGER NOT NULL, 
+    name VARCHAR(30) NOT NULL,
+    FOREIGN KEY (id_fk) REFERENCES points (id)
+);
+
+CREATE TABLE edges (
+    from_fk INTEGER NOT NULL, 
+    to_ INTEGER NOT NULL, 
+    dist INTEGER NOT NULL,
+    link_to_file VARCHAR(30) NOT NULL,
+    FOREIGN KEY (from_fk) REFERENCES points (id)
+);
+
+-- floor 1 =================================
+
+INSERT INTO points (id, isInfr)  
+VALUES (105, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (105, 104, 20, 'photos/1/105-104.jpeg');
+
+
+INSERT INTO points (id, isInfr)  
+VALUES (104, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (104, 105, 20, 'photos/1/104-105.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (104, 1001, 5, 'photos/1/104-1001.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (104, 10191, 5, 'photos/1/104-10191.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (104, 102, 20, 'photos/1/104-102.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (1001, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (1001, 'toilet_1_1_w');
+INSERT INTO point_names (id_fk, name)
+VALUES (1001, 'toilet_w');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (1001, 104, 5, 'photos/1/1001-104.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (10191, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (10191, '191');
+INSERT INTO point_names (id_fk, name)
+VALUES (10191, 'toilet_w');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (10191, 104, 5, 'photos/1/10191-104.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (102, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (102, 104, 20, 'photos/1/102-104.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (102, 100, 20, 'photos/1/102-100.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (100, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (100, 102, 20, 'photos/1/100-102.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (100, 150, 5, 'photos/1/100-150.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (100, 103, 20, 'photos/1/100-103.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (150, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (150, 100, 5, 'photos/1/150-100.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (150, 200, 10, 'photos/2/150-200.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (103, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (103, 100, 20, 'photos/1/103-100.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (103, 1002, 5, 'photos/1/103-1002.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (103, 106, 20, 'photos/1/103-106.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (1002, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (1002, 'toilet_1_1_m');
+INSERT INTO point_names (id_fk, name)
+VALUES (1002, 'toilet_m');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (1002, 103, 5, 'photos/1/1002-103.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (106, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (106, 103, 20, 'photos/1/106-103.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (106, 10186, 5, 'photos/1/106-10186.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (10186, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (10186, '186');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (10186, 106, 5, 'photos/1/10186-106.jpeg');
+
+
+
+-- floor 2 =================================
+
+INSERT INTO points (id, isInfr)  
+VALUES (208, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (208, 207, 20, 'photos/2/208-207.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (208, 209, 20, 'photos/2/208-209.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (209, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (209, 208, 20, 'photos/2/209-208.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (209, 210, 20, 'photos/2/209-210.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (210, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (210, 209, 20, 'photos/2/210-209.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (210, 2003, 5, 'photos/2/210-2003.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (210, 212, 30, 'photos/2/210-212.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (2003, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (2003, 'audit_2_1');
+INSERT INTO point_names (id_fk, name)
+VALUES (2003, 'audit');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (2003, 210, 5, 'photos/2/2003-210.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (212, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (212, 210, 30, 'photos/2/212-210.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (212, 213, 20, 'photos/2/212-213.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (212, 214, 10, 'photos/2/212-214.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (214, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (214, 212, 10, 'photos/2/214-212.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (214, 2004, 20, 'photos/2/214-2004.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (214, 215, 30, 'photos/2/214-215.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (2004, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (2004, 'canteen_2_1');
+INSERT INTO point_names (id_fk, name)
+VALUES (2004, 'canteen');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (2004, 214, 20, 'photos/2/2004-214.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (2004, 215, 20, 'photos/2/2004-215.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (215, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (215, 214, 30, 'photos/2/215-214.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (215, 2004, 20, 'photos/2/215-2004.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (215, 216, 20, 'photos/2/215-216.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (216, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (216, 215, 20, 'photos/2/216-215.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (216, 2005, 5, 'photos/2/216-2005.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (216, 2006, 5, 'photos/2/216-2006.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (2005, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (2005, 'toilet_2_1_m');
+INSERT INTO point_names (id_fk, name)
+VALUES (2005, 'toilet_m');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (2005, 216, 5, 'photos/2/2005-216.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (2006, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (2006, 'toilet_2_2_w');
+INSERT INTO point_names (id_fk, name)
+VALUES (2006, 'toilet_w');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (2006, 216, 5, 'photos/2/2006-216.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (213, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (213, 212, 20, 'photos/2/213-212.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (213, 202, 40, 'photos/2/213-202.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (207, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (207, 208, 20, 'photos/2/207-208.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (207, 206, 30, 'photos/2/207-206.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (206, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (206, 207, 30, 'photos/2/206-207.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (206, 220, 10, 'photos/2/206-220.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (220, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (220, 206, 10, 'photos/2/220-206.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (220, 221, 20, 'photos/2/220-221.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (220, 204, 20, 'photos/2/220-204.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (221, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (221, 220, 20, 'photos/2/221-220.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (204, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (204, 220, 20, 'photos/2/204-220.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (204, 2001, 5, 'photos/2/204-2001.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (204, 200, 20, 'photos/2/204-200.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (2001, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (2001, 'toilet_2_1_w');
+INSERT INTO point_names (id_fk, name)
+VALUES (2001, 'toilet_w');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (2001, 204, 5, 'photos/2/2001-204.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (200, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (200, 204, 20, 'photos/2/200-204.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (200, 150, 10, 'photos/2/200-150.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (200, 250, 10, 'photos/2/200-250.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (200, 201, 20, 'photos/2/200-201.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (250, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (250, 200, 10, 'photos/2/250-200.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (250, 300, 10, 'photos/3/250-300.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (201, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (201, 200, 20, 'photos/2/201-200.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (201, 202, 20, 'photos/2/201-202.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (202, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (202, 201, 20, 'photos/2/202-201.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (202, 213, 40, 'photos/2/202-213.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (202, 2002, 5, 'photos/2/202-2002.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (2002, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (2002, 'souvenir_2_1');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (2002, 202, 5, 'photos/2/2002-202.jpeg');
+
+
+
+
+
+-- floor 3 =================================
+
+INSERT INTO points (id, isInfr)  
+VALUES (312, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (312, 3004, 5, 'photos/3/312-3004.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (312, 3003, 15, 'photos/3/312-3003.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (312, 311, 20, 'photos/3/312-311.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (3004, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (3004, 'canteen_3_1');
+INSERT INTO point_names (id_fk, name)
+VALUES (3004, 'canteen');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (3004, 312, 5, 'photos/3/3004-312.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (3003, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (3003, 'toilet_3_1_w');
+INSERT INTO point_names (id_fk, name)
+VALUES (3003, 'toilet_w');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (3003, 312, 15, 'photos/3/3003-312.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (3003, 311, 15, 'photos/3/3003-311.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (311, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (311, 312, 20, 'photos/3/311-312.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (311, 3003, 15, 'photos/3/311-3003.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (311, 310, 40, 'photos/3/311-310.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (310, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (310, 311, 40, 'photos/3/310-311.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (310, 309, 15, 'photos/3/310-309.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (309, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (309, 310, 15, 'photos/3/309-310.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (309, 3005, 5, 'photos/3/309-3005.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (309, 308, 10, 'photos/3/309-308.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (3005, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (3005, 'military');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (3005, 309, 5, 'photos/3/3005-309.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (308, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (308, 309, 10, 'photos/3/308-309.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (308, 307, 30, 'photos/3/308-307.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (307, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (307, 308, 30, 'photos/3/307-308.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (307, 306, 30, 'photos/3/307-306.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (306, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (306, 307, 30, 'photos/3/306-307.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (306, 305, 10, 'photos/3/306-305.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (305, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (305, 306, 10, 'photos/3/305-306.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (305, 3000, 5, 'photos/3/305-3000.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (305, 300, 40, 'photos/3/305-300.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (3000, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (3000, 'lib_3_1');
+INSERT INTO point_names (id_fk, name)
+VALUES (3000, 'lib');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (3000, 305, 5, 'photos/3/3000-305.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (300, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (300, 305, 40, 'photos/3/300-305.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (300, 250, 10, 'photos/3/300-250.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (300, 350, 10, 'photos/3/300-350.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (300, 303, 40, 'photos/3/300-303.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (350, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (350, 300, 10, 'photos/3/350-300.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (303, 0);
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (303, 300, 40, 'photos/3/303-300.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (303, 3001, 5, 'photos/3/303-3001.jpeg');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (303, 3002, 5, 'photos/3/303-3002.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (3001, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (3001, 'technopark');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (3001, 303, 5, 'photos/3/3001-303.jpeg');
+
+INSERT INTO points (id, isInfr)  
+VALUES (3002, 1);
+INSERT INTO point_names (id_fk, name)
+VALUES (3002, 'buffet_3_1');
+INSERT INTO point_names (id_fk, name)
+VALUES (3002, 'buffet');
+INSERT INTO edges (from_fk, to_, dist, link_to_file)  
+VALUES (3002, 303, 5, 'photos/3/3002-303.jpeg');
+

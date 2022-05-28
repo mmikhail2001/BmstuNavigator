@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Prerequisites
 *.d
 
@@ -53,3 +54,6 @@ dkms.conf
 
 /search_lib/.idea
 /search_lib/cmake-build-debug
+=======
+/build
+>>>>>>> integration

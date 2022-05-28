@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
-project(test_search)
-
-set(CMAKE_CXX_STANDARD 11)
-
-file(GLOB SOURCES *.cpp)
+project(tests)
 
 find_package(GTest REQUIRED)
 
-add_executable(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${SEARCH_LIB_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${SEARCH_LIB_LIBRARIES} GTest::gtest_main)
+set(GMOCK_INCLUDE_DIRS /usr/include/gmock)
+
+set(GMOCK_BOTH_LIBRARIES /usr/local/lib/libgmock.a /usr/local/lib/libgmock_main.a /usr/local/lib/libgtest.a /usr/local/lib/libgtest_main.a)
+
+add_subdirectory(test_db)
+add_subdirectory(test_search)
+add_subdirectory(test_tgbot)

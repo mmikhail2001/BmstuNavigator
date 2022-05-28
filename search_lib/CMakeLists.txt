@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(search_lib)
 
+set(CMAKE_CXX_STANDARD 17)
 set(SEARCH_LIB_LIBRARIES)
 set(SEARCH_LIB_INCLUDE_DIRS)
 

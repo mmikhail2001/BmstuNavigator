@@ -5,116 +5,129 @@
 #include <iterator>
 #include <algorithm>
 #include <cassert>
+#include <iterator>
+#include <optional>
 #include "points.h"
 #include "search.h"
 #include "database.h"
 
+using std::cout;
+using std::endl;
+using std::optional;
+using std::vector;
+using std::string;
 
-void Search::create_map_points() {
-    for (int i = 0; i < infr.size(); ++i) {
-        for (int j = 0; j < infr[i].names.size(); ++j) {
-            nameInfrMap[infr[i].names[j]] = &(infr[i]);
-        }
-        // TODO ADDED LIST OF VALUES
-        idInfrMap[infr[i].id] = &(infr[i]);
+void Search::initMaps() {
+    vector <Point*> vectorOfPtrsToPoints;
+    for (auto &point : graf) {
+        vectorOfPtrsToPoints.push_back(&point);
     }
-    for (int i = 0; i < graf.size(); ++i) {
-        idBasePointsMap[graf[i].id] = &(graf[i]);
+    for (auto &point : infr) {
+        vectorOfPtrsToPoints.push_back(&point);
+    }
+
+    createMapPoints(vectorOfPtrsToPoints);
+}
+
+void Search::createMapPoints(vector <Point*> ptrsToPoints) {
+    for (auto ptrToPoint : ptrsToPoints) {
+        vector <string> names = ptrToPoint->GetNames();
+        for (auto name : names) {
+            namePointsMap[name].push_back(ptrToPoint);
+        }
+        idPointMap[ptrToPoint->GetId()] = ptrToPoint;
+    }
+}
+
+
+void Search::initDijkstra() {
+    for (auto point : graf) {
+        for (auto edge : point.GetEdges()) {
+            dijkstraSearcher.AddDirectedEdge(edge.from, edge.to, edge.dist);
+        }
+    }
+    for (auto point : infr) {
+        for (auto edge : point.GetEdges()) {
+            dijkstraSearcher.AddDirectedEdge(edge.from, edge.to, edge.dist);
+        }
     }
 }
 
 Search::Search(DataBase* base) {
     graf = base->getBasePoints();
     infr = base->getInfrastructurePoints();
-    create_map_points();
+    initMaps();
+    initDijkstra();
 }
 
 bool Search::HavePoint(std::string name) {
-    return nameInfrMap.count(name);
+    return namePointsMap.count(name);
 }
 
-std::vector <std::string> Search::FindRoute(std::string startName, std::string endName) {
-    if (!HavePoint(startName) || !HavePoint(endName)) {
-        // std::cout << "ERROR: Search->FindRoute: unknown point was obtained" << std::endl;
-        throw std::runtime_error("ERROR: Search->FindRoute: unknown point was obtained");
+
+
+optional <Route> Search::FindRoute(unsigned int id, std::string name) {
+    Route route;
+    optional <Route> optRoute;
+    vector <Point*> points = GetByName(name);
+    if (!idPointMap.count(id)) {
+        return optRoute;
     }
-    std::vector <std::string> linksToFiles;
-    std::priority_queue <std::pair<int, Point*>, std::vector <std::pair<int, Point*> >, IsGreater > pq;
-    std::map <Point*, RoadData > distToPoint;
-    Point* startVertex = nameInfrMap[startName];
-    RoadData optDataFirst(0, 0, NULL);
-    distToPoint[startVertex] = optDataFirst;
-    pq.push(std::make_pair(0, startVertex));
-    while (!pq.empty()) {
-        Point* p = pq.top().second;
-        unsigned int dist = pq.top().first;
-        // std::cout << "dist: " << dist << std::endl;
-        // std::cout << "id: " << p->id << std::endl;
-        pq.pop();
-        if (distToPoint[p].dist < dist) continue;
-        for (int i = 0; i < p->BasePointEdges.size(); ++i) {
-            unsigned int localDistToPoint = dist + (p->BasePointEdges[i]).dist;
-            Point* neighbour = idBasePointsMap[(p->BasePointEdges[i]).vertexTo];
-            if (!distToPoint.count(neighbour) || distToPoint[neighbour].dist > localDistToPoint) {
-                RoadData optData(localDistToPoint, i, p);
-                distToPoint[neighbour] = optData;
-                pq.push(std::make_pair(localDistToPoint, neighbour));
-            }
-        }
-        if (p->Type() == Point::PointType::BasePoint) {
-            BasePoint* bpPtr = (BasePoint *)p;
-            for (int i = 0; i < bpPtr->InfrastructureEdges.size(); ++i) {
-                unsigned int localIdInfr = (bpPtr->InfrastructureEdges)[i].vertexTo;
-                Infrastructure* localInfr = idInfrMap[localIdInfr];
-                if (idInfrMap[localIdInfr] == nameInfrMap[endName]) {
-                    Point* localPoint = (Point*) localInfr;
-                    unsigned int localDistToPoint = dist + (bpPtr->InfrastructureEdges)[i].dist;
-                    if (!distToPoint.count(localPoint) || distToPoint[localPoint].dist > localDistToPoint) {
-                        RoadData optData(localDistToPoint, i, p, Point::PointType::Infrastructure);
-                        distToPoint[localPoint] = optData;
-                    }
-                }
-            }
+    dijkstraSearcher.FindRoute(id);
+    unsigned int minDist;
+    Point* minPoint = nullptr;
+    for (auto point : points) {
+        optional <unsigned int> dist = dijkstraSearcher.GetDistTo(point->GetId());
+        if (!minPoint || (dist && *dist < minDist)) {
+            minPoint = point;
+            minDist = *dist;
         }
     }
+    
+    if (!minPoint) {
+        return optRoute;
+    }
 
-    Point* localPoint = nameInfrMap[endName];
-    if (!distToPoint.count(localPoint)) {
-        throw std::runtime_error("ERROR: We cant find this Route");
+    vector <unsigned int> road = dijkstraSearcher.GetRoadTo(minPoint->GetId());
+    // optional<vector <unsigned int>> optRoad;
+
+    if (road.size() == 0) {
+        return optRoute;
     }
-    unsigned int dist = distToPoint[localPoint].dist;
-    RoadData optData = distToPoint[localPoint];
-    while (true) {
-        Point* ptr = optData.prev;
-        if (ptr == NULL) break;
-        if (optData.type == Point::PointType::Infrastructure) {
-            BasePoint* bpPtr = (BasePoint*)ptr;
-            linksToFiles.push_back((bpPtr->InfrastructureEdges)[optData.indexOfEdge].linkToFile);
-        } else {
-            linksToFiles.push_back((ptr->BasePointEdges)[optData.indexOfEdge].linkToFile);
-        }
-        optData = distToPoint[ptr];
+
+    for (int i = 0; i < ((int)road.size()) - 1; ++i) {
+        route.AddEdge(GetById(road[i])->GetEdgeById(road[i + 1]));
     }
-    std::reverse(linksToFiles.begin(), linksToFiles.end());
-    // std::cout << " dist to end: " << dist << std::endl;
-    return linksToFiles;
+    optRoute = route;
+    return optRoute;
+
+
+    // DEBUG:
+    // std::cout << "THIS IS RESULTED ROAD:" << endl;
+    // for (auto edge : route) {
+    //     std::cout << edge.linkToFile << " ";
+    // }
+    // std::copy(road.begin(), road.end(), 
+    //             std::ostream_iterator<unsigned int> (std::cout, " "));
+
+    // unsigned int dist = dijkstraSearcher.GetDistTo(minPoint->GetId());
+    // std::cout << "dist is: " << dist << std::endl;
+    return route;
 }
 
 
-void showRoute(std::vector <std::string> foundRoute) {
-    std::cout << "links: " << std::endl;
-    for (auto link : foundRoute) {
-        std::cout << link << std::endl;
-    }
-}
-/*
 
-int main() {
-    // DataBase data;
-    // Search s1(data);
-    // s1.show();
-    // std::cout << s1.HavePoint("501") << std::endl;
-    // s1.FindRoute("399u", "403u");
-    return 0;
+bool Search::IsUniquePoint(std::string name) {
+    if (namePointsMap.count(name) != 1) {
+        return false;
+    }
+    return true;
 }
-*/
+
+Point* Search::GetById(unsigned int id) {
+    return idPointMap[id];
+}
+
+vector <Point*> Search::GetByName(std::string name) {
+    return namePointsMap[name];
+}
