@@ -1,5 +1,5 @@
 #include "DataBaseDAO.h"
-#include "DataBaseConfigReader.h"
+// #include "DataBaseConfigReader.h"
 
 DataBaseDAO *DataBaseDAO::dataBaseDao = nullptr;
 DataBaseConnection *DataBaseDAO::dataBaseConnection = nullptr;
@@ -7,11 +7,13 @@ DataBaseConnection *DataBaseDAO::dataBaseConnection = nullptr;
 DataBaseDAO *DataBaseDAO::getInstance() {
     if (dataBaseDao == nullptr) {
         dataBaseDao = new DataBaseDAO();
-        
-        //DataBaseConfig *dataBaseConfig = new DataBaseConfig("../mysql_con_config.txt");
         DataBaseConfig *dataBaseConfig = new DataBaseConfig("localhost", "root", "admin", "bmstuNavigator");
-
+        //DataBaseConfig *dataBaseConfig = new DataBaseConfig("../mysql_con_config.txt");
+        //std::cout << "config = " << dataBaseConfig->server << std::endl;
+        //std::cout << "config = " << dataBaseConfig->user << std::endl;
+        //std::cout << "config = " << dataBaseConfig->password << std::endl;
         //std::cout << "config = " << dataBaseConfig->databaseName << std::endl;
+        //std::cout << dataBaseConfig << std::endl;
         dataBaseConnection = new DataBaseConnection(dataBaseConfig);
     }
 
@@ -26,6 +28,7 @@ std::vector<BasePoint> DataBaseDAO::getBasePoints() {
     std::vector<BasePoint> vector = {};
 
     while ((row = mysql_fetch_row(res)) != NULL) {
+        // the below row[] parametes may change depending on the size of the table and your objective
         //std::cout << row[0] << " | " << row[1] << std::endl;
         BasePoint basePoint(atoi(row[0]));
         /*
@@ -62,7 +65,6 @@ std::vector<BasePoint> DataBaseDAO::getBasePoints() {
         MYSQL_ROW row3; // The results rows (array)
         while ((row3 = mysql_fetch_row(res3)) != NULL) {
             //std::cout << "name = " << row3[0] << " | " << row3[1] << std::endl;
-            //Edge edge(atoi(row2[0]), atoi(row2[1]), atoi(row2[2]), row2[3]);
             b.AddName(row3[1]);
         }
     }
@@ -91,6 +93,7 @@ std::vector<Infrastructure> DataBaseDAO::getInfrastructurePoints() {
     std::vector<Infrastructure> vector = {};
 
     while ((row = mysql_fetch_row(res)) != NULL) {
+        // the below row[] parametes may change depending on the size of the table and your objective
         //std::cout << row[0] << " | " << row[1] << std::endl;
         Infrastructure infrastructure(atoi(row[0]));
         /*
@@ -115,7 +118,7 @@ std::vector<Infrastructure> DataBaseDAO::getInfrastructurePoints() {
         //std::cout << "query = " << query2 << std::endl;
         res2 = performQuery(&query2[0]);
         MYSQL_ROW row2; // The results rows (array)
-   
+        while ((row2 = mysql_fetch_row(res2)) != NULL) {
             //std::cout << row2[0] << " | " << row2[1] << " | " << row2[2] << " | " << row2[3] << std::endl;
             Edge edge(atoi(row2[0]), atoi(row2[1]), atoi(row2[2]), row2[3]);
             b.AddEdge(edge);
@@ -127,7 +130,6 @@ std::vector<Infrastructure> DataBaseDAO::getInfrastructurePoints() {
         MYSQL_ROW row3; // The results rows (array)
         while ((row3 = mysql_fetch_row(res3)) != NULL) {
             //std::cout << "name = " << row3[0] << " | " << row3[1] << std::endl;
-            //Edge edge(atoi(row2[0]), atoi(row2[1]), atoi(row2[2]), row2[3]);
             b.AddName(row3[1]);
         }
     }
@@ -227,3 +229,5 @@ DataBaseDAO::~DataBaseDAO() {
     //delete dataBaseConnection;
     delete dataBaseDao;
 }
+
+

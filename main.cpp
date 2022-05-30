@@ -10,8 +10,8 @@
 #include <fstream>
 
 #include "tg_bot.h"
-#include "DataBaseDAO.h"
-
+// #include "DataBaseDAO.h"
+#include "GraphFacade.h"
 
 using TgBot::Bot;
 using TgBot::ReplyKeyboardMarkup;
@@ -27,7 +27,7 @@ using std::string;
 
 int main(int argc, char *argv[])
 {
-    DataBase *db = DataBaseDAO::getInstance();
+    DataBase *db = new GraphFacade;
 
     std::string code;
     std::ifstream myfile("../bot_code.txt");
