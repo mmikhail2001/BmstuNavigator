@@ -23,23 +23,34 @@ void DataBaseConfig::readConfigFile(const std::string &configFilePath) {
     std::string line;
 
     std::ifstream in(configFilePath);
-    if (in.is_open())
-    {
+    if (in.is_open()) {
         /*
         while (getline(in, line))
         {
             std::cout << line << std::endl;
         }
          */
-        getline(in, line);
-        server = &line[0];
-        getline(in, line);
-        user = &line[0];
-        getline(in, line);
-        password = &line[0];
-        getline(in, line);
-        databaseName = &line[0];
+        std::string serverTmp;
+        std::string userTmp;
+        std::string passwordTmp;
+        std::string databaseNameTmp;
+
+        getline(in, serverTmp);
+        server = serverTmp.c_str();
+        getline(in, userTmp);
+        user = userTmp.c_str();
+        getline(in, passwordTmp);
+        password = passwordTmp.c_str();
+        getline(in, databaseNameTmp);
+        databaseName = databaseNameTmp.c_str();
+    } else {
+        in.close();
+        throw std::runtime_error("Exception. Incorrect path to config file: " + configFilePath + ".");
     }
+    //std::cout << server << std::endl;
+    //std::cout << user << std::endl;
+    //std::cout << password << std::endl;
+    //std::cout << databaseName << std::endl;
 
     in.close();
 }

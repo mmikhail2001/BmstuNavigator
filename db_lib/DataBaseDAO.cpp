@@ -7,10 +7,11 @@ DataBaseConnection *DataBaseDAO::dataBaseConnection = nullptr;
 DataBaseDAO *DataBaseDAO::getInstance() {
     if (dataBaseDao == nullptr) {
         dataBaseDao = new DataBaseDAO();
-        //DataBaseConfigReader dataBaseConfigReader;
+        
+        //DataBaseConfig *dataBaseConfig = new DataBaseConfig("../mysql_con_config.txt");
         DataBaseConfig *dataBaseConfig = new DataBaseConfig("localhost", "root", "admin", "bmstuNavigator");
 
-        std::cout << "config = " << dataBaseConfig->databaseName << std::endl;
+        //std::cout << "config = " << dataBaseConfig->databaseName << std::endl;
         dataBaseConnection = new DataBaseConnection(dataBaseConfig);
     }
 
@@ -19,14 +20,13 @@ DataBaseDAO *DataBaseDAO::getInstance() {
 
 std::vector<BasePoint> DataBaseDAO::getBasePoints() {
     MYSQL_RES *res = performQuery("SELECT * FROM points WHERE isInfr = 0;");
-    std::cout << ("Database Output:\n") << std::endl;
+    //std::cout << ("Database Output:\n") << std::endl;
     MYSQL_ROW row; // The results rows (array)
 
     std::vector<BasePoint> vector = {};
 
     while ((row = mysql_fetch_row(res)) != NULL) {
-        // the below row[] parametes may change depending on the size of the table and your objective
-        std::cout << row[0] << " | " << row[1] << std::endl;
+        //std::cout << row[0] << " | " << row[1] << std::endl;
         BasePoint basePoint(atoi(row[0]));
         /*
         std::string query = "SELECT * FROM edges WHERE from_fk = " + std::to_string(basePoint.GetId()) + ";";
@@ -47,27 +47,23 @@ std::vector<BasePoint> DataBaseDAO::getBasePoints() {
         std::string idStr = std::to_string(b.GetId());
 
         std::string query2 = "SELECT * FROM edges WHERE from_fk = " + idStr + ";";
-        std::cout << "query = " << query2 << std::endl;
+        //std::cout << "query = " << query2 << std::endl;
         res2 = performQuery(&query2[0]);
         MYSQL_ROW row2; // The results rows (array)
         while ((row2 = mysql_fetch_row(res2)) != NULL) {
-            // the below row[] parametes may change depending on the size of the table and your objective
-            std::cout << row2[0] << " | " << row2[1] << " | " << row2[2] << " | " << row2[3] << std::endl;
+            //std::cout << row2[0] << " | " << row2[1] << " | " << row2[2] << " | " << row2[3] << std::endl;
             Edge edge(atoi(row2[0]), atoi(row2[1]), atoi(row2[2]), row2[3]);
             b.AddEdge(edge);
-            //Edge edge(atoi(row2[0]), 2, 2, "ghj");
         }
 
         std::string query3 = "SELECT * FROM point_names WHERE id_fk = " + idStr + ";";
-        std::cout << "query = " << query3 << std::endl;
+        //std::cout << "query = " << query3 << std::endl;
         res3 = performQuery(&query3[0]);
         MYSQL_ROW row3; // The results rows (array)
         while ((row3 = mysql_fetch_row(res3)) != NULL) {
-            // the below row[] parametes may change depending on the size of the table and your objective
-            std::cout << "name = " << row3[0] << " | " << row3[1] << std::endl;
+            //std::cout << "name = " << row3[0] << " | " << row3[1] << std::endl;
             //Edge edge(atoi(row2[0]), atoi(row2[1]), atoi(row2[2]), row2[3]);
             b.AddName(row3[1]);
-            //Edge edge(atoi(row2[0]), 2, 2, "ghj");
         }
     }
 
@@ -89,14 +85,13 @@ std::vector<BasePoint> DataBaseDAO::getBasePoints() {
 
 std::vector<Infrastructure> DataBaseDAO::getInfrastructurePoints() {
     MYSQL_RES *res = performQuery("SELECT * FROM points WHERE isInfr = 1;");
-    std::cout << ("Database Output:\n") << std::endl;
+    //std::cout << ("Database Output:\n") << std::endl;
     MYSQL_ROW row; // The results rows (array)
 
     std::vector<Infrastructure> vector = {};
 
     while ((row = mysql_fetch_row(res)) != NULL) {
-        // the below row[] parametes may change depending on the size of the table and your objective
-        std::cout << row[0] << " | " << row[1] << std::endl;
+        //std::cout << row[0] << " | " << row[1] << std::endl;
         Infrastructure infrastructure(atoi(row[0]));
         /*
         std::string query = "SELECT * FROM edges WHERE from_fk = " + std::to_string(infrastructure.GetId()) + ";";
@@ -117,27 +112,23 @@ std::vector<Infrastructure> DataBaseDAO::getInfrastructurePoints() {
         std::string idStr = std::to_string(b.GetId());
 
         std::string query2 = "SELECT * FROM edges WHERE from_fk = " + idStr + ";";
-        std::cout << "query = " << query2 << std::endl;
+        //std::cout << "query = " << query2 << std::endl;
         res2 = performQuery(&query2[0]);
         MYSQL_ROW row2; // The results rows (array)
-        while ((row2 = mysql_fetch_row(res2)) != NULL) {
-            // the below row[] parametes may change depending on the size of the table and your objective
-            std::cout << row2[0] << " | " << row2[1] << " | " << row2[2] << " | " << row2[3] << std::endl;
+   
+            //std::cout << row2[0] << " | " << row2[1] << " | " << row2[2] << " | " << row2[3] << std::endl;
             Edge edge(atoi(row2[0]), atoi(row2[1]), atoi(row2[2]), row2[3]);
             b.AddEdge(edge);
-            //Edge edge(atoi(row2[0]), 2, 2, "ghj");
         }
 
         std::string query3 = "SELECT * FROM point_names WHERE id_fk = " + idStr + ";";
-        std::cout << "query = " << query3 << std::endl;
+        //std::cout << "query = " << query3 << std::endl;
         res3 = performQuery(&query3[0]);
         MYSQL_ROW row3; // The results rows (array)
         while ((row3 = mysql_fetch_row(res3)) != NULL) {
-            // the below row[] parametes may change depending on the size of the table and your objective
-            std::cout << "name = " << row3[0] << " | " << row3[1] << std::endl;
+            //std::cout << "name = " << row3[0] << " | " << row3[1] << std::endl;
             //Edge edge(atoi(row2[0]), atoi(row2[1]), atoi(row2[2]), row2[3]);
             b.AddName(row3[1]);
-            //Edge edge(atoi(row2[0]), 2, 2, "ghj");
         }
     }
 
@@ -236,4 +227,3 @@ DataBaseDAO::~DataBaseDAO() {
     //delete dataBaseConnection;
     delete dataBaseDao;
 }
-
