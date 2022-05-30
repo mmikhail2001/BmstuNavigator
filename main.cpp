@@ -7,9 +7,9 @@
 #include <string_view>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "tg_bot.h"
-#include "db.h"
 #include "DataBaseDAO.h"
 
 
@@ -27,20 +27,16 @@ using std::string;
 
 int main(int argc, char *argv[])
 {
-    db_print();
-
     DataBase *db = DataBaseDAO::getInstance();
-    
-    // std::vector <Infrastructure> infrPoints = test->getInfrastructurePoints();
-    // for (auto bp : infrPoints) {
-    //     std::vector <std::string> names = bp.GetNames();
-    //     for (auto name : names) {
-    //         std::cout << ">>>>" << name << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
 
-    Bot bot("5181505545:AAHTLmsoVKRTby02w54aVI8Y7j-s5NuoSNk");
+    std::string code;
+    std::ifstream myfile("../bot_code.txt");
+    if (!myfile.is_open() || !getline(myfile,code))
+    {
+        return -1;
+    } 
+    myfile.close();
+    Bot bot(code);
 
     std::ifstream ifs("../data.json");
     nlohmann::json j = nlohmann::json::parse(ifs);
@@ -51,7 +47,6 @@ int main(int argc, char *argv[])
     vecViews.push_back(new MessageView(TEXT, &bot));
     vecViews.push_back(new VideoView(VIDEO, &bot));
 
-    // DataBase *db = new DataBaseBMSTU;
     IModel *model = new Model(db);
 
     Presenter presenter(vecViews, model, j);

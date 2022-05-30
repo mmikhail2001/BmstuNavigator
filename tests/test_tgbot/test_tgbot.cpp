@@ -1,16 +1,11 @@
 #include <iostream>
-// #include <sys/sysinfo.h>
 #include <gtest/gtest.h>
 #include "gmock/gmock.h"
 
-// using ::testing::AtLeast;
-// using ::testing::DoAll;
-// using ::testing::Return;
-// using ::testing::SetArgReferee;
 
 #include "tg_bot.h"
-#include "points.h"
-#include "db.h"
+
+// Тесты в ветке Mikhail
 
 TEST(test_tools, test_create_keyboards) {
 

@@ -12,10 +12,7 @@
 #include <iostream>
 #include <string>
 
-//-----------------------
-#include "db.h"
 #include "search.h"
-//-----------------------
 
 using std::string;
 using std::vector;
@@ -58,26 +55,6 @@ struct Positions
     std::string end_id = std::string();
     std::string end_view = std::string();
 };
-
-// заглушки классов сокомандника
-// struct Route;
-
-// class DataBase {};
-
-// class DataBaseBMSTU : public DataBase {};
-
-// class Search
-// {
-// public:
-//     Search (DataBase *db);
-
-//     Route *FindRoute(const Positions &pos);
-
-//     bool HavePoint(std::string point);
-
-// private:
-//     DataBase *db;
-// };
 
 // мои классы
 class IModel

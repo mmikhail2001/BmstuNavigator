@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "db.h"
-
 TEST(test_tools, test_true_1) {
 
     EXPECT_TRUE(true);
