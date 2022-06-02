@@ -1,95 +1,74 @@
 #pragma once
-#include <vector>
-#include <map>
 #include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
 #include <set>
 #include <optional>
-#include <algorithm>
 
-using std::map;
 using std::vector;
-using std::set;
-using std::cout;
-using std::endl;
+using std::unordered_map;
+using std::unordered_set;
 using std::optional;
+using std::set;
+using std::pair;
 
 template <class T>
 class Dijkstra {
 public:
-    Dijkstra();
-    void AddDirectedEdge(const T from, const T to, unsigned int weight);
-    void FindRoute(const T source);
-    optional <unsigned int> GetDistTo(const T& id);
+    Dijkstra() {}
+
+    void AddDirectedEdge(const T &from, const T& to, unsigned int weight);
+
+    void FindRoute(const T& from);
+
+    optional<unsigned int> GetDistTo(const T& to);
+
     vector <T> GetRoadTo(const T& id);
-    void PrintDist();
-    void PrintGraf();
 
 private:
-    const int INF = 1e9;
-    set <T> vertexes;
-    map <T, vector <int> > graf;
-    map <T, vector <int> > grafWeights;
-    map <T, T> dist;
-    map <T, T> prev;
+    unordered_map <T, vector <pair <T, int>>> edges;
+    unordered_map <T, optional <unsigned int>> dists;
+    unordered_map <T, T> prev;
     T sourceVertex;
+
 };
 
-
 template <class T>
-Dijkstra<T>::Dijkstra() {}
-
-template <class T>
-void Dijkstra<T>::AddDirectedEdge(const T from, const T to, unsigned int weight) {
-    vertexes.insert(from);
-    vertexes.insert(to);
-    graf[from].push_back(to);
-    grafWeights[from].push_back(weight);
+void Dijkstra<T>::AddDirectedEdge(const T &from, const T& to, unsigned int weight) {
+    edges[from].push_back({to, weight});
 }
 
-
 template <class T>
-void Dijkstra<T>::FindRoute(const T source) {
-    sourceVertex = source;
-    prev.clear();
-    dist.clear();
-    std::map <T, T> used;
-    for (auto v : vertexes) {
-        dist[v] = INF;
-    }
-	dist[source] = 0;
-
-	for (int i = 0; i < vertexes.size(); ++i) {
-		optional <T> minVertex;
-		for (auto vertex : vertexes) {
-            if (!used[vertex] && (!minVertex || dist[vertex] < dist[*minVertex])) {
-				minVertex = vertex;
+void Dijkstra<T>::FindRoute(const T& from) {
+    sourceVertex = from;
+    set <pair<int, T>> tmpDists;
+    tmpDists.insert({0, from});
+    unordered_set <int> used;
+    while (tmpDists.size()) {
+        pair <int, T> minVertex = *(tmpDists.begin());
+        used.insert(minVertex.second);
+        tmpDists.erase(tmpDists.begin());
+        for (auto &edge : edges[minVertex.second]) {
+            T newVertex = edge.first;
+            optional <unsigned int> lastDistToV = dists[newVertex];
+            int nowDistToV = minVertex.first + edge.second;
+            if (!used.count(newVertex) && (!lastDistToV || nowDistToV < lastDistToV)) {
+                if (lastDistToV) {
+                    pair <int, T> lastEdge = {*lastDistToV, newVertex};
+                    tmpDists.erase(tmpDists.find(lastEdge));
+                }
+                dists[newVertex] = nowDistToV;
+                tmpDists.insert({nowDistToV, newVertex});
+                prev[newVertex] = minVertex.second;
             }
         }
-			
-		if (dist[*minVertex] == INF)
-			break;
-
-		used[*minVertex] = true;
- 
-		for (int j = 0; j < graf[*minVertex].size(); ++j) {
-			int to = graf[*minVertex][j];
-			int	len = grafWeights[*minVertex][j];
-			if (dist[*minVertex] + len < dist[to]) {
-				dist[to] = dist[*minVertex] + len;
-				prev[to] = *minVertex;
-			}
-		}
-	}
+    }
 }
 
 template <class T>
-optional <unsigned int> Dijkstra<T>::GetDistTo(const T& id) {
-    optional <unsigned int> optDist;
-    if (dist[id] == INF) {
-        return optDist;
-    }
-    optDist = dist[id];
-    return optDist;
+optional<unsigned int> Dijkstra<T>::GetDistTo(const T& to) {
+    return dists[to];
 }
 
 template <class T>
@@ -102,3 +81,4 @@ vector <T> Dijkstra<T>::GetRoadTo(const T& id) {
     std::reverse(path.begin(), path.end());
     return path;
 }
+
